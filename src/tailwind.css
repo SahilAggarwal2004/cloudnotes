@@ -1,0 +1,8 @@
+/* ./my-app/src/tailwind.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+    @apply my-1 bg-purple-700 text-white py-1 px-2 border-2 border-white rounded-md transition-all duration-500 hover:bg-white hover:text-purple-700 hover:border-purple-700
+}

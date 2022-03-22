@@ -1,6 +1,8 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CloudNotes",
+  "name": "CloudNotes - Your notes whenever wherever you want!",
+  "description": "CloudNotes is an online platform to save all your notes at one place on the cloud. It is a platform where your notes are totally encrypted and secured so that only you can access your notes.",
+  "author": "Sahil Aggarwal",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,12 +10,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
