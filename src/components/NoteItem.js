@@ -47,7 +47,7 @@ export default function NoteItem(props) {
     }
 
     return (
-        <div className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative' data-aos='fade-up'>
+        <div className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative' data-aos='fade-left'>
             <div className='bg-gray-200 rounded-2xl absolute top-0 translate-y-[-50%] text-xs text-black px-2 py-px border' style={{ backgroundColor: tagColors && tagColors[tag] === '#000000' ? '#e5e7eb' : tagColors ? tagColors[tag] : '#e5e7eb' }}>{tag}</div>
             <h3 className='text-lg text-bold' style={{ wordBreak: 'break-word' }}>{title}</h3>
             <hr className='w-full my-2' />
