@@ -18,7 +18,7 @@ import AOS from "aos";
 
 function App() {
 	useEffect(() => {
-		AOS.init();
+		AOS.init({ once: true, offset: 20 });
 		AOS.refresh();
 	}, [])
 
