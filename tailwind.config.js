@@ -1,5 +1,7 @@
 module.exports = {
-  content: ["./src/pages//*.{js,jsx,ts,tsx}", "./src/components//*.{js,jsx,ts,tsx}", "./public/index.html"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     screens: {
       sm: '640px',
@@ -15,7 +17,7 @@ module.exports = {
       },
       animation: {
         'spin-fast': 'spin 0.55s ease infinite'
-      },
+      }
     },
   },
   plugins: [],

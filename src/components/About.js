@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import logo from '../media/logo.png';
-import creator from '../media/owner.jpeg';
+import logo from '../media/logo.webp'
+import creator from '../media/owner.webp';
 
 export default function About() {
     useEffect(() => {
