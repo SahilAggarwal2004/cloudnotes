@@ -15,6 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "npm run watch:css && react-scripts build",
+    "postbuild": "react-snap",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "watch:css": "postcss src/tailwind.css -o src/index.css",
