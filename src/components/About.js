@@ -22,7 +22,7 @@ export default function About() {
                 <img src={creator} alt="Sahil Aggarwal" className='w-36 h-36 rounded-full border-2 border-black absolute top-0 translate-y-[-50%]' />
                 <div className='font-semibold text-lg mt-4' data-aos='fade-up'>Sahil Aggarwal</div>
                 <div className='text-gray-700 mt-2' data-aos='fade-up'>CSE, 1st Year, MSIT</div>
-                <div className='text-gray-700 mt-2' data-aos='fade-up'>MERN Stack Web Developer</div>
+                <div className='text-gray-700 mt-2' data-aos='fade-up'>Full Stack Web Developer</div>
             </div>
         </div>
         <footer className='w-full text-center bg-purple-600 text-white px-3 py-2 flex flex-col sm:flex-row justify-between'>

@@ -121,7 +121,7 @@ export default function Notes(props) {
                     }
                     else if (note._id === noteToEdit[0]._id) {
                         return (
-                            <div key={note._id} className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${noteToEdit[1] ? '' : 'hidden'}`} data-aos='fade-right'>
+                            <div key={note._id} className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${noteToEdit[1] ? '' : 'hidden'}`} data-aos='fade-right' data-aos-once='true' data-aos-offset={20}>
                                 <div className={`absolute top-0 translate-y-[-50%] flex`}>
                                     <input type='text' list='tagList' ref={editTag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} defaultValue={noteToEdit[0].tag} onChange={event => {
                                         editTagColor.current.value = JSON.parse(localStorage.getItem('tagColors')) ? JSON.parse(localStorage.getItem('tagColors'))[event.target.value] || editTagColor.current.value : editTagColor.current.value
@@ -144,7 +144,7 @@ export default function Notes(props) {
                         return null
                     }
                 })}
-                <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${newNote && !spinner ? '' : 'hidden'}`} data-aos='fade-right'>
+                <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${newNote && !spinner ? '' : 'hidden'}`} data-aos='fade-right' data-aos-once='true' data-aos-offset={20}>
                     <div className={`absolute top-0 translate-y-[-50%] flex`}>
                         <input type='text' list='tagList' ref={tag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} onChange={event => {
                             tagColor.current.value = JSON.parse(localStorage.getItem('tagColors')) ? JSON.parse(localStorage.getItem('tagColors'))[event.target.value] || tagColor.current.value : tagColor.current.value
@@ -170,7 +170,7 @@ export default function Notes(props) {
                     </div>
                     <input type='text' ref={title} className='text-lg text-bold text-center w-full focus:outline-0 placeholder:text-gray-600' placeholder='Add title' minLength={1} maxLength={20} />
                     <hr className='w-full my-2' />
-                    <textarea ref={description} placeholder='Add description' rows='5' maxLength={1000} className='text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0' onChange={() => { setAddDescLength(description.current.value.length) }} />
+                    <textarea ref={description} placeholder='Add description' rows='5' maxLength={1000} className='text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0' onChange={() => setAddDescLength(description.current.value.length)} />
                     <div className='text-xs text-right w-full mb-10 pr-1'>{addDescLength}/1000</div>
                     <div className='space-x-3 absolute bottom-[1.375rem]'>
                         <i className="far fa-plus cursor-pointer" onClick={handleAdd} />
