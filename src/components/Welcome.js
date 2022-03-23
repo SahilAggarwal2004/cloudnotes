@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import bg from '../media/bg.webp'
 import logo from '../media/logo.webp'
-// import logo2 from '../media/logo-white.webp'
 
 export default function Welcome() {
   const redirect = useNavigate();
