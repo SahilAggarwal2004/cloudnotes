@@ -3,6 +3,7 @@ import './index.css';
 import { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Notes from './components/Notes';
+import Loading from './components/Loading';
 import "aos/dist/aos.css";
 import AOS from "aos";
 
@@ -27,17 +28,16 @@ function App() {
 
 	return (
 		// Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up
-		<Suspense fallback={<div className='fixed top-0 w-full h-full flex flex-col space-y-2 items-center justify-center'>
-			<div className='w-[1.375rem] h-[1.375rem] border-2 border-transparent border-t-black border-b-black rounded-[50%] animate-spin-fast' />
-			<p>Loading...</p>
-		</div>}>
-			<ToggleState>
-				{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
-				<NoteState>
-					<Router>
+		<ToggleState>
+			{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
+			<NoteState>
+				<Router>
+					<Suspense fallback={<Loading />}>
 						<Navbar />
 						<Alert />
 						<Modal />
+					</Suspense>
+					<Suspense fallback={<Loading />}>
 						<Routes>
 							<Route path='/' element={<Welcome />} />
 							<Route path="/dashboard" element={<Notes />} />
@@ -47,10 +47,10 @@ function App() {
 							<Route path="/forgot" element={<Forgot />} />
 							<Route path="/account/:type/:token" element={<Account />} />
 						</Routes>
-					</Router>
-				</NoteState>
-			</ToggleState>
-		</Suspense>
+					</Suspense >
+				</Router>
+			</NoteState>
+		</ToggleState>
 	);
 }
 
