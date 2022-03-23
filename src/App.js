@@ -2,20 +2,27 @@ import './App.css';
 import './index.css';
 import { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Welcome from './components/Welcome';
-import Notes from './components/Notes';
-import About from './components/About';
-import Signup from './components/Signup';
-import Login from './components/Login';
-import Forgot from './components/Forgot';
+// import Welcome from './components/Welcome';
+// import Notes from './components/Notes';
+// import About from './components/About';
+// import Signup from './components/Signup';
+// import Login from './components/Login';
+// import Forgot from './components/Forgot';
+// import Account from './components/Account';
 import NoteState from './context/notes/NoteState'; // importing NoteState function
-import Account from './components/Account';
 import "aos/dist/aos.css";
 import AOS from "aos";
 
 const Navbar = lazy(() => import('./components/Navbar'));
 const Alert = lazy(() => import('./components/Alert'));
 const Modal = lazy(() => import('./components/Modal'));
+const Welcome = lazy(() => import('./components/Welcome'));
+const Notes = lazy(() => import('./components/Notes'));
+const About = lazy(() => import('./components/About'));
+const Signup = lazy(() => import('./components/Signup'));
+const Login = lazy(() => import('./components/Login'));
+const Forgot = lazy(() => import('./components/Forgot'));
+const Account = lazy(() => import('./components/Account'));
 
 function App() {
 	useEffect(() => {
