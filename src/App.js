@@ -5,6 +5,9 @@ import NoteState from './context/notes/NoteState' // importing NoteState functio
 import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
 import Welcome from './components/Welcome';
+// import Navbar from './components/Navbar';
+// import Alert from './components/Alert';
+// import Modal from './components/Modal';
 import "aos/dist/aos.css";
 import AOS from "aos";
 
@@ -35,11 +38,11 @@ function App() {
 			{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
 			<NoteState>
 				<Router>
-					<Suspense fallback={<Loading />}>
+					<Suspense fallback={<></>}>
 						<Navbar />
 						<Alert />
 						<Modal />
-					</Suspense >
+					</Suspense>
 					<Suspense fallback={<Loading />}>
 						<Routes>
 							<Route path='/' element={<Welcome />} />
