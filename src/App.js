@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import NoteState from './context/notes/NoteState' // importing NoteState function
 import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
-import Welcome from './components/Welcome';
+// import Welcome from './components/Welcome';
 import "aos/dist/aos.css";
 import AOS from "aos";
 
@@ -14,7 +14,7 @@ import AOS from "aos";
 const Navbar = lazy(() => import('./components/Navbar')); // making components lazy
 const Alert = lazy(() => import('./components/Alert'));
 const Modal = lazy(() => import('./components/Modal'));
-// const Welcome = lazy(() => import('./components/Welcome'));
+const Welcome = lazy(() => import('./components/Welcome'));
 const Notes = lazy(() => import('./components/Notes'));
 const About = lazy(() => import('./components/About'));
 const Signup = lazy(() => import('./components/Signup'));
