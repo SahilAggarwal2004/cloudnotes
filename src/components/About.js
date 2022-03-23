@@ -9,7 +9,7 @@ export default function About() {
 
     return (<div className='flex flex-col items-center text-center absolute top-0'>
         <div className='w-11/12 sm:w-2/3 h-screen flex flex-col justify-center items-center' data-aos='fade-up'>
-            <img src={logo} alt="" className='w-16 h-16' />
+            <img src={logo} alt="CloudNotes" className='w-16 h-16' />
             <h1 className='text-2xl font-semibold'>CloudNotes</h1>
             <p className='pt-4'>
                 CloudNotes is an online platform to save all your notes at one place on the cloud. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.

@@ -2,16 +2,16 @@ import './App.css';
 import './index.css';
 import { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-// import NoteState from './context/notes/NoteState' // importing NoteState function
-// import ToggleState from './context/toggle/ToggleState'
+import NoteState from './context/notes/NoteState' // importing NoteState function
+import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
 // import Welcome from './components/Welcome';
 import "aos/dist/aos.css";
 import AOS from "aos";
 
 
-const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
-const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
+// const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
+// const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
 const Navbar = lazy(() => import('./components/Navbar')); // making components lazy
 const Alert = lazy(() => import('./components/Alert'));
 const Modal = lazy(() => import('./components/Modal'));
@@ -32,14 +32,16 @@ function App() {
 
 	return (
 		// Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up
-		<Suspense fallback={<Loading />}>
-			<ToggleState>
-				{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
-				<NoteState>
-					<Router>
+		<ToggleState>
+			{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
+			<NoteState>
+				<Router>
+					<Suspense fallback={<Loading />}>
 						<Navbar />
 						<Alert />
 						<Modal />
+					</Suspense >
+					<Suspense fallback={<Loading />}>
 						<Routes>
 							<Route path='/' element={<Welcome />} />
 							<Route path="/dashboard" element={<Notes />} />
@@ -49,10 +51,10 @@ function App() {
 							<Route path="/forgot" element={<Forgot />} />
 							<Route path="/account/:type/:token" element={<Account />} />
 						</Routes>
-					</Router>
-				</NoteState>
-			</ToggleState>
-		</Suspense >
+					</Suspense >
+				</Router>
+			</NoteState>
+		</ToggleState>
 	);
 }
 
