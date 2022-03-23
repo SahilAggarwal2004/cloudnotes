@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import bg from '../media/bg.webp'
 import logo from '../media/logo.webp'
-import logo2 from '../media/logo-white.webp'
 
 export default function Welcome() {
   const redirect = useNavigate();
@@ -21,8 +20,6 @@ export default function Welcome() {
       <div className="container col-span-3 flex flex-col justify-evenly items-center min-w-[30vw] h-full">
         <div className='flex flex-col items-center'>
           <img src={logo} alt="" id="logo" className='w-16 h-16 normal:invert-[90%]' />
-          {/* <img src={logo} alt="" id="logo" className='w-16 h-16 normal:hidden' />
-          <img src={logo2} alt="" id="logo" className='w-16 h-16 hidden normal:block' style={{ filter: 'invert(10%)' }} /> */}
           <h1 className='text-2xl font-bold normal:font-semibold'>CloudNotes</h1>
         </div>
         <div className='px-7 text-justify'>CloudNotes is an online platform to save all your notes at one place on the cloud. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.</div>
