@@ -16,8 +16,8 @@ export default function Welcome() {
   }, []);
 
   return (
-    <div className={`flex container fixed inset-0 normal:bg-purple-600 normal:text-white normal:text-opacity-90 justify-center min-w-full ${welcome ? '' : 'hidden'}`}>
-      <div className="container col-span-3 flex flex-col justify-evenly items-center min-w-[30vw] h-full">
+    <div className={`flex container fixed inset-0 normal:text-white normal:text-opacity-90 justify-center min-w-full ${welcome ? '' : 'hidden'}`}>
+      <div className="container col-span-3 flex flex-col justify-evenly items-center min-w-[30vw] h-full normal:bg-purple-600">
         <div className='flex flex-col items-center'>
           <img src={logo} alt="" id="logo" className='w-16 h-16 normal:invert-[90%]' />
           <h1 className='text-2xl font-bold normal:font-semibold'>CloudNotes</h1>
