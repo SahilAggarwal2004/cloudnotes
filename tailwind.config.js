@@ -17,6 +17,9 @@ module.exports = {
       },
       animation: {
         'spin-fast': 'spin 0.55s ease infinite'
+      },
+      invert: {
+        90: '90%'
       }
     },
   },
