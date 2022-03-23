@@ -2,13 +2,16 @@ import './App.css';
 import './index.css';
 import { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import NoteState from './context/notes/NoteState' // importing NoteState function
+import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
 import Welcome from './components/Welcome';
 import "aos/dist/aos.css";
 import AOS from "aos";
 
-const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
-const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
+
+// const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
+// const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
 const Navbar = lazy(() => import('./components/Navbar')); // making components lazy
 const Alert = lazy(() => import('./components/Alert'));
 const Modal = lazy(() => import('./components/Modal'));
