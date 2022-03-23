@@ -33,11 +33,9 @@ function App() {
 				{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
 				<NoteState>
 					<Router>
-						<Suspense fallback={<Loading />}>
-							<Navbar />
-							<Alert />
-							<Modal />
-						</Suspense>
+						<Navbar />
+						<Alert />
+						<Modal />
 						<Suspense fallback={<Loading />}>
 							<Routes>
 								<Route path='/' element={<Welcome />} />
