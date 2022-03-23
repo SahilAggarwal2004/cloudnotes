@@ -28,29 +28,31 @@ function App() {
 
 	return (
 		// Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up
-		<ToggleState>
-			{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
-			<NoteState>
-				<Router>
-					<Suspense fallback={<Loading />}>
-						<Navbar />
-						<Alert />
-						<Modal />
-					</Suspense>
-					<Suspense fallback={<Loading />}>
-						<Routes>
-							<Route path='/' element={<Welcome />} />
-							<Route path="/dashboard" element={<Notes />} />
-							<Route path="/about" element={<About />} />
-							<Route path="/signup" element={<Signup />} />
-							<Route path="/login" element={<Login />} />
-							<Route path="/forgot" element={<Forgot />} />
-							<Route path="/account/:type/:token" element={<Account />} />
-						</Routes>
-					</Suspense >
-				</Router>
-			</NoteState>
-		</ToggleState>
+		<Suspense fallback={<Loading />}>
+			<ToggleState>
+				{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
+				<NoteState>
+					<Router>
+						<Suspense fallback={<Loading />}>
+							<Navbar />
+							<Alert />
+							<Modal />
+						</Suspense>
+						<Suspense fallback={<Loading />}>
+							<Routes>
+								<Route path='/' element={<Welcome />} />
+								<Route path="/dashboard" element={<Notes />} />
+								<Route path="/about" element={<About />} />
+								<Route path="/signup" element={<Signup />} />
+								<Route path="/login" element={<Login />} />
+								<Route path="/forgot" element={<Forgot />} />
+								<Route path="/account/:type/:token" element={<Account />} />
+							</Routes>
+						</Suspense >
+					</Router>
+				</NoteState>
+			</ToggleState>
+		</Suspense>
 	);
 }
 
