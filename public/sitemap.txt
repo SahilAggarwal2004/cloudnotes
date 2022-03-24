@@ -1,0 +1,6 @@
+https://cloudnotesweb.netlify.app
+https://cloudnotesweb.netlify.app/dashboard
+https://cloudnotesweb.netlify.app/about
+https://cloudnotesweb.netlify.app/signup
+https://cloudnotesweb.netlify.app/login
+https://cloudnotesweb.netlify.app/forgot
