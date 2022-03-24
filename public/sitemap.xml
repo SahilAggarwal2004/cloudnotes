@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://cloudnotesweb.netlify.app/index.html</loc>
+        <loc>https://cloudnotesweb.netlify.app</loc>
         <lastmod>2022-03-24</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1</priority>
     </url>
     <url>
-        <loc>https://cloudnotesweb.netlify.app/dashboard/index.html</loc>
+        <loc>https://cloudnotesweb.netlify.app/dashboard</loc>
         <lastmod>2022-03-24</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://cloudnotesweb.netlify.app/about/index.html</loc>
+        <loc>https://cloudnotesweb.netlify.app/about</loc>
         <lastmod>2022-03-24</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://cloudnotesweb.netlify.app/signup/index.html</loc>
+        <loc>https://cloudnotesweb.netlify.app/signup</loc>
         <lastmod>2022-03-24</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://cloudnotesweb.netlify.app/login/index.html</loc>
+        <loc>https://cloudnotesweb.netlify.app/login</loc>
         <lastmod>2022-03-24</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://cloudnotesweb.netlify.app/forgot/index.html</loc>
+        <loc>https://cloudnotesweb.netlify.app/forgot</loc>
         <lastmod>2022-03-24</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.5</priority>
