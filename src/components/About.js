@@ -3,6 +3,8 @@ import logo from '../media/logo.webp'
 import creator from '../media/owner.webp';
 
 export default function About() {
+    document.title = 'About | CloudNotes'
+
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
@@ -12,7 +14,7 @@ export default function About() {
             <img src={logo} alt="CloudNotes" className='w-16 h-16' />
             <h2 className='text-2xl font-semibold'>CloudNotes</h2>
             <p className='pt-4'>
-                CloudNotes is an online platform to save all your notes at one place on the cloud. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.
+                CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.
             </p>
         </div>
         <hr className='w-11/12 border-black' />

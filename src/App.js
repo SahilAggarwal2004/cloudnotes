@@ -24,6 +24,7 @@ const Signup = lazy(() => import('./components/Signup'));
 const Login = lazy(() => import('./components/Login'));
 const Forgot = lazy(() => import('./components/Forgot'));
 const Account = lazy(() => import('./components/Account'));
+const NotFound = lazy(() => import('./components/NotFound'));
 
 function App() {
 	useEffect(() => {
@@ -52,6 +53,7 @@ function App() {
 							<Route path="/login" element={<Login />} />
 							<Route path="/forgot" element={<Forgot />} />
 							<Route path="/account/:type/:token" element={<Account />} />
+							<Route path="/*" element={<NotFound />} />
 						</Routes>
 					</Suspense >
 				</Router>

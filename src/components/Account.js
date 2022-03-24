@@ -4,6 +4,8 @@ import NoteContext from '../context/notes/NoteContext';
 import ToggleContext from '../context/toggle/ToggleContext'
 
 export default function Account() {
+    document.title = 'CloudNotes - Notes on Cloud'
+    
     const { type, token } = useParams();
     const redirect = useNavigate();
     const { fetchApp } = useContext(NoteContext)

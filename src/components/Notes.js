@@ -5,6 +5,8 @@ import ToggleContext from '../context/toggle/ToggleContext'
 import NoteItem from './NoteItem'
 
 export default function Notes(props) {
+    document.title = 'Dashboard | CloudNotes'
+
     const context = useContext(NoteContext) // now the value that NoteContext.Provider provides has been stored inside this variable using useContext(Context)
     const { notes, getNotes, addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, newData, setNewData } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
     const togglecontext = useContext(ToggleContext)
@@ -29,7 +31,7 @@ export default function Notes(props) {
             }
         }
         else {
-            redirect('/')
+            redirect('/signup')
         }
         return () => { // equivalent to componentWillUnmount
             setSelTag('All')

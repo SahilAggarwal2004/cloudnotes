@@ -4,7 +4,9 @@ import NoteContext from '../context/notes/NoteContext';
 import ToggleContext from '../context/toggle/ToggleContext';
 
 
-export default function Login() {
+export default function Forgot() {
+    document.title = 'Reset Password | CloudNotes'
+
     const { fetchApp } = useContext(NoteContext)
     const { showAlert, setLoadbar } = useContext(ToggleContext)
     const email = useRef();

@@ -5,6 +5,8 @@ import ToggleContext from '../context/toggle/ToggleContext';
 
 
 export default function Login() {
+    document.title = 'Login | CloudNotes'
+
     const { fetchApp } = useContext(NoteContext)
     const { showAlert, setLoadbar } = useContext(ToggleContext)
     const email = useRef();

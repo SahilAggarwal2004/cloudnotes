@@ -1,0 +1,20 @@
+<uriset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://cloudnotesweb.netlify.app/</loc>
+    </url>
+    <url>
+        <loc>https://cloudnotesweb.netlify.app/dashboard</loc>
+    </url>
+    <url>
+        <loc>https://cloudnotesweb.netlify.app/about</loc>
+    </url>
+    <url>
+        <loc>https://cloudnotesweb.netlify.app/signup</loc>
+    </url>
+    <url>
+        <loc>https://cloudnotesweb.netlify.app/login</loc>
+    </url>
+    <url>
+        <loc>https://cloudnotesweb.netlify.app/forgot</loc>
+    </url>
+</uriset>
