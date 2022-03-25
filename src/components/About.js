@@ -18,7 +18,11 @@ export default function About() {
             </p>
         </div>
         <hr className='w-11/12 border-black' />
-        <div className='flex flex-col h-[calc(100vh-2.5rem)] justify-center w-11/12 sm:max-w-fit'>
+        {/* <div>
+
+        </div>
+        <hr className='w-11/12 border-black' /> */}
+        <div className='flex flex-col h-[calc(100vh-4rem)] sm:h-[calc(100vh-2.5rem)] justify-center w-11/12 sm:max-w-fit'>
             <h3 className='text-xl font-semibold' data-aos='fade-up'>Created By:</h3>
             <div className='flex flex-col items-center px-10 py-4 m-3 relative mt-24 pt-16 border border-black rounded-sm' data-aos='fade-up'>
                 <img src={creator} alt="Sahil Aggarwal" className='w-36 h-36 rounded-full border-2 border-black absolute top-0 translate-y-[-50%]' />

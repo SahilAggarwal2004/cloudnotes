@@ -5,18 +5,13 @@ import NoteState from './context/notes/NoteState' // importing NoteState functio
 import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
 import Welcome from './components/Welcome';
-// import Navbar from './components/Navbar';
-// import Alert from './components/Alert';
-// import Modal from './components/Modal';
 import "aos/dist/aos.css";
 import AOS from "aos";
 
 
 // const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
 // const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
-const Navbar = lazy(() => import('./components/Navbar')); // making components lazy
-const Alert = lazy(() => import('./components/Alert'));
-const Modal = lazy(() => import('./components/Modal'));
+const Container = lazy(() => import('./components/Container')); // making components lazy
 // const Welcome = lazy(() => import('./components/Welcome'));
 const Notes = lazy(() => import('./components/Notes'));
 const About = lazy(() => import('./components/About'));
@@ -32,7 +27,6 @@ function App() {
 		AOS.refresh();
 	}, [])
 
-
 	return (
 		// Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up
 		<ToggleState>
@@ -40,9 +34,7 @@ function App() {
 			<NoteState>
 				<Router>
 					<Suspense fallback={<></>}>
-						<Navbar />
-						<Alert />
-						<Modal />
+						<Container />
 					</Suspense>
 					<Suspense fallback={<Loading />}>
 						<Routes>
