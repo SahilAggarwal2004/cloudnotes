@@ -28,11 +28,11 @@ function App() {
 	}, [])
 
 	return (
-		// Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up
-		<ToggleState>
-			{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
-			<NoteState>
-				<Router>
+		<Router>
+			<ToggleState>
+				{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
+				<NoteState>
+					{/* Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up */}
 					<Suspense fallback={<></>}>
 						<Container />
 					</Suspense>
@@ -48,9 +48,9 @@ function App() {
 							<Route path="/*" element={<NotFound />} />
 						</Routes>
 					</Suspense >
-				</Router>
-			</NoteState>
-		</ToggleState>
+				</NoteState>
+			</ToggleState >
+		</Router>
 	);
 }
 

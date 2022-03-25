@@ -13,7 +13,7 @@ export default function Navbar() {
 
     return (
         <div className='sticky inset-0 z-20'>
-            <nav className={`flex bg-purple-700 text-white sm:justify-between items-center py-1.5 px-4 flex-col transition-all duration-500 sm:flex-row overflow-hidden ${hide ? 'h-10' : 'h-24'} sm:h-10 ${location.pathname === '/' || location.pathname.includes('/account/confirm') || location.pathname.includes('/account/delete') ? 'hidden' : ''}`}>
+            <nav className={`flex bg-purple-700 text-white sm:justify-between items-center py-1.5 px-4 flex-col transition-all duration-500 sm:flex-row overflow-hidden ${hide ? 'h-10' : 'h-24'} sm:h-10 ${location.pathname.includes('/account/confirm') || location.pathname.includes('/account/delete') ? 'hidden' : ''}`}>
                 <div className={`flex items-center justify-between w-full sm:justify-start ${localStorage.getItem('token') ? 'sm:space-x-5' : ''}`}>
                     <i className={`far fa-user cursor-pointer hover:scale-110 transition-all ${localStorage.getItem('token') ? '' : 'fixed invisible'}`} onClick={() => { setModal([{}, true, 'user']) }} />
                     <h2 className='text-xl text-center'>CloudNotes</h2>

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import ToggleContext from "../toggle/ToggleContext";
 import NoteContext from "./NoteContext"; // importing our context to add the state in it
 
@@ -30,6 +31,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     const [noteToEdit, setNoteToEdit] = useState([{}, false]);
     const tagColor = useRef();
     const editTagColor = useRef();
+    const redirect = useNavigate();
 
     async function fetchApp(api, method, body, token) {
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
@@ -66,6 +68,13 @@ const NoteState = (props) => { // props parameter will store every component(eve
             if (!json.success) {
                 setNotes([])
                 showAlert(json.error, '')
+                if (json.error.includes('authenticate')) {
+                    localStorage.removeItem('name')
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('notes')
+                    setNewData(true)
+                    redirect('/signup')
+                }
                 return
             }
             setNotes(json.notes);
