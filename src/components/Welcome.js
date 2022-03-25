@@ -28,7 +28,7 @@ export default function Welcome() {
         <div className='px-7 text-justify'>CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.</div>
         <Link className="p-1 relative hover:after:scale-100 hover:translate-x-2 after:content-[''] after:h-0.5 after:w-[100%] after:absolute after:scale-0 after:left-0 after:top-[calc(100%)] after:z-10 after:border after:opacity-90 after:border-black normal:after:border-white after:transition-transform after:duration-300 transition-transform duration-300" to="/signup"><strong>Continue to Website</strong> ➤</Link>
       </div>
-      <img src={bg} alt=" " className='fixed normal:static h-full object-cover w-full -z-10 normal:z-0 normal:min-w-[70vw]' />
+      <img src={bg} alt="CloudNotes" className='fixed normal:static h-full object-cover w-full -z-10 normal:z-0 normal:min-w-[70vw]' />
     </div>
   )
 }
