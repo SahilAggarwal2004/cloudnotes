@@ -141,7 +141,7 @@ export default function Notes(props) {
                                 </div>
                             </div>)
                     } else {
-                        return
+                        return null
                     }
                 })}
                 <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${newNote && !spinner ? '' : 'hidden'}`}>
