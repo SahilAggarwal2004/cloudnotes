@@ -9,7 +9,7 @@ export default function About() {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }, [])
 
-    return (<div className='flex flex-col items-center text-center absolute top-0'>
+    return (<div className='flex flex-col items-center text-center absolute top-0 w-full'>
         <div className='w-11/12 sm:w-2/3 h-screen flex flex-col justify-center items-center' data-aos='fade-up'>
             <img src={logo} alt="CloudNotes" className='w-16 h-16' />
             <h2 className='text-2xl font-semibold'>CloudNotes - Notes on Cloud</h2>
