@@ -53,7 +53,7 @@ export default function NoteItem(props) {
             <hr className='w-full my-2' />
             <p className='text-sm text-gray-600 mb-10 whitespace-pre-line' style={{ wordBreak: 'break-word' }}>{description}</p>
             <div className='absolute bottom-1.5'>
-                <div className='space-x-3'>
+                <div className='space-x-5'>
                     <i className="far fa-trash-alt cursor-pointer" onClick={() => {
                         if (!loadbar[1]) {
                             setModal([{}, true, 'deleteNote'])
