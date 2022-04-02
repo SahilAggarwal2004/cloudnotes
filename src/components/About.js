@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import logo from '../media/logo.webp'
-import creator from '../media/owner.webp';
 
 export default function About() {
     document.title = 'About | CloudNotes'
+
+    const logo = 'https://images.weserv.nl/?url=https://cloudnotesweb.herokuapp.com/media/logo.webp&width=100&height=100&maxage=1y&q=1'
+    const creator = 'https://images.weserv.nl/?url=https://cloudnotesweb.herokuapp.com/media/owner.webp&width=300&height=300&maxage=1y'
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import bg from '../media/bg.webp'
-import logo from '../media/logo.webp'
 
 export default function Welcome() {
   document.title = 'CloudNotes - Notes on Cloud'
 
   const redirect = useNavigate();
   const [welcome, setWelcome] = useState(false);
+  const bg = 'https://images.weserv.nl/?url=https://cloudnotesweb.herokuapp.com/media/bg.webp&maxage=1y&q=50'
+  const logo = 'https://images.weserv.nl/?url=https://cloudnotesweb.herokuapp.com/media/logo.webp&width=100&height=100&maxage=1y&q=1'
 
   useEffect(() => {
     localStorage.getItem('token') ? redirect('/dashboard') : setWelcome(true)
