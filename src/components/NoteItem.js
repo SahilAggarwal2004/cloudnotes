@@ -11,16 +11,16 @@ export default function NoteItem(props) {
     const { setNoteToDelete, setNoteToEdit } = useContext(NoteContext)
     const { setModal, loadbar } = useContext(ToggleContext)
     const tagColors = JSON.parse(localStorage.getItem('tagColors'));
-    let speechId = null;
-    const [volume, setVolume] = useState(<GrVolume id={_id} onClick={speech} />)
-
+    const [volume, setVolume] = useState(<GrVolume onClick={speech} />)
+    
     // speechSynthesis is an API which enables to convert text into speech
-    function speech(event) {
+    let speechId = null;
+    function speech() { handleSpeech(_id) }
+    function handleSpeech(clickId) {
         const speaking = speechSynthesis.speaking; // speechSynthesis.speaking checks it speechSynthesis is speaking or not
-        const clickId = event.target.id;
         const newSpeech = () => {
             speechId = clickId;
-            setVolume(<GrVolumeMute id={_id} onClick={speech} />)
+            setVolume(<GrVolumeMute onClick={speech} />)
             const text = `The tag is ${tag}. The title is ${title}. The description is ${description}.`;
             // below is the method to speak:
             // speechSynthesis.speak(new SpeechSynthesisUtterance(text to be spoken))
@@ -28,7 +28,7 @@ export default function NoteItem(props) {
             speechSynthesis.speak(utterance)
             utterance.onend = () => {
                 speechId = null
-                setVolume(<GrVolume id={_id} onClick={speech} />)
+                setVolume(<GrVolume onClick={speech} />)
             }
         }
 
@@ -42,7 +42,7 @@ export default function NoteItem(props) {
             return
         }
         speechId = null;
-        setVolume(<GrVolume id={_id} onClick={speech} />)
+        setVolume(<GrVolume onClick={speech} />)
     }
 
     return (
