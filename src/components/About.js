@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react';
+import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast, FaWindowMaximize } from 'react-icons/fa'
+import { IoIosApps } from 'react-icons/io'
+import { GiTwoCoins } from 'react-icons/gi'
 
 export default function About() {
     document.title = 'About | CloudNotes'
@@ -22,29 +25,29 @@ export default function About() {
         <div className='w-11/12 sm:w-2/3 min-h-screen flex flex-col justify-center items-center py-5'>
             <h2 className='text-2xl font-semibold' data-aos='fade-up'>Why CloudNotes?</h2>
             <ul className='mt-6 border border-black rounded-sm p-5 flex flex-col space-y-2 text-left' data-aos='fade-up'>
-                <li data-aos='fade-up'>
-                    <i className="fas fa-universal-access mr-2 w-5 text-red-500" />
-                    <span className='font-semibold'>Access notes from anywhere anytime</span> - CloudNotes is available 24/7 all over the World!
+                <li data-aos='fade-up' className='flex items-center'>
+                    <FaUniversalAccess className="inline mr-2 w-5 text-red-500 scale-110" />
+                    <span className='font-semibold mr-1'>Access notes from anywhere anytime - </span>CloudNotes is available 24/7 all over the World!
                 </li>
-                <li data-aos='fade-up'>
-                    <i className="fas fa-key mr-2 w-5 text-green-600" />
-                    <span className='font-semibold'>100% security</span> - Your notes are end-to-end encryted!
+                <li data-aos='fade-up' className='flex items-center'>
+                    <FaKey className="mr-2 w-5 text-green-600 scale-110" />
+                    <span className='font-semibold mr-1'>100% security - </span>Your notes are end-to-end encryted!
                 </li>
-                <li data-aos='fade-up'>
-                    <i className="fas fa-shipping-fast mr-2 w-5 text-red-500" />
-                    <span className='font-semibold'>Blazingly fast website</span> - CloudNotes has over 95 score on PageSpeed Insights!
+                <li data-aos='fade-up' className='flex items-center'>
+                    <FaShippingFast className="mr-2 w-5 text-red-500 scale-110" />
+                    <span className='font-semibold mr-1'>Blazingly fast website - </span>CloudNotes has over 95 score on PageSpeed Insights!
                 </li>
-                <li data-aos='fade-up'>
-                    <i className="fas fa-star mr-2 w-5 text-green-600" />
-                    <span className='font-semibold'>Platform friendly</span> - CloudNotes is independent of the OS of device!
+                <li data-aos='fade-up' className='flex items-center'>
+                    <FaStar className="mr-2 w-5 text-green-600 scale-110" />
+                    <span className='font-semibold mr-1'>Platform friendly - </span>CloudNotes is independent of the OS of device!
                 </li>
-                <li data-aos='fade-up'>
-                    <i className="fas fa-browser mr-2 w-5 text-red-500" />
-                    <span className='font-semibold'>Convertible into a Web App</span> - Don't want to go to browser everytime? No worries!
+                <li data-aos='fade-up' className='flex items-center'>
+                    <IoIosApps className="mr-2 w-5 text-red-500 scale-125" />
+                    <span className='font-semibold mr-1'>Convertible into a Web App - </span>Don't want to go to browser everytime? No worries!
                 </li>
-                <li data-aos='fade-up'>
-                    <i className="fas fa-coins mr-2 w-5 text-green-600" />
-                    <span className='font-semibold'>All time free</span> - We focus on user satisfaction instead of money!
+                <li data-aos='fade-up' className='flex items-center'>
+                    <GiTwoCoins className="mr-2 w-5 text-green-600 scale-125" />
+                    <span className='font-semibold mr-1'>All time free - </span>We focus on user satisfaction instead of money!
                 </li>
             </ul>
         </div>
@@ -58,8 +61,8 @@ export default function About() {
                 <div className='text-gray-700 mt-2' data-aos='fade-up'>Full Stack Web Developer</div>
             </div>
         </div>
-        <footer className='w-full text-center bg-purple-600 text-white px-3 py-2 flex flex-col sm:flex-row justify-between'>
-            <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer"><i className="fab fa-linkedin" /> Follow me on LinkedIn!</a>
+        <footer className='w-full text-center bg-purple-600 text-white px-3 py-2 flex flex-col sm:flex-row justify-between items-center'>
+            <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer" className='flex items-center'><FaLinkedin className="scale-110 inline mr-2" />Follow me on LinkedIn!</a>
             <div>Copyright&copy; <strong>CloudNotes</strong> 2022 | All rights reserved</div>
         </footer>
     </div>)

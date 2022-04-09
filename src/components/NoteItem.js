@@ -1,6 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import NoteContext from '../context/notes/NoteContext'
 import ToggleContext from '../context/toggle/ToggleContext';
+import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
+import { GrVolume, GrVolumeMute } from 'react-icons/gr'
 
 export default function NoteItem(props) {
     const { note, editTag, editTagColor, setEditDescLength } = props;
@@ -10,25 +12,23 @@ export default function NoteItem(props) {
     const { setModal, loadbar } = useContext(ToggleContext)
     const tagColors = JSON.parse(localStorage.getItem('tagColors'));
     let speechId = null;
+    const [volume, setVolume] = useState(<GrVolume id={_id} onClick={speech} />)
 
     // speechSynthesis is an API which enables to convert text into speech
     function speech(event) {
-        const speaking = speechSynthesis.speaking;
+        const speaking = speechSynthesis.speaking; // speechSynthesis.speaking checks it speechSynthesis is speaking or not
         const clickId = event.target.id;
         const newSpeech = () => {
-            event.target.classList.remove('fa-volume')
-            event.target.classList.add('fa-volume-mute')
-            const text = `The tag is ${tag}. The title is ${title}. The description is ${description}.`;
             speechId = clickId;
+            setVolume(<GrVolumeMute id={_id} onClick={speech} />)
+            const text = `The tag is ${tag}. The title is ${title}. The description is ${description}.`;
             // below is the method to speak:
             // speechSynthesis.speak(new SpeechSynthesisUtterance(text to be spoken))
             const utterance = new SpeechSynthesisUtterance(text.replace(/\s/g, ' '))
             speechSynthesis.speak(utterance)
             utterance.onend = () => {
-                const elementClass = document.getElementById(clickId).classList
-                elementClass.add('fa-volume')
-                elementClass.remove('fa-volume-mute')
                 speechId = null
+                setVolume(<GrVolume id={_id} onClick={speech} />)
             }
         }
 
@@ -41,9 +41,8 @@ export default function NoteItem(props) {
             newSpeech()
             return
         }
-        event.target.classList.add('fa-volume')
-        event.target.classList.remove('fa-volume-mute')
         speechId = null;
+        setVolume(<GrVolume id={_id} onClick={speech} />)
     }
 
     return (
@@ -53,14 +52,14 @@ export default function NoteItem(props) {
             <hr className='w-full my-2' />
             <p className='text-sm text-gray-600 mb-10 whitespace-pre-line' style={{ wordBreak: 'break-word' }}>{description}</p>
             <div className='absolute bottom-1.5'>
-                <div className='space-x-5'>
-                    <i className="far fa-trash-alt cursor-pointer" onClick={() => {
+                <div className='space-x-5 flex justify-center mb-1'>
+                    <FaRegTrashAlt className="scale-110 cursor-pointer" onClick={() => {
                         if (!loadbar[1]) {
                             setModal([{}, true, 'deleteNote'])
                             setNoteToDelete(_id)
                         }
                     }} />
-                    <i className="far fa-edit cursor-pointer" onClick={() => {
+                    <FaRegEdit className="scale-125 cursor-pointer" onClick={() => {
                         setNoteToEdit([note, true])
                         setEditDescLength(note.description.length)
                         setTimeout(() => {
@@ -68,8 +67,7 @@ export default function NoteItem(props) {
                             if (editTagColor.current.value === '#000000') editTagColor.current.value = '#e5e7eb'
                         }, 0);
                     }} />
-                    {/* speechSynthesis.speaking checks it speechSynthesis is speaking or not */}
-                    <i id={_id} className={`far fa-volume cursor-pointer text-black`} onClick={speech} />
+                    <div className='cursor-pointer font-bold scale-110'>{volume}</div>
                 </div>
                 <p className='text-2xs text-gray-600 self-end'>Last Updated: {showDate}</p>
             </div>
