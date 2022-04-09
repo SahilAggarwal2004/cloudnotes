@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast, FaWindowMaximize } from 'react-icons/fa'
+import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast } from 'react-icons/fa'
 import { IoIosApps } from 'react-icons/io'
 import { GiTwoCoins } from 'react-icons/gi'
 
