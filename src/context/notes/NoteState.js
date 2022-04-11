@@ -19,15 +19,32 @@ const NoteState = (props) => { // props parameter will store every component(eve
 
     const { REACT_APP_HOST: host, REACT_APP_FETCH: fetchAPI, REACT_APP_ADD: addAPI, REACT_APP_DELETE: deleteAPI, REACT_APP_UPDATE: updateAPI } = process.env
 
-    const { alert, showAlert, setLoadbar, setSpinner, selTag, setSelTag, searchBar, setModal, setNewNote } = useContext(ToggleContext)
+    const { alert, showAlert, setLoadbar, setSpinner, setModal, setNewNote } = useContext(ToggleContext)
 
     // Defining things to be stored in value below:
+    const [notes, setNotes] = useState([])
     const [show, setShow] = useState([]);
+    const [search, setSearch] = useState('')
     const [noteToDelete, setNoteToDelete] = useState('');
     const [noteToEdit, setNoteToEdit] = useState([{}, false]);
     const tagColor = useRef();
     const editTagColor = useRef();
     const redirect = useNavigate();
+
+    function searchNotes(searchData = notes) {
+        const value = search.toLowerCase();
+        if (!value) {
+            setShow(searchData)
+            return
+        }
+        let result = []
+        searchData.forEach(note => {
+            if (note.title.toLowerCase().includes(value) || note.description.toLowerCase().includes(value) || note.tag.toLowerCase().includes(value)) {
+                result.push(note)
+            }
+        });
+        setShow(result)
+    }
 
     async function fetchApp(api, method = 'GET', body = null, token = null) {
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
@@ -73,17 +90,14 @@ const NoteState = (props) => { // props parameter will store every component(eve
                 }
                 return
             }
-            setShow(json.notes);
+            searchNotes(json.notes)
             mutate(host + fetchAPI, json, false)
             if (json.success && json.local) {
-                msg?.includes('added') ? msg = "Server Down! Couldn't add note!" : msg?.includes('deleted') ? msg = "Server Down! Couldn't delete note!" : msg?.includes('updated') ? msg = "Server Down! Couldn't update note!" : msg = undefined
                 color = ''
-            } else if (msg?.includes('deleted') || msg?.includes('updated')) {
-                let count = 0;
-                show.forEach(note => {
-                    if (note.tag === selTag) count++
-                })
-                if (count === 1) setSelTag('All')
+                if (msg?.includes('added')) msg = "Server Down! Couldn't add note!"
+                else if (msg?.includes('deleted')) msg = "Server Down! Couldn't delete note!"
+                else if (msg?.includes('updated')) msg = "Server Down! Couldn't update note!"
+                else msg = undefined
             }
             if (!alert[2]) showAlert(msg, color);
         }, 300);
@@ -100,14 +114,13 @@ const NoteState = (props) => { // props parameter will store every component(eve
         await getNotes('Note added!', 'green')
         setTimeout(() => {
             setNewNote(false)
-            localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [tag]: tagColor.current.value }))
+            localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [tag]: tagColor.current?.value }))
             tagColor.current.value = '#e5e7eb';
         }, 300);
     }
 
     // Delete a note
     async function deleteNote(id) {
-        searchBar.current.value = null;
         setNoteToDelete('')
         setModal([{}, false, ''])
         setLoadbar([1 / 12, true])
@@ -132,8 +145,8 @@ const NoteState = (props) => { // props parameter will store every component(eve
             }
             await getNotes('Note updated!', 'green')
             setTimeout(() => {
-                localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [editTag]: editTagColor.current.value }))
                 setNoteToEdit([{}, false])
+                localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [editTag]: editTagColor.current?.value }))
             }, 300);
         } else {
             setLoadbar([1, true])
@@ -149,7 +162,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     return (
         // Context.Provider provides the context to the components using useContext().
         // value attribute stores the value(can be anything) to be passed to the components using the context.
-        <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor }}>
+        <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes }}>
             {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
             {props.children}
         </NoteContext.Provider>

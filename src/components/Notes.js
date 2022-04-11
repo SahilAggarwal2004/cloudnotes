@@ -11,9 +11,9 @@ export default function Notes() {
     document.title = 'Dashboard | CloudNotes'
 
     const context = useContext(NoteContext) // now the value that NoteContext.Provider provides has been stored inside this variable using useContext(Context)
-    const { addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
+    const { addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
     const togglecontext = useContext(ToggleContext)
-    const { showAlert, selTag, setSelTag, searchBar, newNote, setNewNote, spinner, setSpinner, loadbar, setLoadbar } = togglecontext
+    const { showAlert, newNote, setNewNote, spinner, setSpinner, loadbar, setLoadbar } = togglecontext
     const redirect = useNavigate()
     let tags = ['All'];
     const title = useRef(); // defining a reference
@@ -22,7 +22,7 @@ export default function Notes() {
     const editTitle = useRef();
     const editDescription = useRef();
     const editTag = useRef();
-    const [notes, setNotes] = useState([])
+    const [selTag, setSelTag] = useState('All');
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
     const fetchAPI = process.env.REACT_APP_HOST + process.env.REACT_APP_FETCH
@@ -53,7 +53,7 @@ export default function Notes() {
                         setLoadbar([0, false])
                         setSpinner(false)
                         setNotes(fetchData)
-                        setShow(fetchData)
+                        searchNotes(fetchData)
                     }, 300);
                 }
             } else {
@@ -68,7 +68,7 @@ export default function Notes() {
                         setLoadbar([0, false])
                         setSpinner(false)
                         setNotes(fetchData)
-                        setShow(fetchData)
+                        searchNotes(fetchData)
                     }, 300);
                 }
             }
@@ -83,6 +83,12 @@ export default function Notes() {
     useEffect(() => {
         if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
     }, [newNote])
+
+    useEffect(() => {
+        searchNotes()
+        // eslint-disable-next-line
+    }, [search])
+
 
     function addNewNote() {
         setNewNote(true)
@@ -113,21 +119,6 @@ export default function Notes() {
         }
     }
 
-    function search(event) {
-        const value = event.target.value.toLowerCase();
-        if (!value) {
-            setShow(notes)
-            return
-        }
-        let result = []
-        notes.forEach(note => {
-            if (note.title.toLowerCase().includes(value) || note.description.toLowerCase().includes(value) || note.tag.toLowerCase().includes(value)) {
-                result.push(note)
-            }
-        });
-        setShow(result)
-    }
-
     notes.forEach(note => {
         tags.push(note.tag)
     });
@@ -138,7 +129,7 @@ export default function Notes() {
     return (<div className='mb-12'>
         <div className='text-center py-4'>
             <div className='flex flex-col items-center justify-center sm:flex-row sm:justify-end sm:mx-5 sm:space-x-3'>
-                <input ref={searchBar} className='text-center border border-grey-600 my-1' placeholder='Search Notes' onChange={search} />
+                <input className='text-center border border-grey-600 my-1' placeholder='Search Notes' defaultValue={search} onChange={event => setSearch(event.target.value)} />
                 <select className='w-min px-1 my-1 border border-grey-600' defaultValue='All' onChange={(event) => { setSelTag(event.target.value) }}>
                     {tags.map(tag => {
                         return <option key={tag} value={tag}>{tag}</option>
