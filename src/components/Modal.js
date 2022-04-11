@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { mutate } from 'swr'
 import NoteContext from '../context/notes/NoteContext'
 import ToggleContext from '../context/toggle/ToggleContext'
 
 export default function Modal() {
-    const { fetchApp, deleteNote, setShow, noteToDelete } = useContext(NoteContext)
+    const { fetchApp, deleteNote, setNotes, setShow, noteToDelete, fetchAPI } = useContext(NoteContext)
     const { showAlert, modal, setModal, setLoadbar } = useContext(ToggleContext)
     const redirect = useNavigate()
     const { REACT_APP_DELETEUSER } = process.env
@@ -27,6 +28,8 @@ export default function Modal() {
             localStorage.removeItem('name')
             localStorage.removeItem('token')
             localStorage.removeItem('notes')
+            mutate(fetchAPI, [], false)
+            setNotes([])
             setShow([])
             redirect('/signup')
             setModal([{}, false, ''])
@@ -41,7 +44,7 @@ export default function Modal() {
             logOut('Account deleted successfully!', 'green')
             return
         }
-        const json = await fetchApp(REACT_APP_DELETEUSER, 'DELETE', null, authtoken)
+        const json = await fetchApp(REACT_APP_DELETEUSER, 'DELETE', {}, authtoken)
         json.success ? logOut('Account deleted successfully!', 'green') : logOut(json.error, '')
     }
 

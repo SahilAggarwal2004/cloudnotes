@@ -5,13 +5,13 @@ import ToggleContext from '../context/toggle/ToggleContext'
 import NoteItem from './NoteItem'
 import { FaPlus, FaRegSave } from 'react-icons/fa'
 import { GoPlus, GoX } from 'react-icons/go'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 export default function Notes() {
     document.title = 'Dashboard | CloudNotes'
 
     const context = useContext(NoteContext) // now the value that NoteContext.Provider provides has been stored inside this variable using useContext(Context)
-    const { addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
+    const { addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
     const togglecontext = useContext(ToggleContext)
     const { showAlert, newNote, setNewNote, spinner, setSpinner, loadbar, setLoadbar } = togglecontext
     const redirect = useNavigate()
@@ -25,7 +25,6 @@ export default function Notes() {
     const [selTag, setSelTag] = useState('All');
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
-    const fetchAPI = process.env.REACT_APP_HOST + process.env.REACT_APP_FETCH
 
     let fetchData;
     const { data, error, isValidating } = useSWR(fetchAPI)
@@ -46,6 +45,9 @@ export default function Notes() {
                     localStorage.removeItem('name')
                     localStorage.removeItem('token')
                     localStorage.removeItem('notes')
+                    mutate(fetchAPI, [], false)
+                    setNotes([])
+                    setShow([])
                     redirect('/signup')
                 } else {
                     setLoadbar([1, true])

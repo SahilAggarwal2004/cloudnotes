@@ -17,7 +17,8 @@ import NoteContext from "./NoteContext"; // importing our context to add the sta
 
 const NoteState = (props) => { // props parameter will store every component(even their children components) which will be closed inside the tag of this function imported in a component(ideally that component will be App.js as it contains all the components and we usually want our context to be accessed by all components). All these components will be able to access our context using the useContext hook(useContext and the context we created are to be imported in the every component which needs to use the context).
 
-    const { REACT_APP_HOST: host, REACT_APP_FETCH: fetchAPI, REACT_APP_ADD: addAPI, REACT_APP_DELETE: deleteAPI, REACT_APP_UPDATE: updateAPI } = process.env
+    axios.defaults.baseURL = process.env.REACT_APP_HOST
+    const { REACT_APP_FETCH: fetchAPI, REACT_APP_ADD: addAPI, REACT_APP_DELETE: deleteAPI, REACT_APP_UPDATE: updateAPI } = process.env
 
     const { alert, showAlert, setLoadbar, setSpinner, setModal, setNewNote } = useContext(ToggleContext)
 
@@ -50,10 +51,10 @@ const NoteState = (props) => { // props parameter will store every component(eve
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
         let json = {};
         try {
-            const fullAPI = host + api
+            // const fullAPI = host + api
             const authtoken = token || localStorage.getItem('token')
             const response = await axios({
-                url: fullAPI,
+                url: api,
                 method: method, // takes the method, default is 'GET'
                 headers: { // takes an object of headers
                     'auth-token': authtoken,
@@ -86,12 +87,15 @@ const NoteState = (props) => { // props parameter will store every component(eve
                     localStorage.removeItem('name')
                     localStorage.removeItem('token')
                     localStorage.removeItem('notes')
+                    mutate(fetchAPI, [], false)
+                    setNotes([])
+                    setShow([])
                     redirect('/signup')
                 }
                 return
             }
             searchNotes(json.notes)
-            mutate(host + fetchAPI, json, false)
+            mutate(fetchAPI, json, false)
             if (json.success && json.local) {
                 color = ''
                 if (msg?.includes('added')) msg = "Server Down! Couldn't add note!"
@@ -162,7 +166,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     return (
         // Context.Provider provides the context to the components using useContext().
         // value attribute stores the value(can be anything) to be passed to the components using the context.
-        <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes }}>
+        <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI }}>
             {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
             {props.children}
         </NoteContext.Provider>

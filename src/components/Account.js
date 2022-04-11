@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { mutate } from 'swr';
 import NoteContext from '../context/notes/NoteContext';
 import ToggleContext from '../context/toggle/ToggleContext'
 
@@ -8,7 +9,7 @@ export default function Account() {
 
     const { type, token } = useParams();
     const redirect = useNavigate();
-    const { fetchApp } = useContext(NoteContext)
+    const { fetchApp, setNotes, setShow, fetchAPI } = useContext(NoteContext)
     const { showAlert, setLoadbar } = useContext(ToggleContext)
     const { REACT_APP_CONFIRM, REACT_APP_DELETEUSER } = process.env
 
@@ -33,6 +34,9 @@ export default function Account() {
                 localStorage.removeItem('name')
                 localStorage.removeItem('token')
                 localStorage.removeItem('notes')
+                mutate(fetchAPI, [], false)
+                setNotes([])
+                setShow([])
                 showAlert('Successfully deleted your CloudNotes account!', 'green')
                 redirect('/signup')
                 return
