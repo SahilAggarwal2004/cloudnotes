@@ -6,7 +6,7 @@ import ToggleContext from '../context/toggle/ToggleContext';
 
 export default function Signup() {
     document.title = 'Signup | CloudNotes'
-    
+
     const { fetchApp } = useContext(NoteContext)
     const { showAlert, setLoadbar } = useContext(ToggleContext)
     const name = useRef();
@@ -26,7 +26,7 @@ export default function Signup() {
         event.preventDefault()
         if (password.current.value === cpassword.current.value) {
             setLoadbar([1 / 3, true])
-            const json = await fetchApp(REACT_APP_SIGNUP, 'POST', JSON.stringify({ name: name.current.value, email: email.current.value, password: password.current.value }), null)
+            const json = await fetchApp(REACT_APP_SIGNUP, 'POST', { name: name.current.value, email: email.current.value, password: password.current.value })
             setLoadbar([1, true])
             setTimeout(() => {
                 setLoadbar([0, false])

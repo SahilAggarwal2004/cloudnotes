@@ -22,7 +22,7 @@ export default function Login() {
     async function verify(event) {
         event.preventDefault()
         setLoadbar([1 / 3, true])
-        const json = await fetchApp(REACT_APP_LOGIN, 'POST', JSON.stringify({ email: email.current.value, password: password.current.value }), null)
+        const json = await fetchApp(REACT_APP_LOGIN, 'POST', { email: email.current.value, password: password.current.value })
         setLoadbar([1, true])
         setTimeout(() => {
             setLoadbar([0, false])

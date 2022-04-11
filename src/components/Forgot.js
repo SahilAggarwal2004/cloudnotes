@@ -25,7 +25,7 @@ export default function Forgot() {
     async function stage1(event) {
         event.preventDefault()
         setLoadbar([1 / 3, true])
-        const json = await fetchApp(REACT_APP_OTP, 'POST', JSON.stringify({ email: email.current.value }), null)
+        const json = await fetchApp(REACT_APP_OTP, 'POST', { email: email.current.value })
         setLoadbar([1, true])
         setTimeout(() => {
             if (json.success) {
@@ -47,7 +47,7 @@ export default function Forgot() {
             return
         }
         setLoadbar([1 / 3, true])
-        const json = await fetchApp(REACT_APP_FORGOT, 'PUT', JSON.stringify({ email: email.current.value, otp: otp.current.value, password: password.current.value }), null)
+        const json = await fetchApp(REACT_APP_FORGOT, 'PUT', { email: email.current.value, otp: otp.current.value, password: password.current.value })
         setLoadbar([1, true])
         setTimeout(() => {
             setLoadbar([0, false])

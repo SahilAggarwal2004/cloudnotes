@@ -7,6 +7,8 @@ import Loading from './components/Loading';
 import Welcome from './components/Welcome';
 import "aos/dist/aos.css";
 import AOS from "aos";
+import { SWRConfig } from 'swr';
+import axios from 'axios';
 
 
 // const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
@@ -28,29 +30,33 @@ function App() {
 	}, [])
 
 	return (
-		<Router>
-			<ToggleState>
-				{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
-				<NoteState>
-					{/* Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up */}
-					<Suspense fallback={<></>}>
-						<Container />
-					</Suspense>
-					<Suspense fallback={<Loading />}>
-						<Routes>
-							<Route path='/' element={<Welcome />} />
-							<Route path="/dashboard" element={<Notes />} />
-							<Route path="/about" element={<About />} />
-							<Route path="/signup" element={<Signup />} />
-							<Route path="/login" element={<Login />} />
-							<Route path="/forgot" element={<Forgot />} />
-							<Route path="/account/:type/:token" element={<Account />} />
-							<Route path="/*" element={<NotFound />} />
-						</Routes>
-					</Suspense >
-				</NoteState>
-			</ToggleState >
-		</Router>
+		<SWRConfig value={{
+			fetcher: url => axios(url, { headers: { 'auth-token': localStorage.getItem('token'), 'Content-Type': 'application/json' } }).then(res => res.data), shouldRetryOnError: false, refreshInterval: 15000, refreshWhenHidden: true, refreshWhenOffline: true, focusThrottleInterval: 5000
+		}}>
+			<Router>
+				<ToggleState>
+					{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
+					<NoteState>
+						{/* Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up */}
+						<Suspense fallback={<></>}>
+							<Container />
+						</Suspense>
+						<Suspense fallback={<Loading />}>
+							<Routes>
+								<Route path='/' element={<Welcome />} />
+								<Route path="/dashboard" element={<Notes />} />
+								<Route path="/about" element={<About />} />
+								<Route path="/signup" element={<Signup />} />
+								<Route path="/login" element={<Login />} />
+								<Route path="/forgot" element={<Forgot />} />
+								<Route path="/account/:type/:token" element={<Account />} />
+								<Route path="/*" element={<NotFound />} />
+							</Routes>
+						</Suspense >
+					</NoteState>
+				</ToggleState >
+			</Router>
+		</SWRConfig >
 	);
 }
 

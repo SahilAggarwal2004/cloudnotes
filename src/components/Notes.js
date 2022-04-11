@@ -5,14 +5,15 @@ import ToggleContext from '../context/toggle/ToggleContext'
 import NoteItem from './NoteItem'
 import { FaPlus, FaRegSave } from 'react-icons/fa'
 import { GoPlus, GoX } from 'react-icons/go'
+import useSWR from 'swr'
 
-export default function Notes(props) {
+export default function Notes() {
     document.title = 'Dashboard | CloudNotes'
 
     const context = useContext(NoteContext) // now the value that NoteContext.Provider provides has been stored inside this variable using useContext(Context)
-    const { notes, getNotes, addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, newData, setNewData } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
+    const { addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
     const togglecontext = useContext(ToggleContext)
-    const { showAlert, selTag, setSelTag, searchBar, newNote, setNewNote, spinner, setSpinner, loadbar } = togglecontext
+    const { showAlert, selTag, setSelTag, searchBar, newNote, setNewNote, spinner, setSpinner, loadbar, setLoadbar } = togglecontext
     const redirect = useNavigate()
     let tags = ['All'];
     const title = useRef(); // defining a reference
@@ -21,25 +22,63 @@ export default function Notes(props) {
     const editTitle = useRef();
     const editDescription = useRef();
     const editTag = useRef();
+    const [notes, setNotes] = useState([])
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
+    const fetchAPI = process.env.REACT_APP_HOST + process.env.REACT_APP_FETCH
+
+    let fetchData;
+    const { data, error, isValidating } = useSWR(fetchAPI)
+    if (isValidating) {
+        fetchData = data?.notes || []
+    }
+    else {
+        fetchData = data?.notes || JSON.parse(localStorage.getItem('notes'))?.notes || []
+    }
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
-            if (newData) {
-                setSpinner(true)
-                setNewData(false)
-                getNotes(undefined, 'green');
+            if (error && !isValidating) {
+                let json = error.response?.data;
+                if (json && !json.success && json.error.includes('authenticate')) {
+                    showAlert(json.error, '')
+                    setLoadbar([0, false])
+                    localStorage.removeItem('name')
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('notes')
+                    redirect('/signup')
+                } else {
+                    setLoadbar([1, true])
+                    setTimeout(() => {
+                        setLoadbar([0, false])
+                        setSpinner(false)
+                        setNotes(fetchData)
+                        setShow(fetchData)
+                    }, 300);
+                }
+            } else {
+                if (!fetchData.length && isValidating) {
+                    setLoadbar([1 / 3, true])
+                    setNotes([])
+                    setShow([])
+                } else {
+                    setLoadbar([1, true])
+                    localStorage.setItem('notes', JSON.stringify({ ...data, local: true }))
+                    setTimeout(() => {
+                        setLoadbar([0, false])
+                        setSpinner(false)
+                        setNotes(fetchData)
+                        setShow(fetchData)
+                    }, 300);
+                }
             }
         }
-        else {
-            redirect('/signup')
-        }
+        else redirect('/signup')
         return () => { // equivalent to componentWillUnmount
             setSelTag('All')
         }
         // eslint-disable-next-line
-    }, []);
+    }, [data, error]);
 
     useEffect(() => {
         if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })

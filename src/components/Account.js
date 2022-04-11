@@ -5,7 +5,7 @@ import ToggleContext from '../context/toggle/ToggleContext'
 
 export default function Account() {
     document.title = 'CloudNotes - Notes on Cloud'
-    
+
     const { type, token } = useParams();
     const redirect = useNavigate();
     const { fetchApp } = useContext(NoteContext)
@@ -17,9 +17,9 @@ export default function Account() {
         setLoadbar([1 / 3, true])
         let json = {};
         if (type === 'confirm') {
-            json = await fetchApp(REACT_APP_CONFIRM, 'PUT', null, token)
+            json = await fetchApp(REACT_APP_CONFIRM, 'PUT', {}, token)
         } else if (type === 'delete') {
-            json = await fetchApp(REACT_APP_DELETEUSER, 'DELETE', null, token)
+            json = await fetchApp(REACT_APP_DELETEUSER, 'DELETE', {}, token)
         }
         setLoadbar([1, true])
 

@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { mutate } from "swr";
 import ToggleContext from "../toggle/ToggleContext";
 import NoteContext from "./NoteContext"; // importing our context to add the state in it
 
@@ -15,17 +17,11 @@ import NoteContext from "./NoteContext"; // importing our context to add the sta
 
 const NoteState = (props) => { // props parameter will store every component(even their children components) which will be closed inside the tag of this function imported in a component(ideally that component will be App.js as it contains all the components and we usually want our context to be accessed by all components). All these components will be able to access our context using the useContext hook(useContext and the context we created are to be imported in the every component which needs to use the context).
 
-    const host = process.env.REACT_APP_HOST
-    const fetchAPI = process.env.REACT_APP_FETCH
-    const addAPI = process.env.REACT_APP_ADD
-    const deleteAPI = process.env.REACT_APP_DELETE
-    const updateAPI = process.env.REACT_APP_UPDATE
+    const { REACT_APP_HOST: host, REACT_APP_FETCH: fetchAPI, REACT_APP_ADD: addAPI, REACT_APP_DELETE: deleteAPI, REACT_APP_UPDATE: updateAPI } = process.env
 
     const { alert, showAlert, setLoadbar, setSpinner, selTag, setSelTag, searchBar, setModal, setNewNote } = useContext(ToggleContext)
 
     // Defining things to be stored in value below:
-    const [notes, setNotes] = useState([])
-    const [newData, setNewData] = useState(true);
     const [show, setShow] = useState([]);
     const [noteToDelete, setNoteToDelete] = useState('');
     const [noteToEdit, setNoteToEdit] = useState([{}, false]);
@@ -33,25 +29,27 @@ const NoteState = (props) => { // props parameter will store every component(eve
     const editTagColor = useRef();
     const redirect = useNavigate();
 
-    async function fetchApp(api, method, body, token) {
+    async function fetchApp(api, method = 'GET', body = null, token = null) {
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
         let json = {};
         try {
             const fullAPI = host + api
             const authtoken = token || localStorage.getItem('token')
-            const response = await fetch(fullAPI, {
+            const response = await axios({
+                url: fullAPI,
                 method: method, // takes the method, default is 'GET'
                 headers: { // takes an object of headers
                     'auth-token': authtoken,
                     'Content-Type': 'application/json'
                 },
-                body: body // takes body
+                data: body // takes body
             })
-            json = await response.json();
+            json = response.data;
+
             if (api === fetchAPI && json.success) localStorage.setItem('notes', JSON.stringify({ ...json, local: true }))
-        } catch {
-            (api === fetchAPI) ? json = JSON.parse(localStorage.getItem('notes')) : json = null
-            if (!json || !json.success) json = { success: false, error: "Server Down! Please try again later..." }
+        } catch (error) {
+            (api === fetchAPI) ? json = JSON.parse(localStorage.getItem('notes')) : json = error.response?.data;
+            if (!json) json = { success: false, error: "Server Down! Please try again later..." }
         }
         return json
     }
@@ -60,25 +58,23 @@ const NoteState = (props) => { // props parameter will store every component(eve
     async function getNotes(msg, color) {
         setLoadbar([1 / 3, true])
         let json;
-        color ? json = await fetchApp(fetchAPI, 'GET', null) : json = { success: false, error: msg }
+        color ? json = await fetchApp(fetchAPI) : json = { success: false, error: msg }
         setLoadbar([1, true])
         setTimeout(() => {
             setLoadbar([0, false])
             setSpinner(false)
             if (!json.success) {
-                setNotes([])
                 showAlert(json.error, '')
                 if (json.error.includes('authenticate')) {
                     localStorage.removeItem('name')
                     localStorage.removeItem('token')
                     localStorage.removeItem('notes')
-                    setNewData(true)
                     redirect('/signup')
                 }
                 return
             }
-            setNotes(json.notes);
             setShow(json.notes);
+            mutate(host + fetchAPI, json, false)
             if (json.success && json.local) {
                 msg?.includes('added') ? msg = "Server Down! Couldn't add note!" : msg?.includes('deleted') ? msg = "Server Down! Couldn't delete note!" : msg?.includes('updated') ? msg = "Server Down! Couldn't update note!" : msg = undefined
                 color = ''
@@ -96,7 +92,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     // Add a note
     async function addNote(title, description, tag) {
         setLoadbar([1 / 12, true])
-        const json = await fetchApp(addAPI, 'POST', JSON.stringify({ title, description, tag }))
+        const json = await fetchApp(addAPI, 'POST', { title, description, tag })
         if (!json.success) {
             await getNotes(json.error, '')
             return
@@ -115,7 +111,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
         setNoteToDelete('')
         setModal([{}, false, ''])
         setLoadbar([1 / 12, true])
-        const json = await fetchApp(`${deleteAPI}/${id}`, 'DELETE', null)
+        const json = await fetchApp(`${deleteAPI}/${id}`, 'DELETE', {})
         if (!json.success) {
             await getNotes(json.error, '')
             return
@@ -129,7 +125,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
         const editTag = note.editTag || 'General'
         if (title !== editTitle || description !== editDescription || tag !== editTag) {
             setLoadbar([1 / 12, true])
-            const json = await fetchApp(`${updateAPI}/${_id}`, 'PUT', JSON.stringify({ title: editTitle, description: editDescription, tag: editTag }))
+            const json = await fetchApp(`${updateAPI}/${_id}`, 'PUT', { title: editTitle, description: editDescription, tag: editTag })
             if (!json.success) {
                 await getNotes(json.error, '')
                 return
@@ -153,7 +149,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     return (
         // Context.Provider provides the context to the components using useContext().
         // value attribute stores the value(can be anything) to be passed to the components using the context.
-        <NoteContext.Provider value={{ notes, setNotes, fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, newData, setNewData }}>
+        <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor }}>
             {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
             {props.children}
         </NoteContext.Provider>
