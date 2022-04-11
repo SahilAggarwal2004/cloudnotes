@@ -31,7 +31,8 @@ function App() {
 
 	return (
 		<SWRConfig value={{
-			fetcher: url => axios(url, { headers: { 'auth-token': localStorage.getItem('token'), 'Content-Type': 'application/json' } }).then(res => res.data), shouldRetryOnError: false, refreshInterval: 15000, refreshWhenHidden: true, refreshWhenOffline: true, focusThrottleInterval: 5000
+			fetcher: url => axios(url, { headers: { 'auth-token': localStorage.getItem('token'), 'Content-Type': 'application/json' } }).then(res => res.data),
+			shouldRetryOnError: !Boolean(localStorage.getItem('notes')), refreshInterval: 15000, refreshWhenHidden: true, refreshWhenOffline: true, focusThrottleInterval: 15000, dedupingInterval: 10000, errorRetryInterval: 500
 		}}>
 			<Router>
 				<ToggleState>
