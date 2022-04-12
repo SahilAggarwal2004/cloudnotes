@@ -5,6 +5,14 @@ import NoteState from './context/notes/NoteState' // importing NoteState functio
 import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
 import Welcome from './components/Welcome';
+// import Container from './components/Container';
+// import Notes from './components/Notes';
+// import About from './components/About';
+// import Signup from './components/Signup';
+// import Login from './components/Login';
+// import Forgot from './components/Forgot';
+// import Account from './components/Account';
+// import NotFound from './components/NotFound';
 import "aos/dist/aos.css";
 import AOS from "aos";
 import { SWRConfig } from 'swr';
@@ -13,8 +21,8 @@ import axios from 'axios';
 
 // const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
 // const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
-const Container = lazy(() => import('./components/Container')); // making components lazy
 // const Welcome = lazy(() => import('./components/Welcome'));
+const Container = lazy(() => import('./components/Container')); // making components lazy
 const Notes = lazy(() => import('./components/Notes'));
 const About = lazy(() => import('./components/About'));
 const Signup = lazy(() => import('./components/Signup'));
