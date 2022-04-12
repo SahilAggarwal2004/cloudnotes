@@ -11,7 +11,7 @@ export default function Notes() {
     document.title = 'Dashboard | CloudNotes'
 
     const context = useContext(NoteContext) // now the value that NoteContext.Provider provides has been stored inside this variable using useContext(Context)
-    const { addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
+    const { addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI, selTag, setSelTag } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
     const togglecontext = useContext(ToggleContext)
     const { showAlert, newNote, setNewNote, spinner, setSpinner, loadbar, setLoadbar } = togglecontext
     const redirect = useNavigate()
@@ -22,7 +22,6 @@ export default function Notes() {
     const editTitle = useRef();
     const editDescription = useRef();
     const editTag = useRef();
-    const [selTag, setSelTag] = useState('All');
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
 
@@ -59,11 +58,8 @@ export default function Notes() {
                     }, 300);
                 }
             } else {
-                if (!fetchData.length && isValidating) {
-                    setLoadbar([1 / 3, true])
-                    setNotes([])
-                    setShow([])
-                } else {
+                if (!fetchData.length && isValidating) setLoadbar([1 / 3, true])
+                else {
                     setLoadbar([1, true])
                     localStorage.setItem('notes', JSON.stringify({ ...data, local: true }))
                     setTimeout(() => {
@@ -77,7 +73,7 @@ export default function Notes() {
         }
         else redirect('/signup')
         return () => { // equivalent to componentWillUnmount
-            setSelTag('All')
+            setLoadbar([0, false])
         }
         // eslint-disable-next-line
     }, [data, error]);
@@ -132,7 +128,7 @@ export default function Notes() {
         <div className='text-center py-4'>
             <div className='flex flex-col items-center justify-center sm:flex-row sm:justify-end sm:mx-5 sm:space-x-3'>
                 <input className='text-center border border-grey-600 my-1' placeholder='Search Notes' defaultValue={search} onChange={event => setSearch(event.target.value)} />
-                <select className='w-min px-1 my-1 border border-grey-600' defaultValue='All' onChange={(event) => { setSelTag(event.target.value) }}>
+                <select className='w-min px-1 my-1 border border-grey-600' defaultValue={selTag} onChange={(event) => { setSelTag(event.target.value) }}>
                     {tags.map(tag => {
                         return <option key={tag} value={tag}>{tag}</option>
                     })}

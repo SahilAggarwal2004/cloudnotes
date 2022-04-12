@@ -24,30 +24,54 @@ export default function About() {
         <hr className='w-11/12 border-black' />
         <div className='w-11/12 sm:w-2/3 min-h-screen flex flex-col justify-center items-center py-5'>
             <h2 className='text-2xl font-semibold' data-aos='fade-up'>Why CloudNotes?</h2>
-            <ul className='mt-6 border border-black rounded-sm p-5 flex flex-col space-y-2 text-left' data-aos='fade-up'>
+            <ul className='mt-6 border border-black rounded-sm p-3 sm:p-5 flex flex-col space-y-2 text-left' data-aos='fade-up'>
                 <li data-aos='fade-up' className='flex items-center'>
-                    <FaUniversalAccess className="inline mr-2 w-5 text-red-500 scale-110" />
-                    <span className='font-semibold mr-1'>Access notes from anywhere anytime - </span>CloudNotes is available 24/7 all over the World!
+                    <span>
+                        <FaUniversalAccess className="mr-2 w-5 text-red-500 scale-110" />
+                    </span>
+                    <span>
+                        <span className='font-semibold mr-1'>Access notes from anywhere anytime - </span>CloudNotes is available 24/7 all over the World!
+                    </span>
                 </li>
                 <li data-aos='fade-up' className='flex items-center'>
-                    <FaKey className="mr-2 w-5 text-green-600 scale-110" />
-                    <span className='font-semibold mr-1'>100% security - </span>Your notes are end-to-end encryted!
+                    <span>
+                        <FaKey className="mr-2 w-5 text-green-600 scale-110" />
+                    </span>
+                    <span>
+                        <span className='font-semibold mr-1'>100% security - </span>Your notes are end-to-end encryted!
+                    </span>
                 </li>
                 <li data-aos='fade-up' className='flex items-center'>
-                    <FaShippingFast className="mr-2 w-5 text-red-500 scale-110" />
-                    <span className='font-semibold mr-1'>Blazingly fast website - </span>CloudNotes has over 95 score on PageSpeed Insights!
+                    <span>
+                        <FaShippingFast className="mr-2 w-5 text-red-500 scale-110" />
+                    </span>
+                    <span>
+                        <span className='font-semibold mr-1'>Blazingly fast website - </span>CloudNotes has over 95 score on PageSpeed Insights!
+                    </span>
                 </li>
                 <li data-aos='fade-up' className='flex items-center'>
-                    <FaStar className="mr-2 w-5 text-green-600 scale-110" />
-                    <span className='font-semibold mr-1'>Platform friendly - </span>CloudNotes is independent of the OS of device!
+                    <span>
+                        <FaStar className="mr-2 w-5 text-green-600 scale-110" />
+                    </span>
+                    <span>
+                        <span className='font-semibold mr-1'>Platform friendly - </span>CloudNotes is independent of the OS of device!
+                    </span>
                 </li>
                 <li data-aos='fade-up' className='flex items-center'>
-                    <IoIosApps className="mr-2 w-5 text-red-500 scale-125" />
-                    <span className='font-semibold mr-1'>Convertible into a Web App - </span>Don't want to go to browser everytime? No worries!
+                    <span>
+                        <IoIosApps className="mr-2 w-5 text-red-500 scale-125" />
+                    </span>
+                    <span>
+                        <span className='font-semibold mr-1'>Convertible into a Web App - </span>Don't want to go to browser everytime? No worries!
+                    </span>
                 </li>
-                <li data-aos='fade-up' className='flex items-center'>
-                    <GiTwoCoins className="mr-2 w-5 text-green-600 scale-125" />
-                    <span className='font-semibold mr-1'>All time free - </span>We focus on user satisfaction instead of money!
+                <li data-aos='fade-up' data-aos-offset={100} className='flex items-center'>
+                    <span>
+                        <GiTwoCoins className="mr-2 w-5 text-green-600 scale-125" />
+                    </span>
+                    <span>
+                        <span className='font-semibold mr-1'>All time free - </span>We focus on user satisfaction instead of money!
+                    </span>
                 </li>
             </ul>
         </div>

@@ -26,6 +26,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     const [notes, setNotes] = useState([])
     const [show, setShow] = useState([]);
     const [search, setSearch] = useState('')
+    const [selTag, setSelTag] = useState('All');
     const [noteToDelete, setNoteToDelete] = useState('');
     const [noteToEdit, setNoteToEdit] = useState([{}, false]);
     const tagColor = useRef();
@@ -166,7 +167,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     return (
         // Context.Provider provides the context to the components using useContext().
         // value attribute stores the value(can be anything) to be passed to the components using the context.
-        <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI }}>
+        <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI, selTag, setSelTag }}>
             {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
             {props.children}
         </NoteContext.Provider>
