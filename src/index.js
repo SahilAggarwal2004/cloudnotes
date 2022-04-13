@@ -12,7 +12,7 @@ import App from './App';
 
 // below code contains react-snap method which is a library that pre-renders an html page which is good for SEO and google bot now sees some content in our website.
 const rootElement = document.getElementById("root");
-if (rootElement.hasChildNodes()) {
+if (!rootElement.hasChildNodes()) {
   ReactDOM.hydrate(
     <React.StrictMode>
       <App />
