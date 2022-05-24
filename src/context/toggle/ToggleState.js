@@ -11,9 +11,7 @@ const ToggleState = (props) => {
 
     function showAlert(msg, color) {
         setAlert([msg, color, Boolean(msg)])
-        setTimeout(() => {
-            setAlert(['&#8205;', '', false])
-        }, 2000);
+        setTimeout(() => setAlert(['&#8205;', '', false]), 2000);
     }
 
     return (

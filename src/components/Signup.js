@@ -17,10 +17,8 @@ export default function Signup() {
     // In react app, we can create environment variables to hide something confidential from public. They can be stored in a file named .env.local which is by default present in .gitignore and must be names like REACT_APP_NAME to be accessible in react app. These variables are stored in a js object and can be accessed in the application as shown below
     const { REACT_APP_SIGNUP } = process.env
 
-    useEffect(() => {
-        if (localStorage.getItem('token')) redirect('/dashboard')
-        // eslint-disable-next-line
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => { if (localStorage.getItem('token')) redirect('/dashboard') }, []);
 
     async function verify(event) {
         event.preventDefault()
@@ -30,10 +28,7 @@ export default function Signup() {
             setLoadbar([1, true])
             setTimeout(() => {
                 setLoadbar([0, false])
-                if (!json.success) {
-                    showAlert(json.error, '')
-                    return
-                }
+                if (!json.success) return showAlert(json.error, '')
                 showAlert('Account created successfully! Please confirm your account via email to proceed!', 'green')
                 redirect('/login')
             }, 300);

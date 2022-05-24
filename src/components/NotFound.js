@@ -6,12 +6,8 @@ export default function NotFound() {
 
     const redirect = useNavigate()
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            redirect('/dashboard')
-        }, 3000);
-        return () => {
-            clearTimeout(timeout)
-        }
+        const timeout = setTimeout(() => redirect('/dashboard'), 3000);
+        return () => clearTimeout(timeout)
         // eslint-disable-next-line
     }, [])
 

@@ -12,7 +12,7 @@ export default function NoteItem(props) {
     const { setModal, loadbar } = useContext(ToggleContext)
     const tagColors = JSON.parse(localStorage.getItem('tagColors'));
     const [volume, setVolume] = useState(<GrVolume onClick={speech} />)
-    
+
     // speechSynthesis is an API which enables to convert text into speech
     let speechId = null;
     function speech() { handleSpeech(_id) }
@@ -32,15 +32,9 @@ export default function NoteItem(props) {
             }
         }
 
-        if (!speaking) {
-            newSpeech()
-            return
-        }
+        if (!speaking) return newSpeech()
         speechSynthesis.cancel()
-        if (speechId !== clickId) {
-            newSpeech()
-            return
-        }
+        if (speechId !== clickId) return newSpeech()
         speechId = null;
         setVolume(<GrVolume onClick={speech} />)
     }
@@ -63,7 +57,7 @@ export default function NoteItem(props) {
                         setNoteToEdit([note, true])
                         setEditDescLength(note.description.length)
                         setTimeout(() => {
-                            editTagColor.current.value = JSON.parse(localStorage.getItem('tagColors')) ? JSON.parse(localStorage.getItem('tagColors'))[editTag.current.value] : '#e5e7eb'
+                            editTagColor.current.value = tagColors ? tagColors[editTag.current.value] : '#e5e7eb'
                             if (editTagColor.current.value === '#000000') editTagColor.current.value = '#e5e7eb'
                         }, 0);
                     }} />

@@ -26,10 +26,7 @@ export default function Account() {
 
         setTimeout(() => {
             setLoadbar([0, false])
-            if (!json.success) {
-                showAlert(json.error, '')
-                return
-            }
+            if (!json.success) return showAlert(json.error, '')
             if (type === 'delete') {
                 localStorage.removeItem('name')
                 localStorage.removeItem('token')
@@ -39,10 +36,10 @@ export default function Account() {
                 setShow([])
                 showAlert('Successfully deleted your CloudNotes account!', 'green')
                 redirect('/signup')
-                return
+            } else {
+                json.confirmed ? showAlert('User already confirmed!', 'green') : showAlert('Successfully confirmed your CloudNotes account!', 'green')
+                redirect('/login')
             }
-            json.confirmed ? showAlert('User already confirmed!', 'green') : showAlert('Successfully confirmed your CloudNotes account!', 'green')
-            redirect('/login')
         }, 300);
     }
 

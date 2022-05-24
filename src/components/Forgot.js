@@ -42,19 +42,13 @@ export default function Forgot() {
 
     async function stage2(event) {
         event.preventDefault()
-        if (password.current.value !== cpassword.current.value) {
-            showAlert("Password doesn't match", '')
-            return
-        }
+        if (password.current.value !== cpassword.current.value) return showAlert("Password doesn't match", '')
         setLoadbar([1 / 3, true])
         const json = await fetchApp(REACT_APP_FORGOT, 'PUT', { email: email.current.value, otp: otp.current.value, password: password.current.value })
         setLoadbar([1, true])
         setTimeout(() => {
             setLoadbar([0, false])
-            if (!json.success) {
-                showAlert(json.error, '')
-                return
-            }
+            if (!json.success) return showAlert(json.error, '')
             showAlert('Password reset successful!', 'green')
             redirect('/login')
         }, 300);

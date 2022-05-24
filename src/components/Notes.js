@@ -27,12 +27,8 @@ export default function Notes() {
 
     let fetchData;
     const { data, error, isValidating } = useSWR(fetchAPI)
-    if (isValidating) {
-        fetchData = data?.notes || []
-    }
-    else {
-        fetchData = data?.notes || JSON.parse(localStorage.getItem('notes'))?.notes || []
-    }
+    if (isValidating) fetchData = data?.notes || []
+    else fetchData = data?.notes || JSON.parse(localStorage.getItem('notes'))?.notes || []
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
@@ -170,9 +166,7 @@ export default function Notes() {
                                     }} />
                                 </div>
                             </div>)
-                    } else {
-                        return null
-                    }
+                    } else return null
                 })}
                 <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${newNote && !spinner ? '' : 'hidden'}`}>
                     <div className={`absolute top-0 translate-y-[-50%] flex`}>

@@ -35,10 +35,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
 
     function searchNotes(searchData = notes) {
         const value = search.toLowerCase();
-        if (!value) {
-            setShow(searchData)
-            return
-        }
+        if (!value) return setShow(searchData)
         let result = []
         searchData.forEach(note => {
             if (note.title.toLowerCase().includes(value) || note.description.toLowerCase().includes(value) || note.tag.toLowerCase().includes(value)) {
@@ -93,18 +90,18 @@ const NoteState = (props) => { // props parameter will store every component(eve
                     setShow([])
                     redirect('/signup')
                 }
-                return
+            } else {
+                searchNotes(json.notes)
+                mutate(fetchAPI, json, false)
+                if (json.success && json.local) {
+                    color = ''
+                    if (msg?.includes('added')) msg = "Server Down! Couldn't add note!"
+                    else if (msg?.includes('deleted')) msg = "Server Down! Couldn't delete note!"
+                    else if (msg?.includes('updated')) msg = "Server Down! Couldn't update note!"
+                    else msg = undefined
+                }
+                if (!alert[2]) showAlert(msg, color);
             }
-            searchNotes(json.notes)
-            mutate(fetchAPI, json, false)
-            if (json.success && json.local) {
-                color = ''
-                if (msg?.includes('added')) msg = "Server Down! Couldn't add note!"
-                else if (msg?.includes('deleted')) msg = "Server Down! Couldn't delete note!"
-                else if (msg?.includes('updated')) msg = "Server Down! Couldn't update note!"
-                else msg = undefined
-            }
-            if (!alert[2]) showAlert(msg, color);
         }, 300);
     }
 

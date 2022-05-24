@@ -40,10 +40,7 @@ export default function Modal() {
         setModal([{}, false, ''])
         setLoadbar([1 / 3, true])
         const authtoken = localStorage.getItem('token')
-        if (!authtoken) {
-            logOut('Account deleted successfully!', 'green')
-            return
-        }
+        if (!authtoken) return logOut('Account deleted successfully!', 'green')
         const json = await fetchApp(REACT_APP_DELETEUSER, 'DELETE', {}, authtoken)
         json.success ? logOut('Account deleted successfully!', 'green') : logOut(json.error, '')
     }
