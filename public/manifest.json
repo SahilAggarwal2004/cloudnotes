@@ -1,6 +1,7 @@
 {
   "short_name": "CloudNotes",
   "name": "CloudNotes - Your notes whenever wherever you want!",
+  "version": "1.0.0",
   "description": "CloudNotes is an online platform to save all your notes at one place on the cloud. It is a platform where your notes are totally encrypted and secured so that only you can access your notes.",
   "author": "Sahil Aggarwal",
   "icons": [

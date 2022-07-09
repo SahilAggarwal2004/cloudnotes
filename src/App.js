@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import NoteState from './context/notes/NoteState' // importing NoteState function
 import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
-import Welcome from './components/Welcome';
+// import Welcome from './components/Welcome';
 // import Container from './components/Container';
 // import Notes from './components/Notes';
 // import About from './components/About';
@@ -21,8 +21,8 @@ import axios from 'axios';
 
 // const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
 // const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
-// const Welcome = lazy(() => import('./components/Welcome'));
-const Container = lazy(() => import('./components/Container')); // making components lazy
+const Welcome = lazy(() => import('./components/Welcome')); // making components lazy
+const Container = lazy(() => import('./components/Container'));
 const Notes = lazy(() => import('./components/Notes'));
 const About = lazy(() => import('./components/About'));
 const Signup = lazy(() => import('./components/Signup'));
