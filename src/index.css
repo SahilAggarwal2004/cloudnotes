@@ -650,6 +650,9 @@ video {
 .w-min {
   width: min-content;
 }
+.w-screen {
+  width: 100vw;
+}
 .min-w-full {
   min-width: 100%;
 }
@@ -749,6 +752,11 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.75rem * var(--tw-space-x-reverse));
   margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 .self-end {
   align-self: flex-end;
@@ -856,9 +864,6 @@ video {
 .p-5 {
   padding: 1.25rem;
 }
-.p-1 {
-  padding: 0.25rem;
-}
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
@@ -941,6 +946,9 @@ video {
 .text-justify {
   text-align: justify;
 }
+.font-sans {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -964,6 +972,10 @@ video {
 .text-2xs {
   font-size: 0.7rem;
   line-height: 1rem;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 .font-semibold {
   font-weight: 600;
@@ -1028,11 +1040,6 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
-.transition-transform {
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
 .duration-300 {
   transition-duration: 300ms;
 }
@@ -1044,6 +1051,58 @@ video {
 }
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.welcome-btn-container {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.welcome-btn-container:hover {
+  --tw-translate-x: 0.5rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.welcome-btn {
+  position: relative;
+  padding: 0.25rem;
+}
+
+.welcome-btn::after {
+  position: absolute;
+  left: 0px;
+  top: calc(100%);
+  z-index: 10;
+  height: 0.125rem;
+  width: 100%;
+  --tw-scale-x: 0;
+  --tw-scale-y: 0;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
+  opacity: 0.9;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  --tw-content: '';
+  content: var(--tw-content);
+}
+
+.welcome-btn:hover::after {
+  content: var(--tw-content);
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+@media (min-width: 896px) {
+  .welcome-btn::after {
+    content: var(--tw-content);
+    --tw-border-opacity: 1;
+    border-color: rgb(255 255 255 / var(--tw-border-opacity));
+  }
 }
 
 .btn {
@@ -1080,96 +1139,9 @@ video {
   color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 
-.after\:absolute::after {
-  content: var(--tw-content);
-  position: absolute;
-}
-
-.after\:left-0::after {
-  content: var(--tw-content);
-  left: 0px;
-}
-
-.after\:top-\[calc\(100\%\)\]::after {
-  content: var(--tw-content);
-  top: calc(100%);
-}
-
-.after\:z-10::after {
-  content: var(--tw-content);
-  z-index: 10;
-}
-
-.after\:h-0\.5::after {
-  content: var(--tw-content);
-  height: 0.125rem;
-}
-
-.after\:h-0::after {
-  content: var(--tw-content);
-  height: 0px;
-}
-
-.after\:w-\[100\%\]::after {
-  content: var(--tw-content);
-  width: 100%;
-}
-
-.after\:scale-0::after {
-  content: var(--tw-content);
-  --tw-scale-x: 0;
-  --tw-scale-y: 0;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.after\:border::after {
-  content: var(--tw-content);
-  border-width: 1px;
-}
-
-.after\:border-black::after {
-  content: var(--tw-content);
-  --tw-border-opacity: 1;
-  border-color: rgb(0 0 0 / var(--tw-border-opacity));
-}
-
-.after\:opacity-90::after {
-  content: var(--tw-content);
-  opacity: 0.9;
-}
-
-.after\:transition-transform::after {
-  content: var(--tw-content);
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-.after\:duration-300::after {
-  content: var(--tw-content);
-  transition-duration: 300ms;
-}
-
-.after\:content-\[\'\'\]::after {
-  --tw-content: '';
-  content: var(--tw-content);
-}
-
-.hover\:translate-x-2:hover {
-  --tw-translate-x: 0.5rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .hover\:scale-110:hover {
   --tw-scale-x: 1.1;
   --tw-scale-y: 1.1;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.hover\:after\:scale-100:hover::after {
-  content: var(--tw-content);
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1322,10 +1294,5 @@ video {
   }
   .normal\:text-opacity-90 {
     --tw-text-opacity: 0.9;
-  }
-  .normal\:after\:border-white::after {
-    content: var(--tw-content);
-    --tw-border-opacity: 1;
-    border-color: rgb(255 255 255 / var(--tw-border-opacity));
   }
 }

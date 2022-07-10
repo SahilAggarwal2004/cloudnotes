@@ -3,6 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.welcome-btn-container {
+    @apply transition-transform duration-300 hover:translate-x-2
+}
+
+.welcome-btn {
+    @apply p-1 relative hover:after:scale-100 after:content-[''] after:h-0.5 after:w-full after:absolute after:scale-0 after:left-0 after:top-[calc(100%)] after:z-10 after:border after:opacity-90 after:border-black normal:after:border-white after:transition-transform after:duration-300
+}
+
 .btn {
     @apply my-1 bg-purple-700 text-white py-1 px-2 border-2 border-white rounded-md transition-all duration-500 hover:bg-white hover:text-purple-700 hover:border-purple-700
 }

@@ -11,6 +11,7 @@ import Loading from './components/Loading';
 // import Signup from './components/Signup';
 // import Login from './components/Login';
 // import Forgot from './components/Forgot';
+// import Offline from './components/Offline';
 // import Account from './components/Account';
 // import NotFound from './components/NotFound';
 import "aos/dist/aos.css";
@@ -28,6 +29,7 @@ const About = lazy(() => import('./components/About'));
 const Signup = lazy(() => import('./components/Signup'));
 const Login = lazy(() => import('./components/Login'));
 const Forgot = lazy(() => import('./components/Forgot'));
+const Offline = lazy(() => import('./components/Offline'));
 const Account = lazy(() => import('./components/Account'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
@@ -47,9 +49,7 @@ function App() {
 					{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
 					<NoteState>
 						{/* Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up */}
-						<Suspense fallback={<></>}>
-							<Container />
-						</Suspense>
+						<Suspense fallback={<></>}><Container /></Suspense>
 						<Suspense fallback={<Loading />}>
 							<Routes>
 								<Route path='/' element={<Welcome />} />
@@ -58,6 +58,7 @@ function App() {
 								<Route path="/signup" element={<Signup />} />
 								<Route path="/login" element={<Login />} />
 								<Route path="/forgot" element={<Forgot />} />
+								<Route path="/offline" element={<Offline />} />
 								<Route path="/account/:type/:token" element={<Account />} />
 								<Route path="/*" element={<NotFound />} />
 							</Routes>

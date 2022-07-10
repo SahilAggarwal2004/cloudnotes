@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ToggleContext from "./ToggleContext";
 
 const ToggleState = (props) => {
+    const [isOnline, setOnline] = useState(navigator.onLine);
     const [alert, setAlert] = useState(['&#8205;', '', false]);
     const [modal, setModal] = useState([{}, false, '']);
     const [loadbar, setLoadbar] = useState([0, false]);
@@ -15,7 +16,7 @@ const ToggleState = (props) => {
     }
 
     return (
-        <ToggleContext.Provider value={{ alert, showAlert, modal, setModal, loadbar, setLoadbar, spinner, setSpinner, newNote, setNewNote, hide, setHide }}>
+        <ToggleContext.Provider value={{ isOnline, setOnline, alert, showAlert, modal, setModal, loadbar, setLoadbar, spinner, setSpinner, newNote, setNewNote, hide, setHide }}>
             {props.children}
         </ToggleContext.Provider>
     )

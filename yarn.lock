@@ -9044,7 +9044,7 @@ workbox-google-analytics@6.5.3:
     workbox-routing "6.5.3"
     workbox-strategies "6.5.3"
 
-workbox-navigation-preload@6.5.3, workbox-navigation-preload@^6.5.3:
+workbox-navigation-preload@6.5.3:
   version "6.5.3"
   resolved "https://registry.yarnpkg.com/workbox-navigation-preload/-/workbox-navigation-preload-6.5.3.tgz#81b74f598b11aa07e2cf1c21af7a826a4f0f70b3"
   integrity sha512-bK1gDFTc5iu6lH3UQ07QVo+0ovErhRNGvJJO/1ngknT0UQ702nmOUhoN9qE5mhuQSrnK+cqu7O7xeaJ+Rd9Tmg==

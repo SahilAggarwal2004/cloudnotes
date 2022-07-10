@@ -17,7 +17,6 @@
     "workbox-cacheable-response": "^6.5.3",
     "workbox-core": "^6.5.3",
     "workbox-expiration": "^6.5.3",
-    "workbox-navigation-preload": "^6.5.3",
     "workbox-precaching": "^6.5.3",
     "workbox-routing": "^6.5.3",
     "workbox-strategies": "^6.5.3",
@@ -25,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "yarn run watch:css && react-app-rewired build --mode=development",
+    "build": "yarn run watch:css && react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "watch:css": "postcss src/tailwind.css -o src/index.css",

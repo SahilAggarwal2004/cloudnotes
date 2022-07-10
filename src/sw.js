@@ -1,34 +1,21 @@
 /* eslint-disable no-restricted-globals */
-import * as navigationPreload from 'workbox-navigation-preload';
 import { clientsClaim } from 'workbox-core'
-import { precacheAndRoute } from 'workbox-precaching'
-import { NavigationRoute, registerRoute } from 'workbox-routing'
-import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies'
+import { matchPrecache, precacheAndRoute } from 'workbox-precaching'
+import { registerRoute, setCatchHandler, setDefaultHandler } from 'workbox-routing'
+import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { ExpirationPlugin } from 'workbox-expiration'
 
 clientsClaim() // This should be at the top of the service worker
 self.skipWaiting()
 
-precacheAndRoute(self.__WB_MANIFEST)
+const urlsToCache = (self.__WB_MANIFEST || []).concat(['/offline', '/', '/dashboard', '/about'])
+precacheAndRoute(urlsToCache)
 
-// Enable navigation preload
-navigationPreload.enable();
-
-// Create a new navigation route that uses the Network-first, falling back to
-// cache strategy for navigation requests with its own cache. This route will be
-// handled by navigation preload. The NetworkOnly strategy will work as well.
-const navigationRoute = new NavigationRoute(new NetworkFirst({
-    cacheName: 'navigations'
-}));
-
-// Register the navigation route
-registerRoute(navigationRoute);
-
-registerRoute(({ url }) => url.pathname === '/api/notes/fetch', new StaleWhileRevalidate({
-    cacheName: 'notes',
-    plugins: [new CacheableResponsePlugin({ statuses: [200] })]
-}))
+// registerRoute(({ url }) => url.pathname === '/api/notes/fetch', new StaleWhileRevalidate({
+//     cacheName: 'notes',
+//     plugins: [new CacheableResponsePlugin({ statuses: [200] })]
+// }))
 
 registerRoute(({ request }) => request.destination === 'image', new CacheFirst({
     cacheName: 'images',
@@ -39,3 +26,23 @@ registerRoute(({ request }) => request.destination === 'image', new CacheFirst({
 }))
 
 registerRoute(({ request }) => request.destination === 'script' || request.destination === 'style', new StaleWhileRevalidate({ cacheName: 'static-resources' }))
+
+// Use a stale-while-revalidate strategy to handle requests by default.
+setDefaultHandler(new StaleWhileRevalidate());
+
+// This "catch" handler is triggered when any of the other routes fail to
+// generate a response.
+setCatchHandler(async ({ request }) => {
+    // Fallback assets are precached when the service worker is installed, and are
+    // served in the event of an error below. Use `event`, `request`, and `url` to
+    // figure out how to respond, or use request.destination to match requests for
+    // specific resource types.
+    switch (request.destination) {
+        case 'document':
+            return matchPrecache('/offline');
+
+        default:
+            // If we don't have a fallback, return an error response.
+            return Response.error();
+    }
+});
