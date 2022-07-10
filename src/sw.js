@@ -14,7 +14,7 @@ const urlsToCache = (self.__WB_MANIFEST || []).concat(['/', '/dashboard', '/abou
 precacheAndRoute(urlsToCache)
 
 setDefaultHandler(new NetworkOnly())
-offlineFallback({ pageFallback: '/' });
+offlineFallback({ pageFallback: '/offline' });
 
 registerRoute(({ url }) => url.pathname === '/api/notes/fetch', new NetworkFirst({
     cacheName: 'notes',
