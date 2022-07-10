@@ -32,6 +32,6 @@
   ],
   "start_url": "/dashboard",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#7e22ce"
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }
