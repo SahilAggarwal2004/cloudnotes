@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import NoteState from './context/notes/NoteState' // importing NoteState function
 import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
+import Container from './components/Container';
 // import Welcome from './components/Welcome';
-// import Container from './components/Container';
 // import Notes from './components/Notes';
 // import About from './components/About';
 // import Signup from './components/Signup';
@@ -22,8 +22,8 @@ import axios from 'axios';
 
 // const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
 // const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
+// const Container = lazy(() => import('./components/Container'));
 const Welcome = lazy(() => import('./components/Welcome')); // making components lazy
-const Container = lazy(() => import('./components/Container'));
 const Notes = lazy(() => import('./components/Notes'));
 const About = lazy(() => import('./components/About'));
 const Signup = lazy(() => import('./components/Signup'));
@@ -49,7 +49,7 @@ function App() {
 					{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
 					<NoteState>
 						{/* Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up */}
-						<Suspense fallback={<></>}><Container /></Suspense>
+						<Container />
 						<Suspense fallback={<Loading />}>
 							<Routes>
 								<Route path='/' element={<Welcome />} />

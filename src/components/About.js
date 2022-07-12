@@ -2,18 +2,15 @@ import React, { useEffect } from 'react';
 import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast } from 'react-icons/fa'
 import { IoIosApps } from 'react-icons/io'
 import { GiTwoCoins } from 'react-icons/gi'
+import logo from '../images/logo.webp'
+import creator from '../images/creator.webp'
 
 export default function About() {
     document.title = 'About | CloudNotes'
 
-    const logo = 'https://images.weserv.nl/?url=https://cloudnotesweb.herokuapp.com/media/logo.webp&width=100&height=100&maxage=1y&q=1'
-    const creator = 'https://images.weserv.nl/?url=https://cloudnotesweb.herokuapp.com/media/owner.webp&width=300&height=300&maxage=1y'
+    useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [])
 
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, [])
-
-    return (<div className='flex flex-col items-center text-center absolute top-0 w-full'>
+    return <div className='flex flex-col items-center text-center absolute top-0 w-full'>
         <div className='w-11/12 sm:w-2/3 h-screen flex flex-col justify-center items-center' data-aos='fade-up'>
             <img src={logo} alt="CloudNotes" className='w-16 h-16' />
             <h2 className='text-2xl font-semibold'>CloudNotes - Notes on Cloud</h2>
@@ -62,7 +59,7 @@ export default function About() {
                         <IoIosApps className="mr-2 w-5 text-red-500 scale-125" />
                     </span>
                     <span>
-                        <span className='font-semibold mr-1'>Convertible into a Web App - </span>Don't want to go to browser everytime? No worries!
+                        <span className='font-semibold mr-1'>Progressive Web App - </span>Works even when you are offline!
                     </span>
                 </li>
                 <li data-aos='fade-up' data-aos-offset={100} className='flex items-center'>
@@ -89,5 +86,5 @@ export default function About() {
             <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer" className='flex items-center'><FaLinkedin className="scale-110 inline mr-2" />Follow me on LinkedIn!</a>
             <div>Copyright&copy; <strong>CloudNotes</strong> 2022 | All rights reserved</div>
         </footer>
-    </div>)
+    </div>
 }

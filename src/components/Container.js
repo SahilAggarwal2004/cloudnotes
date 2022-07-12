@@ -7,12 +7,9 @@ import Modal from './Modal';
 export default function Container() {
     const location = useLocation()
 
-    return (
-        location.pathname !== '/' ?
-            <>
-                <Navbar />
-                <Alert />
-                <Modal />
-            </> : <></>
-    )
+    return location.pathname !== '/' && <>
+        <Navbar />
+        <Alert />
+        <Modal />
+    </>
 }
