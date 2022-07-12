@@ -10,7 +10,11 @@ import { offlineFallback } from 'workbox-recipes'
 clientsClaim() // This should be at the top of the service worker
 self.skipWaiting()
 
-const urlsToCache = (self.__WB_MANIFEST || []).concat(['/', '/dashboard', '/about'])
+const urlsToCache = (self.__WB_MANIFEST || []).concat([
+    { url: '/', revision: null },
+    { url: '/dashboard', revision: null },
+    { url: '/about', revision: null }
+])
 precacheAndRoute(urlsToCache)
 
 setDefaultHandler(new NetworkOnly())
