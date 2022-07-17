@@ -62,10 +62,9 @@ const NoteState = (props) => { // props parameter will store every component(eve
             })
             json = response.data;
 
-            // if (api === fetchAPI && json.success) localStorage.setItem('notes', JSON.stringify({ ...json, local: true }))
+            if (api === fetchAPI && json.success) localStorage.setItem('notes', JSON.stringify({ ...json, local: true }))
         } catch (error) {
-            // (api === fetchAPI) ? json = JSON.parse(localStorage.getItem('notes')) : 
-            json = error.response?.data;
+            (api === fetchAPI) ? json = JSON.parse(localStorage.getItem('notes')) : json = error.response?.data;
             if (!json) json = { success: false, error: "Server Down! Please try again later..." }
         }
         return json
@@ -85,7 +84,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
                 if (json.error.includes('authenticate')) {
                     localStorage.removeItem('name')
                     localStorage.removeItem('token')
-                    // localStorage.removeItem('notes')
+                    localStorage.removeItem('notes')
                     mutate(fetchAPI, [], false)
                     setNotes([])
                     setShow([])

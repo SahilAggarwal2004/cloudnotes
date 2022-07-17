@@ -22,11 +22,6 @@ precacheAndRoute(urlsToCache)
 setDefaultHandler(new NetworkFirst())
 offlineFallback({ pageFallback: '/offline' });
 
-registerRoute(({ url }) => url.pathname === '/api/notes/fetch', new NetworkFirst({
-    cacheName: 'notes',
-    plugins: [new CacheableResponsePlugin({ statuses: [200] })]
-}))
-
 registerRoute(({ request }) => request.destination === 'image', new CacheFirst({
     cacheName: 'images',
     plugins: [
