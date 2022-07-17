@@ -6,14 +6,16 @@ import { CacheFirst, NetworkFirst, NetworkOnly } from 'workbox-strategies'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { offlineFallback } from 'workbox-recipes'
+import { nanoid } from 'nanoid'
 
 clientsClaim() // This should be at the top of the service worker
 self.skipWaiting()
 
+const revision = nanoid();
 const urlsToCache = (self.__WB_MANIFEST || []).concat([
-    { url: '/', revision: null },
-    { url: '/dashboard', revision: null },
-    { url: '/about', revision: null }
+    { url: '/', revision },
+    { url: '/dashboard', revision },
+    { url: '/about', revision }
 ])
 precacheAndRoute(urlsToCache)
 
