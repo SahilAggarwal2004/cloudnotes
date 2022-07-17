@@ -2,7 +2,7 @@
 import { clientsClaim } from 'workbox-core'
 import { precacheAndRoute } from 'workbox-precaching'
 import { registerRoute, setDefaultHandler } from 'workbox-routing'
-import { CacheFirst, NetworkFirst, NetworkOnly } from 'workbox-strategies'
+import { CacheFirst, NetworkFirst } from 'workbox-strategies'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { offlineFallback } from 'workbox-recipes'
@@ -19,7 +19,7 @@ const urlsToCache = (self.__WB_MANIFEST || []).concat([
 ])
 precacheAndRoute(urlsToCache)
 
-setDefaultHandler(new NetworkOnly())
+setDefaultHandler(new NetworkFirst())
 offlineFallback({ pageFallback: '/offline' });
 
 registerRoute(({ url }) => url.pathname === '/api/notes/fetch', new NetworkFirst({
