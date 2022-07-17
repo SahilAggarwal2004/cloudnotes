@@ -1,13 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import ToggleContext from '../context/toggle/ToggleContext'
 
 export default function Offline() {
     const redirect = useNavigate();
-    const { isOnline } = useContext(ToggleContext)
 
-    useEffect(() => { if (isOnline) redirect('/dashboard') }, [isOnline])
+    useEffect(() => { if (navigator.onLine) redirect('/dashboard') }, [navigator.onLine])
 
     document.title = 'You are Offline'
 
