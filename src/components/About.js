@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast } from 'react-icons/fa'
+import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast, FaGithub } from 'react-icons/fa'
 import { IoIosApps } from 'react-icons/io'
 import { GiTwoCoins } from 'react-icons/gi'
 import logo from '../images/logo.webp'
@@ -35,7 +35,7 @@ export default function About() {
                         <FaKey className="mr-2 w-5 text-green-600 scale-110" />
                     </span>
                     <span>
-                        <span className='font-semibold mr-1'>100% security - </span>Your notes are end-to-end encryted!
+                        <span className='font-semibold mr-1'>100% security - </span>Your notes are end-to-end encrypted!
                     </span>
                 </li>
                 <li data-aos='fade-up' className='flex items-center'>
@@ -82,8 +82,11 @@ export default function About() {
                 <div className='text-gray-700 mt-2' data-aos='fade-up'>Full Stack Web Developer</div>
             </div>
         </div>
-        <footer className='w-full text-center bg-purple-600 text-white px-3 py-2 flex flex-col sm:flex-row justify-between items-center'>
-            <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer" className='flex items-center'><FaLinkedin className="scale-110 inline mr-2" />Follow me on LinkedIn!</a>
+        <footer className='w-full text-center bg-purple-600 text-white px-3 py-2 flex flex-col sm:flex-row justify-between items-center space-y-1 sm:space-y-0'>
+            <div className='flex space-x-4 px-2'>
+                <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer"><FaLinkedin className="scale-125 inline" title='LinkedIn' /></a>
+                <a href="https://github.com/SahilAggarwal2004" target="_blank" rel="noreferrer"><FaGithub className="scale-125 inline" title='GitHub' /></a>
+            </div>
             <div>Copyright&copy; <strong>CloudNotes</strong> 2022 | All rights reserved</div>
         </footer>
     </div>

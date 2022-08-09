@@ -25,10 +25,13 @@ export default function Welcome() {
       <div className='px-7 text-justify'>CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.</div>
       <div className='flex flex-col space-y-3'>
         <div className='welcome-btn-container'>
-          <Link className="welcome-btn" to="/signup"><strong>Continue to Website</strong> ➤</Link>
+          <Link className="welcome-btn" to="/signup"><strong>Create a new account</strong> ➤</Link>
         </div>
         <div className='welcome-btn-container'>
-          <Link className="welcome-btn" to="/about"><strong>More About Us</strong> ➤</Link>
+          <Link className="welcome-btn" to="/login"><strong>Login to your account</strong> ➤</Link>
+        </div>
+        <div className='welcome-btn-container'>
+          <Link className="welcome-btn" to="/about"><strong>Know More</strong> ➤</Link>
         </div>
       </div>
     </div>

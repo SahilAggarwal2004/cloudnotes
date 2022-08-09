@@ -14,7 +14,7 @@ export default function Navbar() {
         <div className={`flex bg-purple-700 text-white sm:justify-between items-center py-1.5 px-4 flex-col transition-all duration-500 sm:flex-row overflow-hidden ${hide ? 'h-10' : 'h-24'} sm:h-10 ${location.pathname.includes('/account/confirm') || location.pathname.includes('/account/delete') ? 'hidden' : ''}`}>
             <div className={`flex items-center justify-between w-full sm:justify-start ${localStorage.getItem('token') ? 'sm:space-x-5' : ''}`}>
                 <FaRegUser className={`cursor-pointer scale-125 font-extrabold transition-all ${localStorage.getItem('token') ? '' : 'fixed invisible'}`} onClick={() => { setModal([{}, true, 'user']) }} />
-                <Link to='/'><h2 className='text-xl text-center'>CloudNotes</h2></Link>
+                <Link to='/'><h2 className='text-xl text-center font-semibold'>CloudNotes</h2></Link>
                 <FaBars className="sm:invisible scale-125" onClick={extendNav} />
             </div>
             <div className='m-2 sm:m-0 sm:space-x-4 sm:flex'>
