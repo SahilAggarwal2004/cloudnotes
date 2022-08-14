@@ -128,7 +128,8 @@ const NoteState = (props) => { // props parameter will store every component(eve
 
     // Edit a note
     async function editNote(note) {
-        const { _id, title, description, tag, editTitle, editDescription, editTag = 'General' } = note
+        const { _id, title, description, tag, editTitle, editDescription } = note
+        const editTag = note.editTag || 'General'
         if (title !== editTitle || description !== editDescription || tag !== editTag) {
             setLoadbar([1 / 12, true])
             const json = await fetchApp(`${updateAPI}/${_id}`, 'PUT', { title: editTitle, description: editDescription, tag: editTag })
