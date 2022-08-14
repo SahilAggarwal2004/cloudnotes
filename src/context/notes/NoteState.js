@@ -38,9 +38,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
         if (!value) return setShow(searchData)
         let result = []
         searchData.forEach(note => {
-            if (note.title.toLowerCase().includes(value) || note.description.toLowerCase().includes(value) || note.tag.toLowerCase().includes(value)) {
-                result.push(note)
-            }
+            if (note.title.toLowerCase().includes(value) || note.description.toLowerCase().includes(value) || note.tag.toLowerCase().includes(value)) result.push(note)
         });
         setShow(result)
     }
@@ -109,10 +107,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     async function addNote(title, description, tag) {
         setLoadbar([1 / 12, true])
         const json = await fetchApp(addAPI, 'POST', { title, description, tag })
-        if (!json.success) {
-            await getNotes(json.error, '')
-            return
-        }
+        if (!json.success) return await getNotes(json.error, '')
         await getNotes('Note added!', 'green')
         setTimeout(() => {
             setNewNote(false)
@@ -127,24 +122,17 @@ const NoteState = (props) => { // props parameter will store every component(eve
         setModal([{}, false, ''])
         setLoadbar([1 / 12, true])
         const json = await fetchApp(`${deleteAPI}/${id}`, 'DELETE', {})
-        if (!json.success) {
-            await getNotes(json.error, '')
-            return
-        }
+        if (!json.success) return await getNotes(json.error, '')
         await getNotes('Note deleted!', 'green')
     }
 
     // Edit a note
     async function editNote(note) {
-        let { _id, title, description, tag, editTitle, editDescription } = note
-        const editTag = note.editTag || 'General'
+        const { _id, title, description, tag, editTitle, editDescription, editTag = 'General' } = note
         if (title !== editTitle || description !== editDescription || tag !== editTag) {
             setLoadbar([1 / 12, true])
             const json = await fetchApp(`${updateAPI}/${_id}`, 'PUT', { title: editTitle, description: editDescription, tag: editTag })
-            if (!json.success) {
-                await getNotes(json.error, '')
-                return
-            }
+            if (!json.success) return await getNotes(json.error, '')
             await getNotes('Note updated!', 'green')
             setTimeout(() => {
                 setNoteToEdit([{}, false])
@@ -161,14 +149,12 @@ const NoteState = (props) => { // props parameter will store every component(eve
         }
     }
 
-    return (
-        // Context.Provider provides the context to the components using useContext().
-        // value attribute stores the value(can be anything) to be passed to the components using the context.
-        <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI, selTag, setSelTag }}>
-            {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
-            {props.children}
-        </NoteContext.Provider>
-    )
+    // Context.Provider provides the context to the components using useContext().
+    // value attribute stores the value(can be anything) to be passed to the components using the context.
+    return <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI, selTag, setSelTag }}>
+        {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
+        {props.children}
+    </NoteContext.Provider>
 }
 
 export default NoteState;

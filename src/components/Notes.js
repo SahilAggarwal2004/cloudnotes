@@ -68,21 +68,14 @@ export default function Notes() {
             }
         }
         else redirect('/signup')
-        return () => { // equivalent to componentWillUnmount
-            setLoadbar([0, false])
-        }
+        return () => { setLoadbar([0, false]) } // equivalent to componentWillUnmount
         // eslint-disable-next-line
     }, [data, error]);
 
-    useEffect(() => {
-        if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
-    }, [newNote])
+    useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
 
-    useEffect(() => {
-        searchNotes()
-        // eslint-disable-next-line
-    }, [search])
-
+    // eslint-disable-next-line
+    useEffect(() => { searchNotes() }, [search])
 
     function addNewNote() {
         setNewNote(true)
@@ -94,40 +87,28 @@ export default function Notes() {
 
     function handleAdd() {
         // accessing ref data and performing functions (some are present in current and some outside current)
-        if (title.current.value.length < 1) {
-            showAlert('Please provide title to the note', '')
-        } else if (description.current.value.length < 1) {
-            showAlert('Please provide description to the note', '')
-        } else if (!loadbar[1]) {
-            addNote(title.current.value, description.current.value, tag.current.value)
-        }
+        if (title.current.value.length < 1) showAlert('Please provide title to the note', '')
+        else if (description.current.value.length < 1) showAlert('Please provide description to the note', '')
+        else if (!loadbar[1]) addNote(title.current.value, description.current.value, tag.current.value)
     }
 
     function handleEdit() {
-        if (editTitle.current.value.length < 1) {
-            showAlert('Please provide title to the note', '')
-        } else if (editDescription.current.value.length < 1) {
-            showAlert('Please provide description to the note', '')
-        } else if (!loadbar[1]) {
-            editNote({ ...noteToEdit[0], editTitle: editTitle.current.value, editDescription: editDescription.current.value, editTag: editTag.current.value })
-        }
+        if (editTitle.current.value.length < 1) showAlert('Please provide title to the note', '')
+        else if (editDescription.current.value.length < 1) showAlert('Please provide description to the note', '')
+        else if (!loadbar[1]) editNote({ ...noteToEdit[0], editTitle: editTitle.current.value, editDescription: editDescription.current.value, editTag: editTag.current.value })
     }
 
-    notes.forEach(note => {
-        tags.push(note.tag)
-    });
+    notes.forEach(note => { tags.push(note.tag) });
     tags = [...new Set(tags)]
 
     const showLength = show.filter((note) => { return (selTag === 'All' || note.tag === selTag) }).length
 
-    return (<div className='mb-12'>
+    return <div className='mb-12'>
         <div className='text-center py-4'>
             <div className='flex flex-col items-center justify-center sm:flex-row sm:justify-end sm:mx-5 sm:space-x-3'>
                 <input className='text-center border border-grey-600 my-1' placeholder='Search Notes' defaultValue={search} onChange={event => setSearch(event.target.value)} />
                 <select className='w-min px-1 my-1 border border-grey-600' defaultValue={selTag} onChange={(event) => { setSelTag(event.target.value) }}>
-                    {tags.map(tag => {
-                        return <option key={tag} value={tag}>{tag}</option>
-                    })}
+                    {tags.map(tag => <option key={tag} value={tag}>{tag}</option>)}
                 </select>
             </div>
             <div className="grid grid-cols-10 m-5 items-center">
@@ -174,9 +155,7 @@ export default function Notes() {
                             tagColor.current.value = JSON.parse(localStorage.getItem('tagColors')) ? JSON.parse(localStorage.getItem('tagColors'))[event.target.value] || tagColor.current.value : tagColor.current.value
                         }} autoComplete='off' />
                         <datalist id='tagList'>
-                            {tags.filter(tag => { return tag !== 'All' }).map(tag => {
-                                return <option key={tag} value={tag} />
-                            })}
+                            {tags.filter(tag => tag !== 'All').map(tag => <option key={tag} value={tag} />)}
                         </datalist>
                         <input type='color' ref={tagColor} list='tagColors' className={`bg-gray-200 text-xs text-center rounded-r-2xl text-black focus:outline-0`} defaultValue='#e5e7eb' />
                         <datalist id='tagColors'>
@@ -210,5 +189,4 @@ export default function Notes() {
             <FaPlus className='scale-110' />
         </div>
     </div>
-    )
 }

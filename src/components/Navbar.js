@@ -5,7 +5,7 @@ import Loadbar from './Loadbar'
 import { FaRegUser, FaBars } from 'react-icons/fa'
 
 export default function Navbar() {
-    let location = useLocation() // useLocation() returns a js object containing current location data and is immutable. pathname key of this object contains the url/path.
+    const location = useLocation() // useLocation() returns a js object containing current location data and is immutable. pathname key of this object contains the url/path.
     const { setModal, hide, setHide } = useContext(ToggleContext)
 
     function extendNav() { setHide(!hide) }
