@@ -36,10 +36,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     function searchNotes(searchData = notes) {
         const value = search.toLowerCase();
         if (!value) return setShow(searchData)
-        let result = []
-        searchData.forEach(note => {
-            if (note.title.toLowerCase().includes(value) || note.description.toLowerCase().includes(value) || note.tag.toLowerCase().includes(value)) result.push(note)
-        });
+        const result = searchData.filter(note => note.title.toLowerCase().includes(value) || note.description.toLowerCase().includes(value) || note.tag.toLowerCase().includes(value))
         setShow(result)
     }
 
