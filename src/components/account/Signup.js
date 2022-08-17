@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import NoteContext from '../context/notes/NoteContext';
-import ToggleContext from '../context/toggle/ToggleContext';
+import NoteContext from '../../context/notes/NoteContext';
+import ToggleContext from '../../context/toggle/ToggleContext';
 
 
 export default function Signup() {

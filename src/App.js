@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import NoteState from './context/notes/NoteState' // importing NoteState function
 import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
-import Container from './components/Container';
+import Container from './components/container/Container';
 // import Welcome from './components/Welcome';
 // import Notes from './components/Notes';
 // import About from './components/About';
@@ -26,11 +26,11 @@ import axios from 'axios';
 const Welcome = lazy(() => import('./components/Welcome')); // making components lazy
 const Notes = lazy(() => import('./components/Notes'));
 const About = lazy(() => import('./components/About'));
-const Signup = lazy(() => import('./components/Signup'));
-const Login = lazy(() => import('./components/Login'));
-const Forgot = lazy(() => import('./components/Forgot'));
+const Signup = lazy(() => import('./components/account/Signup'));
+const Login = lazy(() => import('./components/account/Login'));
+const Forgot = lazy(() => import('./components/account/Forgot'));
 const Offline = lazy(() => import('./components/Offline'));
-const Account = lazy(() => import('./components/Account'));
+const Account = lazy(() => import('./components/account/Account'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
 function App() {

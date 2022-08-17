@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { mutate } from 'swr';
-import NoteContext from '../context/notes/NoteContext';
-import ToggleContext from '../context/toggle/ToggleContext'
+import NoteContext from '../../context/notes/NoteContext';
+import ToggleContext from '../../context/toggle/ToggleContext'
 
 export default function Account() {
     document.title = 'CloudNotes - Notes on Cloud'

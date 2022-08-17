@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import ToggleContext from '../context/toggle/ToggleContext'
-import Loadbar from './Loadbar'
+import ToggleContext from '../../context/toggle/ToggleContext'
+import Loadbar from './../Loadbar'
 import { FaRegUser, FaBars } from 'react-icons/fa'
 
 export default function Navbar() {

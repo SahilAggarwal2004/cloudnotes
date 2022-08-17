@@ -2,7 +2,8 @@ import React, { useContext } from 'react'
 import NoteContext from '../context/notes/NoteContext'
 import ToggleContext from '../context/toggle/ToggleContext';
 import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
-import { useSpeech } from '../hooks';
+import Speech from 'react-text-to-speech';
+import { GrVolume, GrVolumeMute } from 'react-icons/gr';
 
 export default function NoteItem({ note, editTag, editTagColor, setEditDescLength }) {
     const { _id, date, tag, title, description } = note;
@@ -10,7 +11,6 @@ export default function NoteItem({ note, editTag, editTagColor, setEditDescLengt
     const { setNoteToDelete, setNoteToEdit } = useContext(NoteContext)
     const { setModal, loadbar } = useContext(ToggleContext)
     const tagColors = JSON.parse(localStorage.getItem('tagColors'));
-    const speechIcon = useSpeech(note)
 
     return <div className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative' data-aos='fade-up' data-aos-once='true' data-aos-offset={20}>
         <div className='bg-gray-200 rounded-2xl absolute top-0 translate-y-[-50%] text-xs text-black px-2 py-px border' style={{ backgroundColor: tagColors && tagColors[tag] === '#000000' ? '#e5e7eb' : tagColors ? tagColors[tag] : '#e5e7eb' }}>{tag}</div>
@@ -32,7 +32,9 @@ export default function NoteItem({ note, editTag, editTagColor, setEditDescLengt
                         if (editTagColor.current.value === '#000000') editTagColor.current.value = '#e5e7eb'
                     }, 0);
                 }} />
-                <div className='cursor-pointer font-bold scale-110'>{speechIcon}</div>
+                <div className='cursor-pointer font-bold scale-110'>
+                    <Speech id={_id} text={`The tag is ${tag}. The title is ${title}. The description is ${description}.`} startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} />
+                </div>
             </div>
             <p className='text-2xs text-gray-600 self-end'>Last Updated: {showDate}</p>
         </div>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import ToggleContext from '../context/toggle/ToggleContext'
+import ToggleContext from '../../context/toggle/ToggleContext'
 
 export default function Alert() {
     const { alert } = useContext(ToggleContext)
