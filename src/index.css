@@ -518,9 +518,6 @@ video {
 .m-auto {
   margin: auto;
 }
-.m-2 {
-  margin: 0.5rem;
-}
 .my-2 {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -569,6 +566,9 @@ video {
 .mr-0 {
   margin-right: 0px;
 }
+.mt-3 {
+  margin-top: 0.75rem;
+}
 .block {
   display: block;
 }
@@ -604,12 +604,6 @@ video {
 }
 .h-\[1\.375rem\] {
   height: 1.375rem;
-}
-.h-10 {
-  height: 2.5rem;
-}
-.h-24 {
-  height: 6rem;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -762,6 +756,16 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.5rem * var(--tw-space-x-reverse));
   margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.125rem * var(--tw-space-y-reverse));
+}
+.space-y-0 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0px * var(--tw-space-y-reverse));
 }
 .self-end {
   align-self: flex-end;
@@ -1190,6 +1194,9 @@ video {
     margin-left: 1.25rem;
     margin-right: 1.25rem;
   }
+  .sm\:inline-block {
+    display: inline-block;
+  }
   .sm\:inline {
     display: inline;
   }
@@ -1198,9 +1205,6 @@ video {
   }
   .sm\:h-\[calc\(100vh-2\.5rem\)\] {
     height: calc(100vh - 2.5rem);
-  }
-  .sm\:h-10 {
-    height: 2.5rem;
   }
   .sm\:w-2\/3 {
     width: 66.666667%;

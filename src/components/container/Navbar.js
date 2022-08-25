@@ -11,14 +11,19 @@ export default function Navbar() {
     function extendNav() { setHide(!hide) }
 
     return <nav className='sticky inset-0 z-20'>
-        <div className={`flex bg-purple-700 text-white sm:justify-between items-center py-1.5 px-4 flex-col transition-all duration-500 sm:flex-row overflow-hidden ${hide ? 'h-10' : 'h-24'} sm:h-10 ${location.pathname.includes('/account/confirm') || location.pathname.includes('/account/delete') ? 'hidden' : ''}`}>
-            <div className={`flex items-center justify-between w-full sm:justify-start ${localStorage.getItem('token') ? 'sm:space-x-5' : ''}`}>
+        <div className='flex bg-purple-700 text-white sm:justify-between items-center py-2 px-4 flex-col transition-all duration-500 sm:flex-row overflow-hidden'>
+            <div className={`flex items-center justify-between w-full sm:justify-start ${localStorage.getItem('token') && 'sm:space-x-5'}`}>
                 <FaRegUser className={`cursor-pointer scale-125 font-extrabold transition-all ${localStorage.getItem('token') ? '' : 'fixed invisible'}`} onClick={() => { setModal([{}, true, 'user']) }} />
                 <Link to='/'><h2 className='text-xl text-center font-semibold'>CloudNotes</h2></Link>
                 <FaBars className="sm:invisible scale-125" onClick={extendNav} />
             </div>
-            <div className='m-2 sm:m-0 sm:space-x-4 sm:flex'>
-                <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/dashboard" ? "font-bold" : "text-gray-300"}`} to="/dashboard" onClick={extendNav}>Dashboard</Link>
+            <div className={`mt-3 space-y-0.5 sm:m-0 sm:space-y-0 sm:space-x-4 sm:flex ${hide && 'hidden'} sm:inline-block`}>
+                {localStorage.getItem('token') ?
+                    <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/dashboard" ? "font-bold" : "text-gray-300"}`} to="/dashboard" onClick={extendNav}>Dashboard</Link> :
+                    <>
+                        <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/signup" ? "font-bold" : "text-gray-300"}`} to="/signup" onClick={extendNav}>Signup</Link>
+                        <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/login" ? "font-bold" : "text-gray-300"}`} to="/login" onClick={extendNav}>Login</Link>
+                    </>}
                 <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/about" ? "font-bold" : "text-gray-300"}`} to="/about" onClick={extendNav}>About</Link>
             </div>
         </div>
