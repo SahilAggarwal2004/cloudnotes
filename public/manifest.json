@@ -31,6 +31,16 @@
     }
   ],
   "start_url": "/dashboard",
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "url": "/dashboard"
+    },
+    {
+      "name": "About",
+      "url": "/about"
+    }
+  ],
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
