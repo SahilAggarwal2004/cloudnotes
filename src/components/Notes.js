@@ -66,8 +66,7 @@ export default function Notes() {
                     }, 300);
                 }
             }
-        }
-        else redirect('/signup')
+        } else redirect('/')
         return () => { setLoadbar([0, false]) } // equivalent to componentWillUnmount
         // eslint-disable-next-line
     }, [data, error]);
