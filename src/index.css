@@ -1055,9 +1055,6 @@ video {
 .duration-700 {
   transition-duration: 700ms;
 }
-.duration-500 {
-  transition-duration: 500ms;
-}
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }

@@ -11,7 +11,7 @@ export default function Navbar() {
     function extendNav() { setHide(!hide) }
 
     return <nav className='sticky inset-0 z-20'>
-        <div className='flex bg-purple-700 text-white sm:justify-between items-center py-2 px-4 flex-col transition-all duration-500 sm:flex-row overflow-hidden'>
+        <div className='flex bg-purple-700 text-white sm:justify-between items-center py-2 px-4 flex-col sm:flex-row overflow-hidden'>
             <div className={`flex items-center justify-between w-full sm:justify-start ${localStorage.getItem('token') && 'sm:space-x-5'}`}>
                 <FaRegUser className={`cursor-pointer scale-125 font-extrabold transition-all ${localStorage.getItem('token') ? '' : 'fixed invisible'}`} onClick={() => { setModal([{}, true, 'user']) }} />
                 <Link to='/'><h2 className='text-xl text-center font-semibold'>CloudNotes</h2></Link>
