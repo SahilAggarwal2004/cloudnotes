@@ -32,7 +32,6 @@ export default function Forgot() {
             }
             else {
                 if (json.error === "OTP already sent!") setStage(stage + 1)
-                showAlert(json.error, '')
             }
             setLoadbar([0, false])
         }, 300);
@@ -46,7 +45,7 @@ export default function Forgot() {
         setLoadbar([1, true])
         setTimeout(() => {
             setLoadbar([0, false])
-            if (!json.success) return showAlert(json.error, '')
+            if (!json.success) return
             showAlert('Password reset successful!', 'green')
             redirect('/login')
         }, 300);

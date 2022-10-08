@@ -61,51 +61,47 @@ const NoteState = (props) => { // props parameter will store every component(eve
         } catch (error) {
             (api === fetchAPI) ? json = JSON.parse(localStorage.getItem('notes')) : json = error.response?.data;
             if (!json) json = { success: false, error: "Server Down! Please try again later..." }
+            showAlert(json.error, '')
+            if (json.error.includes('authenticate')) {
+                localStorage.removeItem('name')
+                localStorage.removeItem('token')
+                localStorage.removeItem('notes')
+                mutate(fetchAPI, [], false)
+                setNotes([])
+                setShow([])
+                redirect('/signup')
+            }
         }
         return json
     }
 
     // Get notes
-    async function getNotes(msg, color) {
-        setLoadbar([1 / 3, true])
-        let json;
-        color ? json = await fetchApp(fetchAPI) : json = { success: false, error: msg }
-        setLoadbar([1, true])
+    function updateNotes(json) {
+        let { success, notes, msg, local } = json
+        let color = !success ? '' : local ? '' : 'green'
         setTimeout(() => {
             setLoadbar([0, false])
             setSpinner(false)
-            if (!json.success) {
-                showAlert(json.error, '')
-                if (json.error.includes('authenticate')) {
-                    localStorage.removeItem('name')
-                    localStorage.removeItem('token')
-                    localStorage.removeItem('notes')
-                    mutate(fetchAPI, [], false)
-                    setNotes([])
-                    setShow([])
-                    redirect('/signup')
-                }
-            } else {
-                searchNotes(json.notes)
-                mutate(fetchAPI, json, false)
-                if (json.success && json.local) {
-                    color = ''
-                    if (msg?.includes('added')) msg = "Server Down! Couldn't add note!"
-                    else if (msg?.includes('deleted')) msg = "Server Down! Couldn't delete note!"
-                    else if (msg?.includes('updated')) msg = "Server Down! Couldn't update note!"
-                    else msg = undefined
-                }
-                if (!alert[2]) showAlert(msg, color);
+            if (!success) return
+            searchNotes(notes)
+            mutate(fetchAPI, json, false)
+            if (success && local) {
+                if (msg?.includes('added')) msg = "Server Down! Couldn't add note!"
+                else if (msg?.includes('deleted')) msg = "Server Down! Couldn't delete note!"
+                else if (msg?.includes('updated')) msg = "Server Down! Couldn't update note!"
+                else msg = undefined
             }
+            if (!alert[2]) showAlert(msg, color);
         }, 300);
     }
 
     // Add a note
     async function addNote(title, description, tag) {
-        setLoadbar([1 / 12, true])
+        setLoadbar([1 / 3, true])
         const json = await fetchApp(addAPI, 'POST', { title, description, tag })
-        if (!json.success) return await getNotes(json.error, '')
-        await getNotes('Note added!', 'green')
+        setLoadbar([1, true])
+        updateNotes(json)
+        if (!json.success) return
         setTimeout(() => {
             setNewNote(false)
             localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [tag]: tagColor.current?.value }))
@@ -117,10 +113,11 @@ const NoteState = (props) => { // props parameter will store every component(eve
     async function deleteNote(id) {
         setNoteToDelete('')
         setModal([{}, false, ''])
-        setLoadbar([1 / 12, true])
+        setLoadbar([1 / 3, true])
         const json = await fetchApp(`${deleteAPI}/${id}`, 'DELETE', {})
-        if (!json.success) return await getNotes(json.error, '')
-        await getNotes('Note deleted!', 'green')
+        setLoadbar([1, true])
+        updateNotes(json)
+        if (!json.success) return
     }
 
     // Edit a note
@@ -128,10 +125,11 @@ const NoteState = (props) => { // props parameter will store every component(eve
         const { _id, title, description, tag, editTitle, editDescription } = note
         const editTag = note.editTag || 'General'
         if (title !== editTitle || description !== editDescription || tag !== editTag) {
-            setLoadbar([1 / 12, true])
+            setLoadbar([1 / 3, true])
             const json = await fetchApp(`${updateAPI}/${_id}`, 'PUT', { title: editTitle, description: editDescription, tag: editTag })
-            if (!json.success) return await getNotes(json.error, '')
-            await getNotes('Note updated!', 'green')
+            setLoadbar([1, true])
+            updateNotes(json)
+            if (!json.success) return
             setTimeout(() => {
                 setNoteToEdit([{}, false])
                 localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [editTag]: editTagColor.current?.value }))
@@ -149,7 +147,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
 
     // Context.Provider provides the context to the components using useContext().
     // value attribute stores the value(can be anything) to be passed to the components using the context.
-    return <NoteContext.Provider value={{ fetchApp, getNotes, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI, selTag, setSelTag }}>
+    return <NoteContext.Provider value={{ fetchApp, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI, selTag, setSelTag }}>
         {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
         {props.children}
     </NoteContext.Provider>

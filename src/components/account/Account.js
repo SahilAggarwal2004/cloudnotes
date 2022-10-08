@@ -26,7 +26,7 @@ export default function Account() {
 
         setTimeout(() => {
             setLoadbar([0, false])
-            if (!json.success) return showAlert(json.error, '')
+            if (!json.success) return
             if (type === 'delete') {
                 localStorage.removeItem('name')
                 localStorage.removeItem('token')

@@ -26,7 +26,7 @@ export default function Login() {
         setLoadbar([1, true])
         setTimeout(() => {
             setLoadbar([0, false])
-            if (!json.success) return showAlert(json.error, '')
+            if (!json.success) return
             localStorage.setItem('name', json.name)
             localStorage.setItem('token', json.authtoken)
             showAlert('Logged in successfully!', 'green')

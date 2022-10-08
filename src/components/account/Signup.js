@@ -28,7 +28,7 @@ export default function Signup() {
             setLoadbar([1, true])
             setTimeout(() => {
                 setLoadbar([0, false])
-                if (!json.success) return showAlert(json.error, '')
+                if (!json.success) return
                 showAlert('Account created successfully! Please confirm your account via email to proceed!', 'green')
                 redirect('/login')
             }, 300);
