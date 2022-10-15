@@ -5,24 +5,12 @@ import NoteState from './context/notes/NoteState' // importing NoteState functio
 import ToggleState from './context/toggle/ToggleState'
 import Loading from './components/Loading';
 import Container from './components/container/Container';
-// import Welcome from './components/Welcome';
-// import Notes from './components/Notes';
-// import About from './components/About';
-// import Signup from './components/Signup';
-// import Login from './components/Login';
-// import Forgot from './components/Forgot';
-// import Offline from './components/Offline';
-// import Account from './components/Account';
-// import NotFound from './components/NotFound';
 import "aos/dist/aos.css";
 import AOS from "aos";
 import { SWRConfig } from 'swr';
 import axios from 'axios';
 
 
-// const NoteState = lazy(() => import('./context/notes/NoteState')); // importing NoteState function
-// const ToggleState = lazy(() => import('./context/toggle/ToggleState'));
-// const Container = lazy(() => import('./components/Container'));
 const Welcome = lazy(() => import('./components/Welcome')); // making components lazy
 const Notes = lazy(() => import('./components/Notes'));
 const About = lazy(() => import('./components/About'));

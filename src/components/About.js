@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast, FaGithub } from 'react-icons/fa'
 import { IoIosApps } from 'react-icons/io'
 import { GiTwoCoins } from 'react-icons/gi'
-import logo from '../images/logo.webp'
-import creator from '../images/creator.webp'
 
 export default function About() {
     document.title = 'About | CloudNotes'
@@ -12,7 +10,7 @@ export default function About() {
 
     return <div className='flex flex-col items-center text-center absolute top-0 w-full'>
         <div className='w-11/12 sm:w-2/3 h-screen flex flex-col justify-center items-center' data-aos='fade-up'>
-            <img src={logo} alt="CloudNotes" className='w-16 h-16' />
+            <img src='/images/logo.webp' alt="CloudNotes" className='w-16 h-16' />
             <h2 className='text-2xl font-semibold'>CloudNotes - Notes on Cloud</h2>
             <p className='pt-4'>
                 CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.
@@ -76,7 +74,7 @@ export default function About() {
         <div className='flex flex-col h-[calc(100vh-5.5rem)] xs:h-[calc(100vh-4rem)] sm:h-[calc(100vh-2.5rem)] justify-center w-11/12 sm:max-w-fit'>
             <h3 className='text-xl font-semibold' data-aos='fade-up'>Created By:</h3>
             <div className='flex flex-col items-center px-10 py-4 m-3 relative mt-24 pt-16 border border-black rounded-sm' data-aos='fade-up'>
-                <img src={creator} alt="Sahil Aggarwal" className='w-36 h-36 rounded-full border-2 border-black absolute top-0 translate-y-[-50%]' />
+                <img src='/images/creator.webp' alt="Sahil Aggarwal" className='w-36 h-36 rounded-full border-2 border-black absolute top-0 translate-y-[-50%]' />
                 <div className='font-semibold text-lg mt-4' data-aos='fade-up'>Sahil Aggarwal</div>
                 <div className='text-gray-700 mt-2' data-aos='fade-up'>CSE, 1st Year, MSIT</div>
                 <div className='text-gray-700 mt-2' data-aos='fade-up'>Full Stack Web Developer</div>
