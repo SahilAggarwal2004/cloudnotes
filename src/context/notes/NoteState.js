@@ -44,7 +44,6 @@ const NoteState = (props) => { // props parameter will store every component(eve
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
         let json = {};
         try {
-            // const fullAPI = host + api
             const authtoken = token || localStorage.getItem('token')
             const response = await axios({
                 url: api,
