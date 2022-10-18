@@ -3,8 +3,6 @@ import { clientsClaim } from 'workbox-core'
 import { precacheAndRoute } from 'workbox-precaching'
 import { registerRoute, setDefaultHandler } from 'workbox-routing'
 import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies'
-import { CacheableResponsePlugin } from 'workbox-cacheable-response'
-import { ExpirationPlugin } from 'workbox-expiration'
 import { offlineFallback } from 'workbox-recipes'
 import { nanoid } from 'nanoid'
 
@@ -15,7 +13,10 @@ const revision = nanoid();
 const urlsToCache = (self.__WB_MANIFEST || []).concat([
     { url: '/', revision },
     { url: '/dashboard', revision },
-    { url: '/about', revision }
+    { url: '/about', revision },
+    { url: '/images/logo.webp', revision },
+    { url: '/images/bg.webp', revision },
+    { url: '/images/creator.webp', revision }
 ])
 precacheAndRoute(urlsToCache)
 
@@ -23,10 +24,4 @@ setDefaultHandler(new StaleWhileRevalidate())
 offlineFallback({ pageFallback: '/offline' });
 
 registerRoute(({ request }) => request.url.includes('cloudnotes.onrender.com'), new NetworkOnly())
-registerRoute(({ request }) => request.destination === 'image', new CacheFirst({
-    cacheName: 'images',
-    plugins: [
-        new CacheableResponsePlugin({ statuses: [200] }),
-        new ExpirationPlugin({ maxAgeSeconds: 30 * 24 * 60 * 60 })
-    ]
-}))
+registerRoute(({ request }) => request.destination === 'image', new CacheFirst())
