@@ -16,10 +16,7 @@ const urlsToCache = (self.__WB_MANIFEST || []).concat([
     { url: '/signup', revision },
     { url: '/login', revision },
     { url: '/dashboard', revision },
-    { url: '/forgot', revision },
-    { url: '/images/logo.webp', revision },
-    { url: '/images/bg.webp', revision },
-    { url: '/images/creator.webp', revision }
+    { url: '/forgot', revision }
 ])
 precacheAndRoute(urlsToCache)
 
