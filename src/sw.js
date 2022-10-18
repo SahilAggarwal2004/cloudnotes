@@ -12,8 +12,11 @@ self.skipWaiting()
 const revision = nanoid();
 const urlsToCache = (self.__WB_MANIFEST || []).concat([
     { url: '/', revision },
-    { url: '/dashboard', revision },
     { url: '/about', revision },
+    { url: '/signup', revision },
+    { url: '/login', revision },
+    { url: '/dashboard', revision },
+    { url: '/forgot', revision },
     { url: '/images/logo.webp', revision },
     { url: '/images/bg.webp', revision },
     { url: '/images/creator.webp', revision }
