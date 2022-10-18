@@ -2,9 +2,10 @@
 import { clientsClaim } from 'workbox-core'
 import { precacheAndRoute } from 'workbox-precaching'
 import { registerRoute, setDefaultHandler } from 'workbox-routing'
-import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies'
+import { NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies'
 import { offlineFallback } from 'workbox-recipes'
 import { nanoid } from 'nanoid'
+import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 
 clientsClaim() // This should be at the top of the service worker
 self.skipWaiting()
@@ -24,4 +25,7 @@ setDefaultHandler(new StaleWhileRevalidate())
 offlineFallback({ pageFallback: '/offline' });
 
 registerRoute(({ request }) => request.url.includes('cloudnotes.onrender.com'), new NetworkOnly())
-registerRoute(({ request }) => request.destination === 'image', new CacheFirst())
+registerRoute(({ request }) => request.destination === 'image', new StaleWhileRevalidate({
+    cacheName: 'images',
+    plugins: [new CacheableResponsePlugin({ statuses: [200] })]
+}))
