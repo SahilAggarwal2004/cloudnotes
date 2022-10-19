@@ -21,7 +21,7 @@ precacheAndRoute(urlsToCache)
 setDefaultHandler(new StaleWhileRevalidate())
 offlineFallback({ pageFallback: '/offline' });
 
-registerRoute(({ url }) => url.origin === 'cloudnotes.onrender.com', new NetworkOnly())
+registerRoute(({ url }) => url.host === 'cloudnotes.onrender.com', new NetworkOnly())
 registerRoute(({ request }) => request.destination === 'image', new CacheFirst({
     cacheName: 'images',
     plugins: [new CacheableResponsePlugin({ statuses: [200] })]
