@@ -3,24 +3,18 @@ import { clientsClaim } from 'workbox-core'
 import { precacheAndRoute } from 'workbox-precaching'
 import { registerRoute, setDefaultHandler } from 'workbox-routing'
 import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies'
+import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { offlineFallback } from 'workbox-recipes'
 import { nanoid } from 'nanoid'
-import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 
 clientsClaim() // This should be at the top of the service worker
 self.skipWaiting()
 
 const revision = nanoid();
 const urlsToCache = (self.__WB_MANIFEST || []).concat([
-    { url: '/images/logo.webp', revision },
-    { url: '/images/bg.webp', revision },
     { url: '/', revision },
-    { url: '/images/creator.webp', revision },
-    { url: '/about', revision },
-    { url: '/signup', revision },
-    { url: '/login', revision },
     { url: '/dashboard', revision },
-    { url: '/forgot', revision }
+    { url: '/about', revision }
 ])
 precacheAndRoute(urlsToCache)
 
