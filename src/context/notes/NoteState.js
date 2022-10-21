@@ -63,15 +63,14 @@ const NoteState = (props) => { // props parameter will store every component(eve
         return json
     }
 
-    // Get notes
     function updateNotes(json) {
-        let { success, msg, local } = json
+        let { success, notes, msg, local } = json
         let color = !success ? '' : local ? '' : 'green'
         setTimeout(() => {
             setLoadbar([0, false])
             setSpinner(false)
             if (!success) return
-            mutate(fetchAPI, json, false)
+            setNotes(notes)
             if (success && local) {
                 if (msg?.includes('added')) msg = "Server Down! Couldn't add note!"
                 else if (msg?.includes('deleted')) msg = "Server Down! Couldn't delete note!"
@@ -104,7 +103,6 @@ const NoteState = (props) => { // props parameter will store every component(eve
         const json = await fetchApp(`${deleteAPI}/${id}`, 'DELETE', {})
         setLoadbar([1, true])
         updateNotes(json)
-        if (!json.success) return
     }
 
     // Edit a note
