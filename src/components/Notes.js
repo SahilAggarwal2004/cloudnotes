@@ -11,17 +11,18 @@ export default function Notes() {
     document.title = 'Dashboard | CloudNotes'
 
     const context = useContext(NoteContext) // now the value that NoteContext.Provider provides has been stored inside this variable using useContext(Context)
-    const { addNote, show, setShow, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI, selTag, setSelTag } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
-    const togglecontext = useContext(ToggleContext)
-    const { showAlert, newNote, setNewNote, spinner, setSpinner, loadbar, setLoadbar } = togglecontext
+    const { addNote, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, notes, setNotes, fetchAPI } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
+    const { showAlert, newNote, setNewNote, spinner, setSpinner, loadbar, setLoadbar } = useContext(ToggleContext)
     const redirect = useNavigate()
-    let tags = ['All'];
+    const tags = ['All'];
     const title = useRef(); // defining a reference
     const description = useRef();
     const tag = useRef();
     const editTitle = useRef();
     const editDescription = useRef();
     const editTag = useRef();
+    const [selTag, setSelTag] = useState('All');
+    const [search, setSearch] = useState('');
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
 
@@ -29,6 +30,10 @@ export default function Notes() {
     const { data, error, isValidating } = useSWR(fetchAPI)
     if (isValidating) fetchData = data?.notes || []
     else fetchData = data?.notes || JSON.parse(localStorage.getItem('notes'))?.notes || []
+
+    const show = notes.filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search))
+    notes.forEach(note => { if (!tags.includes(note.tag)) tags.push(note.tag) });
+    const showLength = (selTag === 'All' ? show : show.filter(({ tag }) => tag === selTag)).length
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
@@ -42,7 +47,6 @@ export default function Notes() {
                     localStorage.removeItem('notes')
                     mutate(fetchAPI, [], false)
                     setNotes([])
-                    setShow([])
                     redirect('/signup')
                 } else {
                     setLoadbar([1, true])
@@ -50,7 +54,6 @@ export default function Notes() {
                         setLoadbar([0, false])
                         setSpinner(false)
                         setNotes(fetchData)
-                        searchNotes(fetchData)
                     }, 300);
                 }
             } else {
@@ -62,7 +65,6 @@ export default function Notes() {
                         setLoadbar([0, false])
                         setSpinner(false)
                         setNotes(fetchData)
-                        searchNotes(fetchData)
                     }, 300);
                 }
             }
@@ -72,9 +74,6 @@ export default function Notes() {
     }, [data, error]);
 
     useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
-
-    // eslint-disable-next-line
-    useEffect(() => { searchNotes() }, [search])
 
     function addNewNote() {
         setNewNote(true)
@@ -97,15 +96,10 @@ export default function Notes() {
         else if (!loadbar[1]) editNote({ ...noteToEdit[0], editTitle: editTitle.current.value, editDescription: editDescription.current.value, editTag: editTag.current.value })
     }
 
-    notes.forEach(note => { tags.push(note.tag) });
-    tags = [...new Set(tags)]
-
-    const showLength = show.filter((note) => { return (selTag === 'All' || note.tag === selTag) }).length
-
     return <div className='mb-12'>
         <div className='text-center py-4'>
             <div className='flex flex-col items-center justify-center sm:flex-row sm:justify-end sm:mx-5 sm:space-x-3'>
-                <input className='text-center border border-grey-600 my-1' placeholder='Search Notes' defaultValue={search} onChange={event => setSearch(event.target.value)} />
+                <input className='text-center border border-grey-600 my-1' placeholder='Search Notes' defaultValue={search} onChange={event => setSearch(event.target.value.toLowerCase())} />
                 <select className='w-min px-1 my-1 border border-grey-600' defaultValue={selTag} onChange={(event) => { setSelTag(event.target.value) }}>
                     {tags.map(tag => <option key={tag} value={tag}>{tag}</option>)}
                 </select>
@@ -123,31 +117,25 @@ export default function Notes() {
 
                 <h4 className={`fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center ${showLength === 0 && !newNote && !spinner ? '' : 'hidden'}`}>No Notes To Display!</h4>
 
-                {show.map(note => {
-                    if (note._id !== noteToEdit[0]._id && (selTag === note.tag || selTag === 'All')) {
-                        return <NoteItem key={note._id} note={note} editTag={editTag} editTagColor={editTagColor} setEditDescLength={setEditDescLength} />
-                    } else if (note._id === noteToEdit[0]._id) {
-                        return (
-                            <div key={note._id} className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${noteToEdit[1] ? '' : 'hidden'}`} data-aos='fade-right' data-aos-once='true' data-aos-offset={20}>
-                                <div className={`absolute top-0 translate-y-[-50%] flex`}>
-                                    <input type='text' list='tagList' ref={editTag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} defaultValue={noteToEdit[0].tag} onChange={event => {
-                                        editTagColor.current.value = JSON.parse(localStorage.getItem('tagColors')) ? JSON.parse(localStorage.getItem('tagColors'))[event.target.value] || editTagColor.current.value : editTagColor.current.value
-                                    }} autoComplete='off' />
-                                    <input type='color' ref={editTagColor} list='tagColors' className={`bg-gray-200 text-xs text-center rounded-r-2xl text-black focus:outline-0`} defaultValue='#e5e7eb' />
-                                </div>
-                                <input type='text' ref={editTitle} className='text-lg text-bold text-center w-full focus:outline-0 placeholder:text-gray-600' placeholder='Add title' minLength={1} maxLength={20} defaultValue={noteToEdit[0].title} />
-                                <hr className='w-full my-2' />
-                                <textarea ref={editDescription} placeholder='Add description' rows='5' maxLength={1000} className='text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0' defaultValue={noteToEdit[0].description} onChange={() => { setEditDescLength(editDescription.current.value.length) }} />
-                                <div className='text-xs text-right w-full mb-10 pr-1'>{editDescLength}/1000</div>
-                                <div className='space-x-4 absolute bottom-[1.375rem] flex'>
-                                    <FaRegSave className="cursor-pointer scale-110" onClick={handleEdit} />
-                                    <GoX className="cursor-pointer scale-125" onClick={() => {
-                                        setNoteToEdit([{}, false])
-                                    }} />
-                                </div>
-                            </div>)
-                    } else return null
-                })}
+                {show.map(note => note._id !== noteToEdit[0]._id && (selTag === note.tag || selTag === 'All') ?
+                    <NoteItem key={note._id} note={note} editTag={editTag} editTagColor={editTagColor} setEditDescLength={setEditDescLength} /> :
+                    note._id === noteToEdit[0]._id && <div key={note._id} className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${noteToEdit[1] ? '' : 'hidden'}`} data-aos='fade-right' data-aos-once='true' data-aos-offset={20}>
+                        <div className={`absolute top-0 translate-y-[-50%] flex`}>
+                            <input type='text' list='tagList' ref={editTag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} defaultValue={noteToEdit[0].tag} onChange={event => {
+                                editTagColor.current.value = JSON.parse(localStorage.getItem('tagColors')) ? JSON.parse(localStorage.getItem('tagColors'))[event.target.value] || editTagColor.current.value : editTagColor.current.value
+                            }} autoComplete='off' />
+                            <input type='color' ref={editTagColor} list='tagColors' className={`bg-gray-200 text-xs text-center rounded-r-2xl text-black focus:outline-0`} defaultValue='#e5e7eb' />
+                        </div>
+                        <input type='text' ref={editTitle} className='text-lg text-bold text-center w-full focus:outline-0 placeholder:text-gray-600' placeholder='Add title' minLength={1} maxLength={20} defaultValue={noteToEdit[0].title} />
+                        <hr className='w-full my-2' />
+                        <textarea ref={editDescription} placeholder='Add description' rows='5' maxLength={1000} className='text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0' defaultValue={noteToEdit[0].description} onChange={() => { setEditDescLength(editDescription.current.value.length) }} />
+                        <div className='text-xs text-right w-full mb-10 pr-1'>{editDescLength}/1000</div>
+                        <div className='space-x-4 absolute bottom-[1.375rem] flex'>
+                            <FaRegSave className="cursor-pointer scale-110" onClick={handleEdit} />
+                            <GoX className="cursor-pointer scale-125" onClick={() => setNoteToEdit([{}, false])} />
+                        </div>
+                    </div>
+                )}
                 <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${newNote && !spinner ? '' : 'hidden'}`}>
                     <div className={`absolute top-0 translate-y-[-50%] flex`}>
                         <input type='text' list='tagList' ref={tag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} onChange={event => {

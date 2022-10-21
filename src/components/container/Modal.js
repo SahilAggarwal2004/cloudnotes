@@ -5,7 +5,7 @@ import NoteContext from '../../context/notes/NoteContext'
 import ToggleContext from '../../context/toggle/ToggleContext'
 
 export default function Modal() {
-    const { fetchApp, deleteNote, setNotes, setShow, noteToDelete, fetchAPI } = useContext(NoteContext)
+    const { fetchApp, deleteNote, setNotes, noteToDelete, fetchAPI } = useContext(NoteContext)
     const { showAlert, modal, setModal, setLoadbar } = useContext(ToggleContext)
     const redirect = useNavigate()
     const { REACT_APP_DELETEUSER } = process.env
@@ -30,7 +30,6 @@ export default function Modal() {
             localStorage.removeItem('notes')
             mutate(fetchAPI, [], false)
             setNotes([])
-            setShow([])
             redirect('/signup')
             setModal([{}, false, ''])
         }, 300);

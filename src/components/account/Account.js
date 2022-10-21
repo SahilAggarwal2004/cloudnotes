@@ -9,7 +9,7 @@ export default function Account() {
 
     const { type, token } = useParams();
     const redirect = useNavigate();
-    const { fetchApp, setNotes, setShow, fetchAPI } = useContext(NoteContext)
+    const { fetchApp, setNotes, fetchAPI } = useContext(NoteContext)
     const { showAlert, setLoadbar } = useContext(ToggleContext)
     const { REACT_APP_CONFIRM, REACT_APP_DELETEUSER } = process.env
 
@@ -33,7 +33,6 @@ export default function Account() {
                 localStorage.removeItem('notes')
                 mutate(fetchAPI, [], false)
                 setNotes([])
-                setShow([])
                 showAlert('Successfully deleted your CloudNotes account!', 'green')
                 redirect('/signup')
             } else {

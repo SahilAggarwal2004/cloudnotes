@@ -24,21 +24,11 @@ const NoteState = (props) => { // props parameter will store every component(eve
 
     // Defining things to be stored in value below:
     const [notes, setNotes] = useState([])
-    const [show, setShow] = useState([]);
-    const [search, setSearch] = useState('')
-    const [selTag, setSelTag] = useState('All');
     const [noteToDelete, setNoteToDelete] = useState('');
     const [noteToEdit, setNoteToEdit] = useState([{}, false]);
     const tagColor = useRef();
     const editTagColor = useRef();
     const redirect = useNavigate();
-
-    function searchNotes(searchData = notes) {
-        const value = search.toLowerCase();
-        if (!value) return setShow(searchData)
-        const result = searchData.filter(note => note.title.toLowerCase().includes(value) || note.description.toLowerCase().includes(value) || note.tag.toLowerCase().includes(value))
-        setShow(result)
-    }
 
     async function fetchApp(api, method = 'GET', body = null, token = null) {
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
@@ -67,7 +57,6 @@ const NoteState = (props) => { // props parameter will store every component(eve
                 localStorage.removeItem('notes')
                 mutate(fetchAPI, [], false)
                 setNotes([])
-                setShow([])
                 redirect('/signup')
             }
         }
@@ -76,13 +65,12 @@ const NoteState = (props) => { // props parameter will store every component(eve
 
     // Get notes
     function updateNotes(json) {
-        let { success, notes, msg, local } = json
+        let { success, msg, local } = json
         let color = !success ? '' : local ? '' : 'green'
         setTimeout(() => {
             setLoadbar([0, false])
             setSpinner(false)
             if (!success) return
-            searchNotes(notes)
             mutate(fetchAPI, json, false)
             if (success && local) {
                 if (msg?.includes('added')) msg = "Server Down! Couldn't add note!"
@@ -146,7 +134,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
 
     // Context.Provider provides the context to the components using useContext().
     // value attribute stores the value(can be anything) to be passed to the components using the context.
-    return <NoteContext.Provider value={{ fetchApp, addNote, deleteNote, editNote, show, setShow, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, search, setSearch, searchNotes, fetchAPI, selTag, setSelTag }}>
+    return <NoteContext.Provider value={{ fetchApp, addNote, deleteNote, editNote, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, notes, setNotes, fetchAPI }}>
         {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
         {props.children}
     </NoteContext.Provider>
