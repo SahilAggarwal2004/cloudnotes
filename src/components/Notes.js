@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NoteContext from '../context/notes/NoteContext'
 import ToggleContext from '../context/toggle/ToggleContext'
@@ -31,7 +31,7 @@ export default function Notes() {
     if (isValidating) fetchData = data?.notes || []
     else fetchData = data?.notes || JSON.parse(localStorage.getItem('notes'))?.notes || []
 
-    const show = notes.filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search))
+    const show = useMemo(() => notes.filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search)), [notes, search])
     notes.forEach(note => { if (!tags.includes(note.tag)) tags.push(note.tag) });
     const showLength = (selTag === 'All' ? show : show.filter(({ tag }) => tag === selTag)).length
 
