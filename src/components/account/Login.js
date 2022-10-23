@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NoteContext from '../../context/notes/NoteContext';
 import ToggleContext from '../../context/toggle/ToggleContext';
-
+import Logo from '../Logo';
+import Password from './Password';
 
 export default function Login() {
     document.title = 'Login | CloudNotes'
@@ -14,12 +16,9 @@ export default function Login() {
     const redirect = useNavigate()
     const { REACT_APP_LOGIN } = process.env
 
-    useEffect(() => {
-        if (localStorage.getItem('token')) redirect('/dashboard')
-        // eslint-disable-next-line
-    }, []);
+    useEffect(() => { if (localStorage.getItem('token')) redirect('/dashboard') }, []);
 
-    async function verify(event) {
+    async function submit(event) {
         event.preventDefault()
         setLoadbar([1 / 3, true])
         const json = await fetchApp(REACT_APP_LOGIN, 'POST', { email: email.current.value, password: password.current.value })
@@ -34,23 +33,25 @@ export default function Login() {
         }, 300);
     }
 
-    return <div className='text-center py-5'>
-        <h2 className='text-xl font-semibold mb-2'>Login to your account</h2>
-        <form action="" method='post' onSubmit={verify}>
-            <div className='w-4/5 sm:w-1/2 md:w-1/3 m-auto'>
-                <div>
-                    <input ref={email} type="email" placeholder='Enter email' className='text-center border-2 border-grey-600 my-1 w-full' required />
-                </div>
-                <div>
-                    <input ref={password} type="password" placeholder='Enter password' className='text-center border-2 border-grey-600 my-1 w-full' minLength={4} required />
-                </div>
-                <Link to='/forgot' className='block text-gray-600 active:text-black font-semibold text-xs mb-2 mr-0.5 text-right'>Forgot Password?</Link>
+    return <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+            <div className='space-y-2 text-center'>
+                <Logo />
+                <h2 className="text-2xl font-bold text-gray-900">Log in to your account</h2>
+                <p className="text-sm text-gray-600">
+                    or <Link to='/signup'><span className="font-medium hover:text-black">Sign Up</span></Link>
+                </p>
             </div>
-            <button type='submit' className='btn'>Log In</button>
-        </form>
-        <div className='text-sm pt-2'>
-            <span>New to CloudNotes? </span>
-            <Link to='/signup' className='text-blue-500 active:text-purple-500 font-semibold'>Click Here</Link>
+            <form className="mt-8 space-y-6" onSubmit={submit}>
+                <div className="rounded-md shadow-sm -space-y-px">
+                    <input ref={email} type="email" autoComplete="email" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-purple-600 focus:border-purple-600 focus:z-10 sm:text-sm" placeholder="Email address" />
+                    <Password password={password} />
+                </div>
+
+                <Link to='/forgot' className='flex'><div className="cursor-pointer font-medium text-sm text-gray-600 hover:text-black">Forgot your password?</div></Link>
+
+                <button type="submit" className="relative w-full flex justify-center py-2 px-4 text-sm font-medium rounded-md border button-animation">Log in</button>
+            </form>
         </div>
     </div>
 }

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast, FaGithub } from 'react-icons/fa'
 import { IoIosApps } from 'react-icons/io'
 import { GiTwoCoins } from 'react-icons/gi'
+import Logo from './Logo';
 
 export default function About() {
     document.title = 'About | CloudNotes'
@@ -10,7 +11,7 @@ export default function About() {
 
     return <div className='flex flex-col items-center text-center absolute top-0 w-full'>
         <div className='w-11/12 sm:w-2/3 h-screen flex flex-col justify-center items-center' data-aos='fade-up'>
-            <img src='/images/logo.webp' alt="CloudNotes" className='w-16 h-16' />
+            <Logo />
             <h2 className='text-2xl font-semibold'>CloudNotes - Notes on Cloud</h2>
             <p className='pt-4'>
                 CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.

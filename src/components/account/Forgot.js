@@ -3,6 +3,8 @@ import React, { useContext, useRef, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NoteContext from '../../context/notes/NoteContext';
 import ToggleContext from '../../context/toggle/ToggleContext';
+import Logo from '../Logo';
+import Password from './Password';
 
 
 export default function Forgot() {
@@ -13,68 +15,56 @@ export default function Forgot() {
     const email = useRef();
     const otp = useRef();
     const password = useRef();
-    const cpassword = useRef();
     const redirect = useNavigate();
-    const [stage, setStage] = useState(1)
+    const [stage, setStage] = useState(0)
     const { REACT_APP_OTP, REACT_APP_FORGOT } = process.env
 
     useEffect(() => { if (localStorage.getItem('token')) redirect('/dashboard') }, []);
 
-    async function stage1(event) {
+    async function submit(event) {
         event.preventDefault()
         setLoadbar([1 / 3, true])
-        const json = await fetchApp(REACT_APP_OTP, 'POST', { email: email.current.value })
+        if (!stage) {
+            const { success, error } = await fetchApp(REACT_APP_OTP, 'POST', { email: email.current.value })
+            setTimeout(() => {
+                if (success) {
+                    showAlert('OTP sent to your email!', 'green')
+                    setStage(1)
+                }
+                else if (error === "OTP already sent!") setStage(stage + 1)
+                setLoadbar([0, false])
+            }, 300);
+        } else {
+            const { success } = await fetchApp(REACT_APP_FORGOT, 'PUT', { email: email.current.value, otp: otp.current.value, password: password.current.value })
+            setTimeout(() => {
+                setLoadbar([0, false])
+                if (!success) return
+                showAlert('Password reset successful!', 'green')
+                redirect('/login')
+            }, 300);
+        }
         setLoadbar([1, true])
-        setTimeout(() => {
-            if (json.success) {
-                showAlert('OTP sent to your email!', 'green')
-                setStage(stage + 1)
-            }
-            else {
-                if (json.error === "OTP already sent!") setStage(stage + 1)
-            }
-            setLoadbar([0, false])
-        }, 300);
     }
 
-    async function stage2(event) {
-        event.preventDefault()
-        if (password.current.value !== cpassword.current.value) return showAlert("Password doesn't match", '')
-        setLoadbar([1 / 3, true])
-        const json = await fetchApp(REACT_APP_FORGOT, 'PUT', { email: email.current.value, otp: otp.current.value, password: password.current.value })
-        setLoadbar([1, true])
-        setTimeout(() => {
-            setLoadbar([0, false])
-            if (!json.success) return
-            showAlert('Password reset successful!', 'green')
-            redirect('/login')
-        }, 300);
-    }
-
-    return <div className='text-center py-5'>
-        <h2 className='text-xl font-semibold mb-2 px-4'>Forgot Password</h2>
-        <form action="" method='post' onSubmit={stage === 1 ? stage1 : stage2}>
-            <div>
-                <input ref={email} type="email" placeholder='Enter email' className='text-center border-2 border-grey-600 my-1 w-4/5 sm:w-1/3' required />
+    return <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+            <div className='space-y-2 text-center'>
+                <Logo />
+                <h2 className="text-2xl font-bold text-gray-900">Forgot Password</h2>
+                <p className="text-sm text-gray-600">
+                    or <Link to='/login'><span className="font-medium hover:text-black">Login</span></Link>
+                </p>
             </div>
-            {stage === 2 ?
-                <>
-                    <div>
-                        <input ref={otp} type="text" placeholder='Enter OTP' className='text-center border-2 border-grey-600 my-1 w-4/5 sm:w-1/3' minLength={6} maxLength={6} required />
-                    </div>
-                    <div>
-                        <input ref={password} type="password" placeholder='Enter new password' className='text-center border-2 border-grey-600 my-1 w-4/5 sm:w-1/3' minLength={4} required autoComplete='new-password' />
-                    </div>
-                    <div>
-                        <input ref={cpassword} type="password" placeholder='Confirm new password' className='text-center border-2 border-grey-600 my-1 w-4/5 sm:w-1/3' minLength={4} required />
-                    </div>
-                </> : <></>}
-            <div className='my-2'></div>
-            <button type='submit' className='btn'>{stage === 1 ? 'Send OTP' : 'Reset Password'}</button>
-        </form>
-        <div className='text-sm pt-2'>
-            <span>Remember your password? </span>
-            <Link to='/login' className='text-blue-500 active:text-purple-500 font-semibold'>Click Here</Link>
+            <form className="mt-8 space-y-6" onSubmit={submit}>
+                <div className="rounded-md shadow-sm -space-y-px">
+                    <input ref={email} type="email" autoComplete="email" required className={`appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md ${stage ? 'rounded-b-none' : ''} focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm`} placeholder="Email address" />
+                    {Boolean(stage) && <>
+                        <input ref={otp} type="text" autoComplete="new-password" minLength={6} maxLength={6} required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm" placeholder="Enter OTP" />
+                        <Password password={password} />
+                    </>}
+                </div>
+                <button type="submit" className="relative w-full flex justify-center py-2 px-4 text-sm font-medium rounded-md border button-animation">{stage ? 'Reset password' : 'Send OTP'}</button>
+            </form>
         </div>
     </div>
 }
