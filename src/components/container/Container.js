@@ -6,10 +6,9 @@ import Modal from './Modal';
 
 export default function Container() {
     const location = useLocation()
-    const hideNavbar = ['/account/confirm', '/account/delete']
 
     return location.pathname !== '/' && <>
-        {!hideNavbar.includes(location.pathname) && <Navbar />}
+        <Navbar />
         <Alert />
         <Modal />
     </>
