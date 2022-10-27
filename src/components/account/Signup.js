@@ -50,7 +50,7 @@ export default function Signup() {
                     <Password password={password} />
                 </div>
 
-                <button type="submit" className="relative w-full flex justify-center py-2 px-4 text-sm font-medium rounded-md border button-animation">Log in</button>
+                <button type="submit" className="relative w-full flex justify-center py-2 px-4 text-sm font-medium rounded-md border button-animation">Sign up</button>
             </form>
         </div>
     </div>
