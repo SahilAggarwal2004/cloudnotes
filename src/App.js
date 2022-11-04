@@ -18,7 +18,7 @@ const Signup = lazy(() => import('./components/account/Signup'));
 const Login = lazy(() => import('./components/account/Login'));
 const Forgot = lazy(() => import('./components/account/Forgot'));
 const Offline = lazy(() => import('./components/Offline'));
-const Account = lazy(() => import('./components/account/Account'));
+const Confirm = lazy(() => import('./components/account/Confirm'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
 function App() {
@@ -47,7 +47,7 @@ function App() {
 								<Route path="/login" element={<Login />} />
 								<Route path="/forgot" element={<Forgot />} />
 								<Route path="/offline" element={<Offline />} />
-								<Route path="/account/:type/:token" element={<Account />} />
+								<Route path="/account/confirm/:token" element={<Confirm />} />
 								<Route path="/*" element={<NotFound />} />
 							</Routes>
 						</Suspense >
