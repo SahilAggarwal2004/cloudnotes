@@ -36,14 +36,13 @@ export default function Notes() {
     const showLength = (selTag === 'All' ? show : show.filter(({ tag }) => tag === selTag)).length
 
     useEffect(() => {
-        if (localStorage.getItem('token')) {
+        if (localStorage.getItem('name')) {
             if (error && !isValidating) {
                 let json = error.response?.data;
                 if (json && !json.success && json.error.includes('authenticate')) {
                     showAlert(json.error, '')
                     setLoadbar([0, false])
                     localStorage.removeItem('name')
-                    localStorage.removeItem('token')
                     localStorage.removeItem('notes')
                     mutate(fetchAPI, [], false)
                     setNotes([])

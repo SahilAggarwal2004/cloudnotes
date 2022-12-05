@@ -15,33 +15,39 @@ export default function Modal() {
         setModal([{}, false, ''])
     }
 
-    function logOut(msg, color) {
-        if (msg === 'Cannot find the user!') {
-            msg = 'Account deleted successfully!'
-            color = 'green'
-        }
+    async function logOut() {
+        setLoadbar([1 / 3, true])
+        const { success } = await fetchApp('/api/auth/logout')
         setLoadbar([1, true])
         setTimeout(() => {
-            showAlert(msg, color)
+            success ? showAlert('Account deleted successfully!', 'green') : showAlert('Something went wrong', 'red')
             setLoadbar([0, false])
-            if (!color) return
+            setModal([{}, false, ''])
+            if (!success) return
             localStorage.removeItem('name')
-            localStorage.removeItem('token')
             localStorage.removeItem('notes')
             mutate(fetchAPI, [], false)
             setNotes([])
-            redirect('/signup')
-            setModal([{}, false, ''])
+            redirect('/login')
         }, 300);
     }
 
     async function delUser() {
         setModal([{}, false, ''])
         setLoadbar([1 / 3, true])
-        const authtoken = localStorage.getItem('token')
-        if (!authtoken) return logOut('Account deleted successfully!', 'green')
-        const json = await fetchApp(REACT_APP_DELETEUSER, 'DELETE', {}, authtoken)
-        json.success ? logOut('Account deleted successfully!', 'green') : logOut(json.error, '')
+        const { success, error } = await fetchApp(REACT_APP_DELETEUSER, 'DELETE', {})
+        setLoadbar([1, true])
+        setTimeout(() => {
+            success ? showAlert('Account deleted successfully!', 'green') : showAlert(error, 'red')
+            setLoadbar([0, false])
+            if (!success) return
+            localStorage.removeItem('name')
+            localStorage.removeItem('notes')
+            mutate(fetchAPI, [], false)
+            setNotes([])
+            redirect('/signup')
+            setModal([{}, false, ''])
+        }, 300);
     }
 
     return <div>
@@ -51,10 +57,8 @@ export default function Modal() {
                 <div>
                     {localStorage.getItem('name') ? <h3 className='font-bold'>Hi, {localStorage.getItem('name')}!</h3> : <></>}
                     <div className='flex flex-col sm:space-x-2 sm:flex-row'>
-                        <button className='btn' onClick={() => { logOut('Logged out successfully!', 'green') }}>Log Out</button>
-                        <button className='btn' onClick={() => {
-                            setModal([{}, true, 'deleteUser'])
-                        }}>Delete Account</button>
+                        <button className='btn' onClick={() => logOut()}>Log Out</button>
+                        <button className='btn' onClick={() => setModal([{}, true, 'deleteUser'])}>Delete Account</button>
                         <button className='btn' onClick={handleCancel}>Cancel</button>
                     </div>
                 </div> :

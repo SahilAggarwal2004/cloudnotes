@@ -16,7 +16,7 @@ export default function Login() {
     const redirect = useNavigate()
     const { REACT_APP_LOGIN } = process.env
 
-    useEffect(() => { if (localStorage.getItem('token')) redirect('/dashboard') }, []);
+    useEffect(() => { if (localStorage.getItem('name')) redirect('/dashboard') }, []);
 
     async function submit(event) {
         event.preventDefault()
@@ -27,7 +27,6 @@ export default function Login() {
             setLoadbar([0, false])
             if (!json.success) return
             localStorage.setItem('name', json.name)
-            localStorage.setItem('token', json.authtoken)
             showAlert('Logged in successfully!', 'green')
             redirect('/dashboard')
         }, 300);

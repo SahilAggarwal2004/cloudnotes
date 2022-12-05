@@ -30,18 +30,15 @@ const NoteState = (props) => { // props parameter will store every component(eve
     const editTagColor = useRef();
     const redirect = useNavigate();
 
-    async function fetchApp(api, method = 'GET', body = null, token = null) {
+    async function fetchApp(api, method = 'GET', body = null, authtoken) {
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
         let json = {};
         try {
-            const authtoken = token || localStorage.getItem('token')
             const response = await axios({
                 url: api,
                 method: method, // takes the method, default is 'GET'
-                headers: { // takes an object of headers
-                    'auth-token': authtoken,
-                    'Content-Type': 'application/json'
-                },
+                withCredentials: true,
+                headers: { authtoken, 'Content-Type': 'application/json' }, // takes an object of headers
                 data: body // takes body
             })
             json = response.data;
@@ -53,7 +50,6 @@ const NoteState = (props) => { // props parameter will store every component(eve
             showAlert(json.error, '')
             if (json.error.includes('authenticate')) {
                 localStorage.removeItem('name')
-                localStorage.removeItem('token')
                 localStorage.removeItem('notes')
                 mutate(fetchAPI, [], false)
                 setNotes([])

@@ -19,7 +19,7 @@ export default function Signup() {
     const { REACT_APP_SIGNUP } = process.env
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => { if (localStorage.getItem('token')) redirect('/dashboard') }, []);
+    useEffect(() => { if (localStorage.getItem('name')) redirect('/dashboard') }, []);
 
     async function submit(event) {
         event.preventDefault()

@@ -29,7 +29,7 @@ function App() {
 
 	return (
 		<SWRConfig value={{
-			fetcher: url => axios(url, { headers: { 'auth-token': localStorage.getItem('token'), 'Content-Type': 'application/json' } }).then(res => res.data),
+			fetcher: url => axios(url, { withCredentials: true, headers: { 'Content-Type': 'application/json' } }).then(res => res.data),
 			shouldRetryOnError: !Boolean(localStorage.getItem('notes')), errorRetryInterval: 0, errorRetryCount: 1, focusThrottleInterval: 15000
 		}}>
 			<Router>

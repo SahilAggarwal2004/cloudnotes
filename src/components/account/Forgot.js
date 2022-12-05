@@ -6,7 +6,6 @@ import ToggleContext from '../../context/toggle/ToggleContext';
 import Logo from '../Logo';
 import Password from './Password';
 
-
 export default function Forgot() {
     document.title = 'Reset Password | CloudNotes'
 
@@ -19,7 +18,7 @@ export default function Forgot() {
     const [stage, setStage] = useState(0)
     const { REACT_APP_OTP, REACT_APP_FORGOT } = process.env
 
-    useEffect(() => { if (localStorage.getItem('token')) redirect('/dashboard') }, []);
+    useEffect(() => { if (localStorage.getItem('name')) redirect('/dashboard') }, []);
 
     async function submit(event) {
         event.preventDefault()

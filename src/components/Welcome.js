@@ -9,7 +9,7 @@ export default function Welcome() {
   const [welcome, setWelcome] = useState(false);
 
   useEffect(() => {
-    localStorage.getItem('token') ? redirect('/dashboard') : setWelcome(true)
+    localStorage.getItem('name') ? redirect('/dashboard') : setWelcome(true)
     return () => { setWelcome(false) }
     // eslint-disable-next-line
   }, []);
