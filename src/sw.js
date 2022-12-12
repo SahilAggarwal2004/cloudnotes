@@ -2,7 +2,7 @@
 import { clientsClaim } from 'workbox-core'
 import { precacheAndRoute } from 'workbox-precaching'
 import { registerRoute, setDefaultHandler } from 'workbox-routing'
-import { CacheFirst, NetworkFirst, NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies'
+import { CacheFirst, NetworkFirst, NetworkOnly } from 'workbox-strategies'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { offlineFallback } from 'workbox-recipes'
 import { nanoid } from 'nanoid'
@@ -18,7 +18,7 @@ const urlsToCache = (self.__WB_MANIFEST || []).concat([
 ]).filter(({ url }) => url !== '/manifest.json')
 precacheAndRoute(urlsToCache)
 
-setDefaultHandler(new StaleWhileRevalidate())
+setDefaultHandler(new CacheFirst())
 offlineFallback({ pageFallback: '/offline' });
 
 registerRoute(({ url }) => url.host === 'cloudnotes.onrender.com', new NetworkOnly())
