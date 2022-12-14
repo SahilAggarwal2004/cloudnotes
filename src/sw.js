@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import { clientsClaim } from 'workbox-core'
-import { precacheAndRoute } from 'workbox-precaching'
+import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
 import { registerRoute, setDefaultHandler } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, NetworkOnly } from 'workbox-strategies'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
@@ -17,6 +17,7 @@ const urlsToCache = (self.__WB_MANIFEST || []).concat([
     { url: '/about', revision }
 ]).filter(({ url }) => url !== '/manifest.json')
 precacheAndRoute(urlsToCache)
+cleanupOutdatedCaches()
 
 setDefaultHandler(new CacheFirst())
 offlineFallback({ pageFallback: '/offline' });
