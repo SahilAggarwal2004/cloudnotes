@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { mutate } from 'swr'
 import NoteContext from '../../context/notes/NoteContext'
 import ToggleContext from '../../context/toggle/ToggleContext'
+import { getStorage, resetStorage } from '../../modules/storage'
 
 export default function Modal() {
     const { fetchApp, deleteNote, setNotes, noteToDelete, fetchAPI } = useContext(NoteContext)
     const { showAlert, modal, setModal, setLoadbar } = useContext(ToggleContext)
     const redirect = useNavigate()
     const { REACT_APP_DELETEUSER } = process.env
+    const name = getStorage('name')
 
     function handleCancel(event) {
         event.preventDefault()
@@ -24,8 +26,7 @@ export default function Modal() {
             setLoadbar([0, false])
             setModal([{}, false, ''])
             if (!success) return
-            localStorage.removeItem('name')
-            localStorage.removeItem('notes')
+            resetStorage()
             mutate(fetchAPI, [], false)
             setNotes([])
             redirect('/login')
@@ -41,8 +42,7 @@ export default function Modal() {
             success ? showAlert('Account deleted successfully!', 'green') : showAlert(error, 'red')
             setLoadbar([0, false])
             if (!success) return
-            localStorage.removeItem('name')
-            localStorage.removeItem('notes')
+            resetStorage()
             mutate(fetchAPI, [], false)
             setNotes([])
             redirect('/signup')
@@ -55,7 +55,7 @@ export default function Modal() {
         <div className={`z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center bg-white ${modal[1] ? 'opacity-100' : 'hidden'} p-4 rounded-md ${modal[2] === 'edit' ? 'w-4/5' : 'w-max'}`}>
             {modal[2] === 'user' ?
                 <div>
-                    {localStorage.getItem('name') ? <h3 className='font-bold'>Hi, {localStorage.getItem('name')}!</h3> : <></>}
+                    {name && <h3 className='font-bold'>Hi, {name}!</h3>}
                     <div className='flex flex-col sm:space-x-2 sm:flex-row'>
                         <button className='btn' onClick={() => logOut()}>Log Out</button>
                         <button className='btn' onClick={() => setModal([{}, true, 'deleteUser'])}>Delete Account</button>

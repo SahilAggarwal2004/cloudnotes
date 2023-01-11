@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { getStorage } from '../modules/storage';
 import Logo from './Logo';
 
 export default function Welcome() {
@@ -9,7 +10,7 @@ export default function Welcome() {
   const [welcome, setWelcome] = useState(false);
 
   useEffect(() => {
-    localStorage.getItem('name') ? redirect('/dashboard') : setWelcome(true)
+    getStorage('name') ? redirect('/dashboard') : setWelcome(true)
     return () => { setWelcome(false) }
     // eslint-disable-next-line
   }, []);

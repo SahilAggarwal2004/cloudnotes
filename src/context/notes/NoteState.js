@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { mutate } from "swr";
+import { setStorage, getStorage, resetStorage } from "../../modules/storage";
 import ToggleContext from "../toggle/ToggleContext";
 import NoteContext from "./NoteContext"; // importing our context to add the state in it
 
@@ -38,19 +39,18 @@ const NoteState = (props) => { // props parameter will store every component(eve
                 url: api,
                 method: method, // takes the method, default is 'GET'
                 withCredentials: true,
-                headers: { authtoken, 'Content-Type': 'application/json' }, // takes an object of headers
+                headers: { authtoken, csrf: getStorage('csrf'), 'Content-Type': 'application/json' }, // takes an object of headers
                 data: body // takes body
             })
             json = response.data;
 
-            if (api === fetchAPI && json.success) localStorage.setItem('notes', JSON.stringify({ ...json, local: true }))
+            if (api === fetchAPI && json.success) setStorage('notes', { ...json, local: true })
         } catch (error) {
-            (api === fetchAPI) ? json = JSON.parse(localStorage.getItem('notes')) : json = error.response?.data;
+            json = api === fetchAPI ? getStorage('notes') : error.response?.data;
             if (!json) json = { success: false, error: "Server Down! Please try again later..." }
             showAlert(json.error, '')
             if (json.error.includes('authenticate')) {
-                localStorage.removeItem('name')
-                localStorage.removeItem('notes')
+                resetStorage()
                 mutate(fetchAPI, [], false)
                 setNotes([])
                 redirect('/signup')
@@ -86,7 +86,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
         if (!json.success) return
         setTimeout(() => {
             setNewNote(false)
-            localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [tag]: tagColor.current?.value }))
+            setStorage('tagColors', { ...getStorage('tagColors'), [tag]: tagColor.current?.value })
             tagColor.current.value = '#e5e7eb';
         }, 300);
     }
@@ -113,12 +113,12 @@ const NoteState = (props) => { // props parameter will store every component(eve
             if (!json.success) return
             setTimeout(() => {
                 setNoteToEdit([{}, false])
-                localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [editTag]: editTagColor.current?.value }))
+                setStorage('tagColors', { ...getStorage('tagColors'), [editTag]: editTagColor.current?.value })
             }, 300);
         } else {
             setLoadbar([1, true])
             setTimeout(() => {
-                localStorage.setItem('tagColors', JSON.stringify({ ...JSON.parse(localStorage.getItem('tagColors')), [editTag]: editTagColor.current.value }))
+                setStorage('tagColors', { ...getStorage('tagColors'), [editTag]: editTagColor.current?.value })
                 showAlert('Note updated!', 'green')
                 setLoadbar([0, false])
                 setNoteToEdit([{}, false])

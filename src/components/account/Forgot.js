@@ -3,6 +3,7 @@ import React, { useContext, useRef, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NoteContext from '../../context/notes/NoteContext';
 import ToggleContext from '../../context/toggle/ToggleContext';
+import { getStorage } from '../../modules/storage';
 import Logo from '../Logo';
 import Password from './Password';
 
@@ -18,7 +19,7 @@ export default function Forgot() {
     const [stage, setStage] = useState(0)
     const { REACT_APP_OTP, REACT_APP_FORGOT } = process.env
 
-    useEffect(() => { if (localStorage.getItem('name')) redirect('/dashboard') }, []);
+    useEffect(() => { if (getStorage('name')) redirect('/dashboard') }, []);
 
     async function submit(event) {
         event.preventDefault()

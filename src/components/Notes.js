@@ -6,6 +6,7 @@ import NoteItem from './NoteItem'
 import { FaPlus, FaRegSave } from 'react-icons/fa'
 import { GoPlus, GoX } from 'react-icons/go'
 import useSWR, { mutate } from 'swr'
+import { getStorage, resetStorage, setStorage } from '../modules/storage'
 
 export default function Notes() {
     document.title = 'Dashboard | CloudNotes'
@@ -29,21 +30,20 @@ export default function Notes() {
     let fetchData;
     const { data, error, isValidating } = useSWR(fetchAPI)
     if (isValidating) fetchData = data?.notes || []
-    else fetchData = data?.notes || JSON.parse(localStorage.getItem('notes'))?.notes || []
+    else fetchData = data?.notes || getStorage('notes')?.notes || []
 
     const show = useMemo(() => notes.filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search)), [notes, search])
     notes.forEach(note => { if (!tags.includes(note.tag)) tags.push(note.tag) });
     const showLength = (selTag === 'All' ? show : show.filter(({ tag }) => tag === selTag)).length
 
     useEffect(() => {
-        if (localStorage.getItem('name')) {
+        if (getStorage('name')) {
             if (error && !isValidating) {
                 let json = error.response?.data;
                 if (json && !json.success && json.error.includes('authenticate')) {
                     showAlert(json.error, '')
                     setLoadbar([0, false])
-                    localStorage.removeItem('name')
-                    localStorage.removeItem('notes')
+                    resetStorage();
                     mutate(fetchAPI, [], false)
                     setNotes([])
                     redirect('/signup')
@@ -59,7 +59,7 @@ export default function Notes() {
                 if (!fetchData.length && isValidating) setLoadbar([1 / 3, true])
                 else {
                     setLoadbar([1, true])
-                    localStorage.setItem('notes', JSON.stringify({ ...data, local: true }))
+                    setStorage('notes', { ...data, local: true })
                     setTimeout(() => {
                         setLoadbar([0, false])
                         setSpinner(false)
@@ -120,9 +120,7 @@ export default function Notes() {
                     <NoteItem key={note._id} note={note} editTag={editTag} editTagColor={editTagColor} setEditDescLength={setEditDescLength} /> :
                     note._id === noteToEdit[0]._id && <div key={note._id} className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${noteToEdit[1] ? '' : 'hidden'}`} data-aos='fade-right' data-aos-once='true' data-aos-offset={20}>
                         <div className={`absolute top-0 translate-y-[-50%] flex`}>
-                            <input type='text' list='tagList' ref={editTag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} defaultValue={noteToEdit[0].tag} onChange={event => {
-                                editTagColor.current.value = JSON.parse(localStorage.getItem('tagColors')) ? JSON.parse(localStorage.getItem('tagColors'))[event.target.value] || editTagColor.current.value : editTagColor.current.value
-                            }} autoComplete='off' />
+                            <input type='text' list='tagList' ref={editTag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} defaultValue={noteToEdit[0].tag} onChange={event => editTagColor.current.value = getStorage('tagColors')?.[event.target.value] || editTagColor.current.value} autoComplete='off' />
                             <input type='color' ref={editTagColor} list='tagColors' className={`bg-gray-200 text-xs text-center rounded-r-2xl text-black focus:outline-0`} defaultValue='#e5e7eb' />
                         </div>
                         <input type='text' ref={editTitle} className='text-lg text-bold text-center w-full focus:outline-0 placeholder:text-gray-600' placeholder='Add title' minLength={1} maxLength={20} defaultValue={noteToEdit[0].title} />
@@ -137,9 +135,7 @@ export default function Notes() {
                 )}
                 <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${newNote && !spinner ? '' : 'hidden'}`}>
                     <div className={`absolute top-0 translate-y-[-50%] flex`}>
-                        <input type='text' list='tagList' ref={tag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} onChange={event => {
-                            tagColor.current.value = JSON.parse(localStorage.getItem('tagColors')) ? JSON.parse(localStorage.getItem('tagColors'))[event.target.value] || tagColor.current.value : tagColor.current.value
-                        }} autoComplete='off' />
+                        <input type='text' list='tagList' ref={tag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} onChange={event => tagColor.current.value = getStorage('tagColors')?.[event.target.value] || tagColor.current.value} autoComplete='off' />
                         <datalist id='tagList'>
                             {tags.filter(tag => tag !== 'All').map(tag => <option key={tag} value={tag} />)}
                         </datalist>

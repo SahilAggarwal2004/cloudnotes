@@ -9,6 +9,7 @@ import "aos/dist/aos.css";
 import AOS from "aos";
 import { SWRConfig } from 'swr';
 import axios from 'axios';
+import { getStorage } from './modules/storage';
 
 
 const Welcome = lazy(() => import('./components/Welcome')); // making components lazy
@@ -29,8 +30,8 @@ function App() {
 
 	return (
 		<SWRConfig value={{
-			fetcher: url => axios(url, { withCredentials: true, headers: { 'Content-Type': 'application/json' } }).then(res => res.data),
-			shouldRetryOnError: !Boolean(localStorage.getItem('notes')), errorRetryInterval: 0, errorRetryCount: 1, focusThrottleInterval: 15000
+			fetcher: url => axios(url, { withCredentials: true, headers: { csrf: getStorage('csrf'), 'Content-Type': 'application/json' } }).then(res => res.data),
+			shouldRetryOnError: !Boolean(getStorage('notes')), errorRetryInterval: 0, errorRetryCount: 1, focusThrottleInterval: 15000
 		}}>
 			<Router>
 				<ToggleState>

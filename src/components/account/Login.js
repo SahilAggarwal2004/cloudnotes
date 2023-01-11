@@ -3,6 +3,7 @@ import React, { useContext, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NoteContext from '../../context/notes/NoteContext';
 import ToggleContext from '../../context/toggle/ToggleContext';
+import { getStorage, setStorage } from '../../modules/storage';
 import Logo from '../Logo';
 import Password from './Password';
 
@@ -16,17 +17,18 @@ export default function Login() {
     const redirect = useNavigate()
     const { REACT_APP_LOGIN } = process.env
 
-    useEffect(() => { if (localStorage.getItem('name')) redirect('/dashboard') }, []);
+    useEffect(() => { if (getStorage('name')) redirect('/dashboard') }, []);
 
     async function submit(event) {
         event.preventDefault()
         setLoadbar([1 / 3, true])
-        const json = await fetchApp(REACT_APP_LOGIN, 'POST', { email: email.current.value, password: password.current.value })
+        const { success, name, csrf } = await fetchApp(REACT_APP_LOGIN, 'POST', { email: email.current.value, password: password.current.value })
         setLoadbar([1, true])
         setTimeout(() => {
             setLoadbar([0, false])
-            if (!json.success) return
-            localStorage.setItem('name', json.name)
+            if (!success) return
+            setStorage('name', name)
+            setStorage('csrf', csrf)
             showAlert('Logged in successfully!', 'green')
             redirect('/dashboard')
         }, 300);
