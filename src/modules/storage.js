@@ -5,6 +5,7 @@ export const removeStorage = key => localStorage.removeItem(key)
 export const getStorage = (key, fallbackValue) => {
     let value = localStorage.getItem(key)
     try {
+        if (!value) throw new Error("Value doesn't exist")
         value = JSON.parse(value)
     } catch {
         if (fallbackValue) {
