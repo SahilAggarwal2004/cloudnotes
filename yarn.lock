@@ -7483,10 +7483,10 @@ react-scripts@^5.0.0:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-text-to-speech@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/react-text-to-speech/-/react-text-to-speech-0.3.0.tgz#63eb4b155f7069e4f18bd0208c9eb6d1f74d1681"
-  integrity sha512-fEnqP3EmB6GOM8WZ1B3QgETHimaKaFBmLzLAkxpjBSp90WzDtHtHWevEjDgbKc6BdEoKl4tPjy3Ysjx95nrBQQ==
+react-text-to-speech@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/react-text-to-speech/-/react-text-to-speech-0.3.4.tgz#db023b8452bd004af7eab5af91957e816673ad73"
+  integrity sha512-cy6bi7fXcNQRhHNOvahbuwpvRDGtnjoEhcLLuboirJpMkmfddQNFOiT3sCylEidBi2+odJPOx5nZL4ubN5+nZw==
 
 react@^18.2.0:
   version "18.2.0"
