@@ -8,7 +8,7 @@ export const getStorage = (key, fallbackValue) => {
         if (!value) throw new Error("Value doesn't exist")
         value = JSON.parse(value)
     } catch {
-        if (fallbackValue) {
+        if (fallbackValue !== undefined) {
             value = fallbackValue
             setStorage(key, value)
         } else {
