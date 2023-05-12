@@ -4,6 +4,7 @@ import ToggleContext from '../../context/toggle/ToggleContext'
 import Loadbar from './../Loadbar'
 import { FaRegUser, FaBars } from 'react-icons/fa'
 import { getStorage } from '../../modules/storage'
+import Expandable from './Expandable'
 
 export default function Navbar() {
     const location = useLocation() // useLocation() returns a js object containing current location data and is immutable. pathname key of this object contains the url/path.
@@ -18,15 +19,15 @@ export default function Navbar() {
                 <Link to='/'><h2 className='text-xl text-center font-semibold'>CloudNotes</h2></Link>
                 <FaBars className="sm:invisible scale-125" onClick={extendNav} />
             </div>
-            <div className={`mt-3 space-y-0.5 sm:m-0 sm:space-y-0 sm:space-x-4 sm:flex ${hide && 'hidden'} sm:inline-block`}>
-                {name ?
-                    <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/dashboard" ? "font-bold" : "text-gray-300"}`} to="/dashboard" onClick={extendNav}>Dashboard</Link> :
-                    <>
+            <Expandable expand={!hide}>
+                <div className='mt-3 space-y-0.5 sm:m-0 sm:space-y-0 sm:space-x-4 sm:flex'>
+                    {name ? <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/dashboard" ? "font-bold" : "text-gray-300"}`} to="/dashboard" onClick={extendNav}>Dashboard</Link> : <>
                         <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/signup" ? "font-bold" : "text-gray-300"}`} to="/signup" onClick={extendNav}>Signup</Link>
                         <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/login" ? "font-bold" : "text-gray-300"}`} to="/login" onClick={extendNav}>Login</Link>
                     </>}
-                <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/about" ? "font-bold" : "text-gray-300"}`} to="/about" onClick={extendNav}>About</Link>
-            </div>
+                    <Link className={`flex items-center justify-center hover:scale-110 transition-all cursor-pointer ${location.pathname === "/about" ? "font-bold" : "text-gray-300"}`} to="/about" onClick={extendNav}>About</Link>
+                </div>
+            </Expandable>
         </div>
         <Loadbar />
     </nav>
