@@ -40,7 +40,7 @@ export default function Notes() {
         if (getStorage('name')) {
             if (error && !isValidating) {
                 let json = error.response?.data;
-                if (json && !json.success && json.error.includes('authenticate')) {
+                if (json && !json.success && json.error?.includes('authenticate')) {
                     showAlert(json.error, '')
                     setLoadbar([0, false])
                     resetStorage();
