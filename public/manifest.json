@@ -1,8 +1,9 @@
 {
   "short_name": "CloudNotes",
-  "name": "CloudNotes - Your notes whenever wherever you want!",
-  "version": "1.0.0",
-  "description": "CloudNotes is an online platform to save all your notes at one place on the cloud. It is a platform where your notes are totally encrypted and secured so that only you can access your notes.",
+  "name": "CloudNotes - Notes on Cloud",
+  "version": "1.0.1",
+  "manifest_version": 2,
+  "description": "CloudNotes is an online platform to save all your notes at one place on the cloud securely for free.",
   "author": "Sahil Aggarwal",
   "icons": [
     {
@@ -43,5 +44,20 @@
   ],
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "dir": "auto",
+  "scope": "/",
+  "lang": "en",
+  "prefer_related_applications": false,
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "display_override": [
+    "standalone",
+    "window-controls-overlay"
+  ],
+  "edge_side_panel": {
+    "preferred_width": 500
+  }
 }
