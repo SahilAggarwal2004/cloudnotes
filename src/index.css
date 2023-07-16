@@ -1,5 +1,5 @@
 /* ./my-app/src/tailwind.css */
-/* ! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com */
+/* ! tailwindcss v3.3.3 | MIT License | https://tailwindcss.com */
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
@@ -137,6 +137,8 @@ optgroup,
 select,
 textarea {
   font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
   font-size: 100%; /* 1 */
   font-weight: inherit; /* 1 */
   line-height: inherit; /* 1 */
@@ -246,6 +248,12 @@ ul,
 menu {
   list-style: none;
   margin: 0;
+  padding: 0;
+}
+/*
+Reset default styling for dialogs.
+*/
+dialog {
   padding: 0;
 }
 /*
@@ -682,6 +690,14 @@ video {
 }
 .scale-125 {
   --tw-scale-x: 1.25;
+  --tw-scale-y: 1.25;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.scale-x-\[1\.2\] {
+  --tw-scale-x: 1.2;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.scale-y-125 {
   --tw-scale-y: 1.25;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }

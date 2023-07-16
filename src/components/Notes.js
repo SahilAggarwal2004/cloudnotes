@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import NoteContext from '../context/notes/NoteContext'
 import ToggleContext from '../context/toggle/ToggleContext'
 import NoteItem from './NoteItem'
-import { FaPlus, FaRegSave } from 'react-icons/fa'
-import { GoPlus, GoX } from 'react-icons/go'
+import { FaPlus as FaPlusBold, FaRegSave } from 'react-icons/fa'
+import { FaPlus, FaXmark } from 'react-icons/fa6'
 import useSWR, { mutate } from 'swr'
 import { getStorage, resetStorage, setStorage } from '../modules/storage'
 
@@ -129,7 +129,7 @@ export default function Notes() {
                         <div className='text-xs text-right w-full mb-10 pr-1'>{editDescLength}/1000</div>
                         <div className='space-x-4 absolute bottom-[1.375rem] flex'>
                             <FaRegSave className="cursor-pointer scale-110" onClick={handleEdit} />
-                            <GoX className="cursor-pointer scale-125" onClick={() => setNoteToEdit([{}, false])} />
+                            <FaXmark className="cursor-pointer scale-x-[1.2] scale-y-125" onClick={() => setNoteToEdit([{}, false])} />
                         </div>
                     </div>
                 )}
@@ -158,8 +158,8 @@ export default function Notes() {
                     <textarea ref={description} placeholder='Add description' rows='5' maxLength={1000} className='text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0' onChange={() => setAddDescLength(description.current.value.length)} />
                     <div className='text-xs text-right w-full mb-10 pr-1'>{addDescLength}/1000</div>
                     <div className='space-x-3 absolute bottom-[1.375rem] flex'>
-                        <GoPlus className="cursor-pointer scale-125" onClick={handleAdd} />
-                        <GoX className="cursor-pointer scale-125" onClick={() => {
+                        <FaPlus className="cursor-pointer scale-110 font-bold" onClick={handleAdd} />
+                        <FaXmark className="cursor-pointer scale-x-[1.2] scale-y-125" onClick={() => {
                             setNewNote(false)
                             tagColor.current.value = '#e5e7eb';
                         }} />
@@ -168,7 +168,7 @@ export default function Notes() {
             </div>
         </div>
         <div className='z-20 fixed bottom-[2.625rem] right-[4vw] sm:right-[3vw] text-center py-3 px-4 rounded-full text-white bg-purple-700 cursor-pointer' onClick={!spinner ? (newNote ? handleAdd : addNewNote) : null}>
-            <FaPlus className='scale-110' />
+            <FaPlusBold className='scale-110' />
         </div>
     </div>
 }
