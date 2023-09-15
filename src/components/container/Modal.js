@@ -19,13 +19,11 @@ export default function Modal() {
 
     async function logOut() {
         setLoadbar([1 / 3, true])
-        const { success } = await fetchApp('/api/auth/logout')
         setLoadbar([1, true])
         setTimeout(() => {
-            success ? showAlert('Account deleted successfully!', 'green') : showAlert('Something went wrong', 'red')
+            showAlert('Account deleted successfully!', 'green')
             setLoadbar([0, false])
             setModal([{}, false, ''])
-            if (!success) return
             resetStorage()
             mutate(fetchAPI, [], false)
             setNotes([])

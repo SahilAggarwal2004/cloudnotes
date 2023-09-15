@@ -16,6 +16,8 @@ import NoteContext from "./NoteContext"; // importing our context to add the sta
 //     )
 // }
 
+const dimensions = window.screen.width + window.screen.height
+
 const NoteState = (props) => { // props parameter will store every component(even their children components) which will be closed inside the tag of this function imported in a component(ideally that component will be App.js as it contains all the components and we usually want our context to be accessed by all components). All these components will be able to access our context using the useContext hook(useContext and the context we created are to be imported in the every component which needs to use the context).
 
     axios.defaults.baseURL = process.env.REACT_APP_HOST
@@ -31,15 +33,14 @@ const NoteState = (props) => { // props parameter will store every component(eve
     const editTagColor = useRef();
     const redirect = useNavigate();
 
-    async function fetchApp(api, method = 'GET', body = null, authtoken) {
+    async function fetchApp(api, method = 'GET', body = null, token) {
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
         let json = {};
         try {
             const response = await axios({
                 url: api,
                 method: method, // takes the method, default is 'GET'
-                withCredentials: true,
-                headers: { authtoken, csrf: getStorage('csrf'), 'Content-Type': 'application/json' }, // takes an object of headers
+                headers: { token: token || getStorage('token'), dimensions, 'Content-Type': 'application/json' }, // takes an object of headers
                 data: body // takes body
             })
             json = response.data;
@@ -49,7 +50,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
             json = api === fetchAPI ? getStorage('notes') : error.response?.data;
             if (!json) json = { success: false, error: "Server Down! Please try again later..." }
             showAlert(json.error, '')
-            if (json.error.includes('authenticate')) {
+            if (json.error.toLowerCase().includes('session expired')) {
                 resetStorage()
                 mutate(fetchAPI, [], false)
                 setNotes([])

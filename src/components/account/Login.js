@@ -22,13 +22,13 @@ export default function Login() {
     async function submit(event) {
         event.preventDefault()
         setLoadbar([1 / 3, true])
-        const { success, name, csrf } = await fetchApp(REACT_APP_LOGIN, 'POST', { email: email.current.value, password: password.current.value })
+        const { success, name, token } = await fetchApp(REACT_APP_LOGIN, 'POST', { email: email.current.value, password: password.current.value })
         setLoadbar([1, true])
         setTimeout(() => {
             setLoadbar([0, false])
             if (!success) return
             setStorage('name', name)
-            setStorage('csrf', csrf)
+            setStorage('token', token)
             showAlert('Logged in successfully!', 'green')
             redirect('/dashboard')
         }, 300);

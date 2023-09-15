@@ -11,7 +11,6 @@ import { SWRConfig } from 'swr';
 import axios from 'axios';
 import { getStorage } from './modules/storage';
 
-
 const Welcome = lazy(() => import('./components/Welcome')); // making components lazy
 const Notes = lazy(() => import('./components/Notes'));
 const About = lazy(() => import('./components/About'));
@@ -22,6 +21,8 @@ const Offline = lazy(() => import('./components/Offline'));
 const Confirm = lazy(() => import('./components/account/Confirm'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
+const dimensions = window.screen.width + window.screen.height
+
 function App() {
 	useEffect(() => {
 		AOS.init();
@@ -30,7 +31,7 @@ function App() {
 
 	return (
 		<SWRConfig value={{
-			fetcher: url => axios(url, { withCredentials: true, headers: { csrf: getStorage('csrf'), 'Content-Type': 'application/json' } }).then(res => res.data),
+			fetcher: url => axios(url, { headers: { token: getStorage('token'), dimensions, 'Content-Type': 'application/json' } }).then(res => res.data),
 			shouldRetryOnError: !Boolean(getStorage('notes')), errorRetryInterval: 0, errorRetryCount: 1, focusThrottleInterval: 15000
 		}}>
 			<Router>
