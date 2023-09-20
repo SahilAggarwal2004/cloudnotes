@@ -5,12 +5,11 @@ import { registerRoute, setDefaultHandler } from 'workbox-routing'
 import { CacheFirst, NetworkFirst, NetworkOnly } from 'workbox-strategies'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { offlineFallback } from 'workbox-recipes'
-import { nanoid } from 'nanoid'
 
 clientsClaim() // This should be at the top of the service worker
 self.skipWaiting()
 
-const revision = nanoid();
+const revision = `${Date.now()}`
 const urlsToCache = (self.__WB_MANIFEST || []).concat([
     { url: '/', revision },
     { url: '/dashboard', revision },
