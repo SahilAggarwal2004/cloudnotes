@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { mutate } from "swr";
 import { setStorage, getStorage, resetStorage } from "../../modules/storage";
 import ToggleContext from "../toggle/ToggleContext";
 import NoteContext from "./NoteContext"; // importing our context to add the state in it
@@ -26,7 +25,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     const { alert, showAlert, setLoadbar, setSpinner, setModal, setNewNote } = useContext(ToggleContext)
 
     // Defining things to be stored in value below:
-    const [notes, setNotes] = useState([])
+    const [notes, setNotes] = useState(getStorage('notes', []))
     const [noteToDelete, setNoteToDelete] = useState('');
     const [noteToEdit, setNoteToEdit] = useState([{}, false]);
     const tagColor = useRef();
@@ -44,15 +43,12 @@ const NoteState = (props) => { // props parameter will store every component(eve
                 data: body // takes body
             })
             json = response.data;
-
-            if (api === fetchAPI && json.success) setStorage('notes', { ...json, local: true })
         } catch (error) {
-            json = api === fetchAPI ? getStorage('notes') : error.response?.data;
+            json = error.response?.data;
             if (!json) json = { success: false, error: "Server Down! Please try again later..." }
             showAlert(json.error, '')
             if (json.error.toLowerCase().includes('session expired')) {
                 resetStorage()
-                mutate(fetchAPI, [], false)
                 setNotes([])
                 redirect('/signup')
             }

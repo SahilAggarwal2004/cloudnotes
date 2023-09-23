@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { mutate } from 'swr'
 import NoteContext from '../../context/notes/NoteContext'
 import ToggleContext from '../../context/toggle/ToggleContext'
 import { getStorage, resetStorage } from '../../modules/storage'
 
 export default function Modal() {
-    const { fetchApp, deleteNote, setNotes, noteToDelete, fetchAPI } = useContext(NoteContext)
+    const { fetchApp, deleteNote, setNotes, noteToDelete } = useContext(NoteContext)
     const { showAlert, modal, setModal, setLoadbar } = useContext(ToggleContext)
     const redirect = useNavigate()
     const { REACT_APP_DELETEUSER } = process.env
@@ -25,7 +24,6 @@ export default function Modal() {
             setLoadbar([0, false])
             setModal([{}, false, ''])
             resetStorage()
-            mutate(fetchAPI, [], false)
             setNotes([])
             redirect('/login')
         }, 300);
@@ -41,7 +39,6 @@ export default function Modal() {
             setLoadbar([0, false])
             if (!success) return
             resetStorage()
-            mutate(fetchAPI, [], false)
             setNotes([])
             redirect('/signup')
             setModal([{}, false, ''])
@@ -55,7 +52,7 @@ export default function Modal() {
                 <div>
                     {name && <h3 className='font-bold'>Hi, {name}!</h3>}
                     <div className='flex flex-col sm:space-x-2 sm:flex-row'>
-                        <button className='btn' onClick={() => logOut()}>Log Out</button>
+                        <button className='btn' onClick={logOut}>Log Out</button>
                         <button className='btn' onClick={() => setModal([{}, true, 'deleteUser'])}>Delete Account</button>
                         <button className='btn' onClick={handleCancel}>Cancel</button>
                     </div>

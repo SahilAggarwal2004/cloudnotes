@@ -1,15 +1,14 @@
-import './App.css';
-import { useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import NoteState from './context/notes/NoteState' // importing NoteState function
-import ToggleState from './context/toggle/ToggleState'
+import { useEffect, lazy, Suspense, useContext } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import AOS from "aos";
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Loading from './components/Loading';
 import Container from './components/container/Container';
+import { resetStorage } from './modules/storage';
+import NoteContext from './context/notes/NoteContext';
+import ToggleContext from './context/toggle/ToggleContext';
+import './App.css';
 import "aos/dist/aos.css";
-import AOS from "aos";
-import { SWRConfig } from 'swr';
-import axios from 'axios';
-import { getStorage } from './modules/storage';
 
 const Welcome = lazy(() => import('./components/Welcome')); // making components lazy
 const Notes = lazy(() => import('./components/Notes'));
@@ -21,43 +20,56 @@ const Offline = lazy(() => import('./components/Offline'));
 const Confirm = lazy(() => import('./components/account/Confirm'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
-const dimensions = window.screen.width + window.screen.height
 
 function App() {
+	const { setNotes } = useContext(NoteContext)
+	const { showAlert, setSpinner, setLoadbar } = useContext(ToggleContext)
+	const redirect = useNavigate()
+
+	const client = new QueryClient({
+		defaultOptions: { queries: { staleTime: 15000, retry: 1 } },
+		queryCache: new QueryCache({
+			onError: (error) => {
+				const json = error.response?.data;
+				if (json?.error?.toLowerCase().includes('session expired')) {
+					showAlert(json.error, '')
+					setLoadbar([0, false])
+					console.log(1)
+					resetStorage();
+					setNotes([])
+					redirect('/login')
+				} else {
+					setLoadbar([1, true])
+					setTimeout(() => {
+						setLoadbar([0, false])
+						setSpinner(false)
+					}, 300);
+				}
+			}
+		})
+	})
+
 	useEffect(() => {
 		AOS.init();
 		AOS.refresh();
 	}, [])
 
-	return (
-		<SWRConfig value={{
-			fetcher: url => axios(url, { headers: { token: getStorage('token'), dimensions, 'Content-Type': 'application/json' } }).then(res => res.data),
-			shouldRetryOnError: !Boolean(getStorage('notes')), errorRetryInterval: 0, errorRetryCount: 1, focusThrottleInterval: 15000
-		}}>
-			<Router>
-				<ToggleState>
-					{/* All the components stored inside NoteState tag are now props(as mentioned in NoteState.js) and now can access the NoteContext using useContext() */}
-					<NoteState>
-						{/* Keeping things below in suspense(only lazy components will go under suspense) and fallback component will show up until the required lazy components loads up */}
-						<Container />
-						<Suspense fallback={<Loading />}>
-							<Routes>
-								<Route path='/' element={<Welcome />} />
-								<Route path="/dashboard" element={<Notes />} />
-								<Route path="/about" element={<About />} />
-								<Route path="/signup" element={<Signup />} />
-								<Route path="/login" element={<Login />} />
-								<Route path="/forgot" element={<Forgot />} />
-								<Route path="/offline" element={<Offline />} />
-								<Route path="/account/confirm/:token" element={<Confirm />} />
-								<Route path="/*" element={<NotFound />} />
-							</Routes>
-						</Suspense >
-					</NoteState>
-				</ToggleState >
-			</Router>
-		</SWRConfig >
-	);
+	return <QueryClientProvider client={client}>
+		<Container />
+		<Suspense fallback={<Loading />}>
+			<Routes>
+				<Route path='/' element={<Welcome />} />
+				<Route path="/dashboard" element={<Notes />} />
+				<Route path="/about" element={<About />} />
+				<Route path="/signup" element={<Signup />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/forgot" element={<Forgot />} />
+				<Route path="/offline" element={<Offline />} />
+				<Route path="/account/confirm/:token" element={<Confirm />} />
+				<Route path="/*" element={<NotFound />} />
+			</Routes>
+		</Suspense >
+	</QueryClientProvider>
 }
 
 export default App;

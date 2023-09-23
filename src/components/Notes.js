@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NoteContext from '../context/notes/NoteContext'
@@ -5,8 +6,11 @@ import ToggleContext from '../context/toggle/ToggleContext'
 import NoteItem from './NoteItem'
 import { FaPlus as FaPlusBold, FaRegSave } from 'react-icons/fa'
 import { FaPlus, FaXmark } from 'react-icons/fa6'
-import useSWR, { mutate } from 'swr'
-import { getStorage, resetStorage, setStorage } from '../modules/storage'
+import { getStorage, setStorage } from '../modules/storage'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+
+const dimensions = window.screen.width + window.screen.height
 
 export default function Notes() {
     document.title = 'Dashboard | CloudNotes'
@@ -27,50 +31,27 @@ export default function Notes() {
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
 
-    let fetchData;
-    const { data, error, isValidating } = useSWR(fetchAPI)
-    if (isValidating) fetchData = data?.notes || []
-    else fetchData = data?.notes || getStorage('notes')?.notes || []
+    useQuery({
+        queryKey: ['notes'], enabled: Boolean(getStorage('name')), placeholderData: getStorage('notes'),
+        queryFn: async () => {
+            setLoadbar([1 / 3, true])
+            const { data: { notes } } = await axios(fetchAPI, { headers: { token: getStorage('token'), dimensions, 'Content-Type': 'application/json' } })
+            setLoadbar([1, true])
+            setStorage('notes', notes)
+            setTimeout(() => {
+                setLoadbar([0, false])
+                setSpinner(false)
+                setNotes(notes)
+            }, 300);
+            return notes
+        }
+    })
 
     const show = useMemo(() => notes.filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search)), [notes, search])
     notes.forEach(note => { if (!tags.includes(note.tag)) tags.push(note.tag) });
     const showLength = (selTag === 'All' ? show : show.filter(({ tag }) => tag === selTag)).length
 
-    useEffect(() => {
-        if (getStorage('name')) {
-            if (error && !isValidating) {
-                let json = error.response?.data;
-                if (json && !json.success && json.error?.toLowerCase().includes('session expired')) {
-                    showAlert(json.error, '')
-                    setLoadbar([0, false])
-                    resetStorage();
-                    mutate(fetchAPI, [], false)
-                    setNotes([])
-                    redirect('/signup')
-                } else {
-                    setLoadbar([1, true])
-                    setTimeout(() => {
-                        setLoadbar([0, false])
-                        setSpinner(false)
-                        setNotes(fetchData)
-                    }, 300);
-                }
-            } else {
-                if (!fetchData.length && isValidating) setLoadbar([1 / 3, true])
-                else {
-                    setLoadbar([1, true])
-                    setStorage('notes', { ...data, local: true })
-                    setTimeout(() => {
-                        setLoadbar([0, false])
-                        setSpinner(false)
-                        setNotes(fetchData)
-                    }, 300);
-                }
-            }
-        } else redirect('/')
-        return () => { setLoadbar([0, false]) } // equivalent to componentWillUnmount
-        // eslint-disable-next-line
-    }, [data, error]);
+    useEffect(() => { if (!getStorage('name')) redirect('/') }, []);
 
     useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
 
@@ -110,11 +91,11 @@ export default function Notes() {
                     Notes: <strong>{notes.length}</strong>/100
                 </div>
             </div>
-            <div className={`grid grid-cols-1 p-5 ${showLength === 0 && !newNote ? '' : 'sm:grid-cols-2 normal:grid-cols-3 gap-x-5 gap-y-7'}`}>
+            <div className={`grid grid-cols-1 p-5 ${(showLength !== 0 || newNote) && 'sm:grid-cols-2 normal:grid-cols-3 gap-x-5 gap-y-7'}`}>
 
-                <div className={`fixed top-[calc(50%-0.6875rem)] left-[calc(50%-0.6875rem)] w-[1.375rem] h-[1.375rem] border-2 border-transparent border-t-black border-b-black rounded-[50%] animate-spin-fast ${spinner ? '' : 'hidden'}`} />
-
-                <h4 className={`fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center ${showLength === 0 && !newNote && !spinner ? '' : 'hidden'}`}>No Notes To Display!</h4>
+                {showLength === 0 && <>
+                    {spinner ? <div className='fixed top-[calc(50%-0.6875rem)] left-[calc(50%-0.6875rem)] w-[1.375rem] h-[1.375rem] border-2 border-transparent border-t-black border-b-black rounded-[50%] animate-spin-fast' /> : !newNote && <h4 className='fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center'>No Notes To Display!</h4>}
+                </>}
 
                 {show.map(note => note._id !== noteToEdit[0]._id && (selTag === note.tag || selTag === 'All') ?
                     <NoteItem key={note._id} note={note} editTag={editTag} editTagColor={editTagColor} setEditDescLength={setEditDescLength} /> :
@@ -133,7 +114,7 @@ export default function Notes() {
                         </div>
                     </div>
                 )}
-                <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${newNote && !spinner ? '' : 'hidden'}`}>
+                {!spinner && newNote && <div className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative'>
                     <div className={`absolute top-0 translate-y-[-50%] flex`}>
                         <input type='text' list='tagList' ref={tag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} onChange={event => tagColor.current.value = getStorage('tagColors')?.[event.target.value] || tagColor.current.value} autoComplete='off' />
                         <datalist id='tagList'>
@@ -164,7 +145,7 @@ export default function Notes() {
                             tagColor.current.value = '#e5e7eb';
                         }} />
                     </div>
-                </div>
+                </div>}
             </div>
         </div>
         <div className='z-20 fixed bottom-[2.625rem] right-[4vw] sm:right-[3vw] text-center py-3 px-4 rounded-full text-white bg-purple-700 cursor-pointer' onClick={!spinner ? (newNote ? handleAdd : addNewNote) : null}>
