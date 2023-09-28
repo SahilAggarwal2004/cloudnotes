@@ -6,7 +6,7 @@ import ToggleContext from '../context/toggle/ToggleContext'
 import NoteItem from './NoteItem'
 import { FaPlus as FaPlusBold, FaRegSave } from 'react-icons/fa'
 import { FaPlus, FaXmark } from 'react-icons/fa6'
-import { getStorage, setStorage } from '../modules/storage'
+import { getStorage } from '../modules/storage'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
