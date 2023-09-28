@@ -34,8 +34,8 @@ function App() {
 				if (json?.error?.toLowerCase().includes('session expired')) {
 					showAlert(json.error, '')
 					setLoadbar([0, false])
-					resetStorage();
 					setNotes([])
+					resetStorage();
 					redirect('/login')
 				} else {
 					setLoadbar([1, true])

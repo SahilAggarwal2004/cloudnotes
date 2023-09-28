@@ -21,6 +21,5 @@ export const getStorage = (key, fallbackValue) => {
 
 export const resetStorage = () => {
     removeStorage('name')
-    removeStorage('notes')
     removeStorage('token')
 }

@@ -23,8 +23,8 @@ export default function Modal() {
             showAlert('Account deleted successfully!', 'green')
             setLoadbar([0, false])
             setModal([{}, false, ''])
-            resetStorage()
             setNotes([])
+            resetStorage()
             redirect('/login')
         }, 300);
     }
@@ -38,8 +38,8 @@ export default function Modal() {
             success ? showAlert('Account deleted successfully!', 'green') : showAlert(error, 'red')
             setLoadbar([0, false])
             if (!success) return
-            resetStorage()
             setNotes([])
+            resetStorage()
             redirect('/signup')
             setModal([{}, false, ''])
         }, 300);

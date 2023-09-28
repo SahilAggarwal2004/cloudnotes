@@ -32,16 +32,15 @@ export default function Notes() {
     const [editDescLength, setEditDescLength] = useState(0);
 
     useQuery({
-        queryKey: ['notes'], enabled: Boolean(getStorage('name')), placeholderData: getStorage('notes'),
+        queryKey: ['notes'], enabled: Boolean(getStorage('name')), placeholderData: notes,
         queryFn: async () => {
             setLoadbar([1 / 3, true])
             const { data: { notes } } = await axios(fetchAPI, { headers: { token: getStorage('token'), dimensions, 'Content-Type': 'application/json' } })
             setLoadbar([1, true])
-            setStorage('notes', notes)
+            setNotes(notes)
             setTimeout(() => {
                 setLoadbar([0, false])
                 setSpinner(false)
-                setNotes(notes)
             }, 300);
             return notes
         }

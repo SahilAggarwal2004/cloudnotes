@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { setStorage, getStorage, resetStorage } from "../../modules/storage";
 import ToggleContext from "../toggle/ToggleContext";
 import NoteContext from "./NoteContext"; // importing our context to add the state in it
+import useStorage from "../../hooks/useStorage";
 
 // Below is the boiler plate(basic structure) for the function to be created inside which we will pass some value (can be state or a function to update the state or anything else):
 // const Function = (props) => {
@@ -25,7 +26,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
     const { alert, showAlert, setLoadbar, setSpinner, setModal, setNewNote } = useContext(ToggleContext)
 
     // Defining things to be stored in value below:
-    const [notes, setNotes] = useState(getStorage('notes', []))
+    const [notes, setNotes] = useStorage('notes', [])
     const [noteToDelete, setNoteToDelete] = useState('');
     const [noteToEdit, setNoteToEdit] = useState([{}, false]);
     const tagColor = useRef();
@@ -48,9 +49,9 @@ const NoteState = (props) => { // props parameter will store every component(eve
             if (!json) json = { success: false, error: "Server Down! Please try again later..." }
             showAlert(json.error, '')
             if (json.error.toLowerCase().includes('session expired')) {
-                resetStorage()
                 setNotes([])
-                redirect('/signup')
+                resetStorage()
+                redirect('/login')
             }
         }
         return json
