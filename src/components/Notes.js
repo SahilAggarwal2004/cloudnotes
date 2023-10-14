@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
+import{ useContext, useEffect, useRef, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NoteContext from '../context/notes/NoteContext'
 import ToggleContext from '../context/toggle/ToggleContext'

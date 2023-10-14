@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
+import Speech from 'react-text-to-speech';
+import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
+import { GrVolume, GrVolumeMute } from 'react-icons/gr';
 import NoteContext from '../context/notes/NoteContext'
 import ToggleContext from '../context/toggle/ToggleContext';
-import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
-import Speech from 'react-text-to-speech';
-import { GrVolume, GrVolumeMute } from 'react-icons/gr';
 import { getStorage } from '../modules/storage';
 
 export default function NoteItem({ note, editTag, editTagColor, setEditDescLength }) {
@@ -34,7 +34,7 @@ export default function NoteItem({ note, editTag, editTagColor, setEditDescLengt
                     }, 0);
                 }} />
                 <div className='cursor-pointer font-bold scale-110'>
-                    <Speech id={_id} text={`The tag is ${tag}. The title is ${title}. The description is ${description}.`} startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} />
+                    <Speech id={_id} text={`The tag is ${tag}. The title is ${title}. The description is ${description}.`} startBtn={<GrVolume />} pauseBtn={<GrVolumeMute />} stopBtn={null} />
                 </div>
             </div>
             <p className='text-2xs text-gray-600 self-end'>Last Updated: {showDate}</p>

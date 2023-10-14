@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import{ useContext } from 'react'
 import ToggleContext from '../../context/toggle/ToggleContext'
 
 export default function Alert() {
