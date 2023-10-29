@@ -1,5 +1,5 @@
 import axios from "axios";
-import{ useState, useContext, useRef } from "react";
+import { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { setStorage, getStorage, resetStorage } from "../../modules/storage";
 import ToggleContext from "../toggle/ToggleContext";

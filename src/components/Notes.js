@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import{ useContext, useEffect, useRef, useState, useMemo } from 'react'
+import { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NoteContext from '../context/notes/NoteContext'
 import ToggleContext from '../context/toggle/ToggleContext'
@@ -113,7 +113,7 @@ export default function Notes() {
                         </div>
                     </div>
                 )}
-                {!spinner && newNote && <div className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative'>
+                {!spinner && <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${!newNote && 'hidden'}`}>
                     <div className={`absolute top-0 translate-y-[-50%] flex`}>
                         <input type='text' list='tagList' ref={tag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} onChange={event => tagColor.current.value = getStorage('tagColors')?.[event.target.value] || tagColor.current.value} autoComplete='off' />
                         <datalist id='tagList'>
