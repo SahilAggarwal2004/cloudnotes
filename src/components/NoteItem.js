@@ -34,7 +34,7 @@ export default function NoteItem({ note, editTag, editTagColor, setEditDescLengt
                     }, 0);
                 }} />
                 <div className='cursor-pointer font-bold scale-110'>
-                    <Speech id={_id} text={`The tag is ${tag}. The title is ${title}. The description is ${description}.`} startBtn={<GrVolume />} pauseBtn={<GrVolumeMute />} stopBtn={null} />
+                    <Speech id={_id} text={`The tag is ${tag}. The title is ${title}. The description is ${description}.`} startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} useStopOverPause={true} />
                 </div>
             </div>
             <p className='text-2xs text-gray-600 self-end'>Last Updated: {showDate}</p>

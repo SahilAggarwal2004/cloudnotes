@@ -10,8 +10,8 @@ overrides:
 
 dependencies:
   '@tanstack/react-query':
-    specifier: ^5.0.5
-    version: 5.0.5(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^5.4.3
+    version: 5.4.3(react-dom@18.2.0)(react@18.2.0)
   '@testing-library/jest-dom':
     specifier: ^6.1.4
     version: 6.1.4(jest@27.5.1)
@@ -40,8 +40,8 @@ dependencies:
     specifier: ^6.17.0
     version: 6.17.0(react-dom@18.2.0)(react@18.2.0)
   react-text-to-speech:
-    specifier: ^0.5.2
-    version: 0.5.2(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.6.0
+    version: 0.6.0(react-dom@18.2.0)(react@18.2.0)
   web-vitals:
     specifier: ^3.5.0
     version: 3.5.0
@@ -2276,12 +2276,12 @@ packages:
       - supports-color
     dev: true
 
-  /@tanstack/query-core@5.0.5:
-    resolution: {integrity: sha512-MThCETMkHDHTnFZHp71L+SqTtD5d6XHftFCVR1xRJdWM3qGrlQ2VCXaj0SKVcyJej2e1Opa2c7iknu1llxCDNQ==}
+  /@tanstack/query-core@5.4.3:
+    resolution: {integrity: sha512-fnI9ORjcuLGm1sNrKatKIosRQUpuqcD4SV7RqRSVmj8JSicX2aoMyKryHEBpVQvf6N4PaBVgBxQomjsbsGPssQ==}
     dev: false
 
-  /@tanstack/react-query@5.0.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ZG0Q4HZ0iuI8mWiZ2/MdVYPHbrmAVhMn7+gLOkxJh6zLIgCL4luSZlohzN5Xt4MjxfxxWioO1nemwpudaTsmQg==}
+  /@tanstack/react-query@5.4.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-4aSOrRNa6yEmf7mws5QPTVMn8Lp7L38tFoTZ0c1ZmhIvbr8GIA0WT7X5N3yz/nuK8hUtjw9cAzBr4BPDZZ+tzA==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
@@ -2292,7 +2292,7 @@ packages:
       react-native:
         optional: true
     dependencies:
-      '@tanstack/query-core': 5.0.5
+      '@tanstack/query-core': 5.4.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -8580,8 +8580,8 @@ packages:
       - webpack-plugin-serve
     dev: true
 
-  /react-text-to-speech@0.5.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-TwvZqbHpLTJnIi/5r7l7mttd+4Xz3bPyndDtWGbp6wF8Qycu8cQLlTnARIociSqWHlwyelSjqV+tgMNrRvrUzQ==}
+  /react-text-to-speech@0.6.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-FuckHjkAMb/QzUhJtTq9dQ7QnmsWpytJS4zc8p2Dd+Kvty442Lxhj1zHxqlN2TxTp6YAqGixKrBNUVkLj2fFeQ==}
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
