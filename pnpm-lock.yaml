@@ -40,8 +40,8 @@ dependencies:
     specifier: ^6.17.0
     version: 6.17.0(react-dom@18.2.0)(react@18.2.0)
   react-text-to-speech:
-    specifier: ^0.6.0
-    version: 0.6.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.6.1
+    version: 0.6.1(react-dom@18.2.0)(react@18.2.0)
   web-vitals:
     specifier: ^3.5.0
     version: 3.5.0
@@ -8580,8 +8580,8 @@ packages:
       - webpack-plugin-serve
     dev: true
 
-  /react-text-to-speech@0.6.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-FuckHjkAMb/QzUhJtTq9dQ7QnmsWpytJS4zc8p2Dd+Kvty442Lxhj1zHxqlN2TxTp6YAqGixKrBNUVkLj2fFeQ==}
+  /react-text-to-speech@0.6.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-RKjFILlAwfH8R9gpmIUGUvcJGTvSixudf9pZAc4vuek95oS9VevJckZpJ72m31jY7v0+q+xCTwg3NIluAFm/pQ==}
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
