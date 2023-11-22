@@ -1,3 +1,5 @@
+import { queryKey } from "../constants"
+
 export const setStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value))
 
 export const removeStorage = key => localStorage.removeItem(key)
@@ -22,4 +24,5 @@ export const getStorage = (key, fallbackValue) => {
 export const resetStorage = () => {
     removeStorage('name')
     removeStorage('token')
+    removeStorage(queryKey)
 }

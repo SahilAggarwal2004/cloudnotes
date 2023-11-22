@@ -1,49 +1,44 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import{ useContext, useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import NoteContext from '../../context/notes/NoteContext';
-import ToggleContext from '../../context/toggle/ToggleContext';
+import { toast } from 'react-toastify';
 import { getStorage } from '../../modules/storage';
 import Logo from '../Logo';
 import Password from './Password';
+import { useNoteContext } from '../../context/NoteState';
+import { useToggleContext } from '../../context/ToggleState';
 
 export default function Forgot() {
-    document.title = 'Reset Password | CloudNotes'
-
-    const { fetchApp } = useContext(NoteContext)
-    const { showAlert, setLoadbar } = useContext(ToggleContext)
+    const { fetchApp } = useNoteContext()
+    const { setProgress } = useToggleContext()
     const email = useRef();
     const otp = useRef();
     const password = useRef();
     const redirect = useNavigate();
     const [stage, setStage] = useState(0)
-    const { REACT_APP_OTP, REACT_APP_FORGOT } = process.env
 
-    useEffect(() => { if (getStorage('name')) redirect('/dashboard') }, []);
+    useEffect(() => {
+        if (getStorage('name')) redirect('/dashboard')
+        else document.title = 'Reset Password | CloudNotes'
+    }, []);
 
     async function submit(event) {
         event.preventDefault()
-        setLoadbar([1 / 3, true])
+        setProgress(33)
         if (!stage) {
-            const { success, error } = await fetchApp(REACT_APP_OTP, 'POST', { email: email.current.value })
-            setTimeout(() => {
-                if (success) {
-                    showAlert('OTP sent to your email!', 'green')
-                    setStage(1)
-                }
-                else if (error === "OTP already sent!") setStage(stage + 1)
-                setLoadbar([0, false])
-            }, 300);
+            const { success, error } = await fetchApp('api/auth/otp', 'POST', { email: email.current.value })
+            if (success) {
+                toast.success('OTP sent to your email!')
+                setStage(1)
+            }
+            else if (error === "OTP already sent!") setStage(stage + 1)
         } else {
-            const { success } = await fetchApp(REACT_APP_FORGOT, 'PUT', { email: email.current.value, otp: otp.current.value, password: password.current.value })
-            setTimeout(() => {
-                setLoadbar([0, false])
-                if (!success) return
-                showAlert('Password reset successful!', 'green')
-                redirect('/login')
-            }, 300);
+            const { success } = await fetchApp('api/auth/forgot', 'PUT', { email: email.current.value, otp: otp.current.value, password: password.current.value })
+            if (!success) return
+            toast.success('Password reset successful!')
+            redirect('/login')
         }
-        setLoadbar([1, true])
+        setProgress(100)
     }
 
     return <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

@@ -1,14 +1,13 @@
-import{ useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import ToggleContext from '../../context/toggle/ToggleContext'
-import Loadbar from './../Loadbar'
 import { FaRegUser, FaBars } from 'react-icons/fa'
+import LoadingBar from "react-top-loading-bar"
 import { getStorage } from '../../modules/storage'
 import Expandable from './Expandable'
+import { useToggleContext } from '../../context/ToggleState'
 
 export default function Navbar() {
     const location = useLocation() // useLocation() returns a js object containing current location data and is immutable. pathname key of this object contains the url/path.
-    const { setModal, hide, setHide } = useContext(ToggleContext)
+    const { setModal, hide, setHide, progress, setProgress } = useToggleContext()
     const name = getStorage('name')
     const extendNav = () => setHide(!hide)
 
@@ -29,6 +28,6 @@ export default function Navbar() {
                 </div>
             </Expandable>
         </div>
-        <Loadbar />
+        <LoadingBar color='#dc2626' containerStyle={{position: 'relative'}} shadow={false} progress={progress} waitingTime={300} onLoaderFinished={() => setProgress(0)} />
     </nav>
 }

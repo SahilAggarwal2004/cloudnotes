@@ -1,29 +1,25 @@
-import{ useContext } from 'react'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom'
-import NoteContext from '../../context/notes/NoteContext';
-import ToggleContext from '../../context/toggle/ToggleContext'
+import { useNoteContext } from '../../context/NoteState';
+import { useToggleContext } from '../../context/ToggleState';
 
 export default function Confirm() {
-    document.title = 'CloudNotes - Notes on Cloud'
-
     const { token } = useParams();
     const redirect = useNavigate();
-    const { fetchApp } = useContext(NoteContext)
-    const { showAlert, setLoadbar } = useContext(ToggleContext)
-    const { REACT_APP_CONFIRM } = process.env
+    const { fetchApp } = useNoteContext()
+    const { setProgress } = useToggleContext()
+
+    useEffect(() => { document.title = 'CloudNotes - Notes on Cloud' }, [])
 
     async function verify() {
         if (!token) return
-        setLoadbar([1 / 3, true])
-        let json = await fetchApp(REACT_APP_CONFIRM, 'PUT', {}, token);
-        setLoadbar([1, true])
-
-        setTimeout(() => {
-            setLoadbar([0, false])
-            if (!json.success) return
-            json.confirmed ? showAlert('User already confirmed!', 'green') : showAlert('Successfully confirmed your CloudNotes account!', 'green')
-            redirect('/login')
-        }, 300);
+        setProgress(33)
+        const json = await fetchApp('api/auth/confirm', 'PUT', {}, token);
+        setProgress(100)
+        if (!json.success) return
+        toast.success(json.confirmed ? 'User already confirmed!' : 'Successfully confirmed your CloudNotes account!')
+        redirect('/login')
     }
 
     return <div>

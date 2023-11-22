@@ -1,8 +1,7 @@
-import{ useContext } from 'react'
-import ToggleContext from '../context/toggle/ToggleContext'
+import { useToggleContext } from '../context/ToggleState'
 
 export default function Loadbar() {
-    const { loadbar } = useContext(ToggleContext)
+    const { loadbar } = useToggleContext()
     const [w, visibility] = loadbar
 
     return (

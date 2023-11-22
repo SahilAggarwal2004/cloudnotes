@@ -1,23 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useRef, useState, useMemo, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import NoteContext from '../context/notes/NoteContext'
-import ToggleContext from '../context/toggle/ToggleContext'
-import NoteItem from './NoteItem'
 import { FaPlus as FaPlusBold, FaRegSave } from 'react-icons/fa'
 import { FaPlus, FaXmark } from 'react-icons/fa6'
-import { getStorage } from '../modules/storage'
+import { toast } from 'react-toastify';
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
-
-const dimensions = window.screen.width + window.screen.height
+import NoteItem from './NoteItem'
+import { getStorage, setStorage } from '../modules/storage'
+import { useNoteContext } from '../context/NoteState'
+import { useToggleContext } from '../context/ToggleState'
+import { queryKey } from '../constants'
 
 export default function Notes() {
-    document.title = 'Dashboard | CloudNotes'
-
-    const context = useContext(NoteContext) // now the value that NoteContext.Provider provides has been stored inside this variable using useContext(Context)
-    const { addNote, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, notes, setNotes, fetchAPI } = context // now our notes varibale that was stored in value can be accessed normally using as an object item as value of NoteContext was an object.
-    const { showAlert, newNote, setNewNote, spinner, setSpinner, loadbar, setLoadbar } = useContext(ToggleContext)
+    const { addNote, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, queryFn, onError } = useNoteContext()
+    const { newNote, setNewNote, spinner, progress } = useToggleContext()
     const redirect = useNavigate()
     const tags = ['All'];
     const title = useRef(); // defining a reference
@@ -31,28 +27,26 @@ export default function Notes() {
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
 
-    useQuery({
-        queryKey: ['notes'], enabled: Boolean(getStorage('name')), placeholderData: notes,
-        queryFn: async () => {
-            setLoadbar([1 / 3, true])
-            const { data: { notes } } = await axios(fetchAPI, { headers: { token: getStorage('token'), dimensions, 'Content-Type': 'application/json' } })
-            setLoadbar([1, true])
-            setNotes(notes)
-            setTimeout(() => {
-                setLoadbar([0, false])
-                setSpinner(false)
-            }, 300);
-            return notes
-        }
-    })
-
-    const show = useMemo(() => notes.filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search)), [notes, search])
+    const { data, error } = useQuery({ queryKey, enabled: Boolean(getStorage('name')), queryFn })
+    const notes = useMemo(() => data || getStorage(queryKey, []), [data])
+    const show = useMemo(() => {
+        if (notes) setStorage(queryKey, notes)
+        return notes.filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search))
+    }, [notes, search])
     notes.forEach(note => { if (!tags.includes(note.tag)) tags.push(note.tag) });
     const showLength = (selTag === 'All' ? show : show.filter(({ tag }) => tag === selTag)).length
 
-    useEffect(() => { if (!getStorage('name')) redirect('/') }, []);
+    useEffect(() => {
+        if (getStorage('name')) document.title = 'Dashboard | CloudNotes'
+        else redirect('/')
+    }, []);
 
     useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
+
+    useLayoutEffect(() => {
+        if (!error) return
+        onError(error)
+    }, [error])
 
     function addNewNote() {
         setNewNote(true)
@@ -64,15 +58,15 @@ export default function Notes() {
 
     function handleAdd() {
         // accessing ref data and performing functions (some are present in current and some outside current)
-        if (title.current.value.length < 1) showAlert('Please provide title to the note', '')
-        else if (description.current.value.length < 1) showAlert('Please provide description to the note', '')
-        else if (!loadbar[1]) addNote(title.current.value, description.current.value, tag.current.value)
+        if (title.current.value.length < 1) toast.error('Please provide title to the note')
+        else if (description.current.value.length < 1) toast.error('Please provide description to the note')
+        else if (!progress) addNote(title.current.value, description.current.value, tag.current.value)
     }
 
     function handleEdit() {
-        if (editTitle.current.value.length < 1) showAlert('Please provide title to the note', '')
-        else if (editDescription.current.value.length < 1) showAlert('Please provide description to the note', '')
-        else if (!loadbar[1]) editNote({ ...noteToEdit[0], editTitle: editTitle.current.value, editDescription: editDescription.current.value, editTag: editTag.current.value })
+        if (editTitle.current.value.length < 1) toast.error('Please provide title to the note')
+        else if (editDescription.current.value.length < 1) toast.error('Please provide description to the note')
+        else if (!progress) editNote({ ...noteToEdit[0], editTitle: editTitle.current.value, editDescription: editDescription.current.value, editTag: editTag.current.value })
     }
 
     return <div className='mb-12'>

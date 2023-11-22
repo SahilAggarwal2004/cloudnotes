@@ -5,9 +5,10 @@ import { GiTwoCoins } from 'react-icons/gi'
 import Logo from './Logo';
 
 export default function About() {
-    document.title = 'About | CloudNotes'
-
-    useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }) }, [])
+    useEffect(() => {
+        document.title = 'About | CloudNotes'
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [])
 
     return <div className='flex flex-col items-center text-center absolute top-0 w-full'>
         <div className='w-11/12 sm:w-2/3 h-screen flex flex-col justify-center items-center' data-aos='fade-up'>

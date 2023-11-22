@@ -1,16 +1,15 @@
-import { useContext } from 'react'
 import Speech from 'react-text-to-speech';
 import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
 import { GrVolume, GrVolumeMute } from 'react-icons/gr';
-import NoteContext from '../context/notes/NoteContext'
-import ToggleContext from '../context/toggle/ToggleContext';
 import { getStorage } from '../modules/storage';
+import { useNoteContext } from '../context/NoteState';
+import { useToggleContext } from '../context/ToggleState';
 
 export default function NoteItem({ note, editTag, editTagColor, setEditDescLength }) {
     const { _id, date, tag, title, description } = note;
     const showDate = new Date(Date.parse(date)).toLocaleString()
-    const { setNoteToDelete, setNoteToEdit } = useContext(NoteContext)
-    const { setModal, loadbar } = useContext(ToggleContext)
+    const { setNoteToDelete, setNoteToEdit } = useNoteContext()
+    const { setModal, progress } = useToggleContext()
     const tagColors = getStorage('tagColors')
 
     return <div className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative' data-aos='fade-up' data-aos-once='true' data-aos-offset={20}>
@@ -21,7 +20,7 @@ export default function NoteItem({ note, editTag, editTagColor, setEditDescLengt
         <div className='absolute bottom-1.5'>
             <div className='space-x-5 flex justify-center mb-1'>
                 <FaRegTrashAlt className="scale-110 cursor-pointer" onClick={() => {
-                    if (loadbar[1]) return
+                    if (progress) return
                     setModal([{}, true, 'deleteNote'])
                     setNoteToDelete(_id)
                 }} />

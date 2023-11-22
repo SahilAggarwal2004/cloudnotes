@@ -1,37 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import{ useContext, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import NoteContext from '../../context/notes/NoteContext';
-import ToggleContext from '../../context/toggle/ToggleContext';
+import { toast } from 'react-toastify';
 import { getStorage, setStorage } from '../../modules/storage';
 import Logo from '../Logo';
 import Password from './Password';
+import { useNoteContext } from '../../context/NoteState';
+import { useToggleContext } from '../../context/ToggleState';
 
 export default function Login() {
-    document.title = 'Login | CloudNotes'
-
-    const { fetchApp } = useContext(NoteContext)
-    const { showAlert, setLoadbar } = useContext(ToggleContext)
+    const { fetchApp } = useNoteContext()
+    const { setProgress } = useToggleContext()
     const email = useRef();
     const password = useRef();
     const redirect = useNavigate()
-    const { REACT_APP_LOGIN } = process.env
 
-    useEffect(() => { if (getStorage('name')) redirect('/dashboard') }, []);
+    useEffect(() => {
+        if (getStorage('name')) redirect('/dashboard')
+        document.title = 'Login | CloudNotes'
+    }, []);
 
     async function submit(event) {
         event.preventDefault()
-        setLoadbar([1 / 3, true])
-        const { success, name, token } = await fetchApp(REACT_APP_LOGIN, 'POST', { email: email.current.value, password: password.current.value })
-        setLoadbar([1, true])
-        setTimeout(() => {
-            setLoadbar([0, false])
-            if (!success) return
-            setStorage('name', name)
-            setStorage('token', token)
-            showAlert('Logged in successfully!', 'green')
-            redirect('/dashboard')
-        }, 300);
+        setProgress(33)
+        const { success, name, token } = await fetchApp('api/auth/login', 'POST', { email: email.current.value, password: password.current.value })
+        setProgress(100)
+        if (!success) return
+        setStorage('name', name)
+        setStorage('token', token)
+        toast.success('Logged in successfully!')
+        redirect('/dashboard')
     }
 
     return <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

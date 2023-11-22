@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom';
 export default function Offline() {
     const redirect = useNavigate();
 
-    useEffect(() => { if (navigator.onLine) redirect('/dashboard') }, [navigator.onLine])
+    useEffect(() => { document.title = 'You are Offline' }, [])
 
-    document.title = 'You are Offline'
+    useEffect(() => { if (navigator.onLine) redirect('/dashboard') }, [navigator.onLine])
 
     return <div className="w-screen h-screen flex justify-center items-center bg-purple-700 inset-0 fixed z-20">
         <div className='text-white text-center px-4 font-sans space-y-2'>

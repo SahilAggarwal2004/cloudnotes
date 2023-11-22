@@ -1,7 +1,7 @@
-import React from 'react'
+import { useEffect } from 'react'
 
 export default function NotFound() {
-    document.title = 'Page Not Found | CloudNotes'
+    useEffect(() => { document.title = 'Page Not Found' }, [])
 
     return (
         <div className='fixed top-0 w-full h-full flex flex-col space-y-2 items-center justify-center'>

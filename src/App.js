@@ -1,13 +1,11 @@
-import { useEffect, lazy, Suspense, useContext } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { useEffect, lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
 import AOS from "aos";
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Loading from './components/Loading';
 import Container from './components/container/Container';
-import { resetStorage } from './modules/storage';
-import NoteContext from './context/notes/NoteContext';
-import ToggleContext from './context/toggle/ToggleContext';
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 import "aos/dist/aos.css";
 
 const Welcome = lazy(() => import('./components/Welcome')); // making components lazy
@@ -22,38 +20,12 @@ const NotFound = lazy(() => import('./components/NotFound'));
 
 
 function App() {
-	const { setNotes } = useContext(NoteContext)
-	const { showAlert, setSpinner, setLoadbar } = useContext(ToggleContext)
-	const redirect = useNavigate()
-
-	const client = new QueryClient({
-		defaultOptions: { queries: { staleTime: 15000, retry: 1 } },
-		queryCache: new QueryCache({
-			onError: (error) => {
-				const json = error.response?.data;
-				if (json?.error?.toLowerCase().includes('session expired')) {
-					showAlert(json.error, '')
-					setLoadbar([0, false])
-					setNotes([])
-					resetStorage();
-					redirect('/login')
-				} else {
-					setLoadbar([1, true])
-					setTimeout(() => {
-						setLoadbar([0, false])
-						setSpinner(false)
-					}, 300);
-				}
-			}
-		})
-	})
-
 	useEffect(() => {
 		AOS.init();
 		AOS.refresh();
 	}, [])
 
-	return <QueryClientProvider client={client}>
+	return <>
 		<Container />
 		<Suspense fallback={<Loading />}>
 			<Routes>
@@ -68,7 +40,8 @@ function App() {
 				<Route path="/*" element={<NotFound />} />
 			</Routes>
 		</Suspense >
-	</QueryClientProvider>
+		<ToastContainer autoClose={2500} pauseOnFocusLoss={false} pauseOnHover={false} position='bottom-left' closeButton={false} />
+	</>
 }
 
 export default App;

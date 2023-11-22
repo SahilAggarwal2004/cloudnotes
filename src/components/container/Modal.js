@@ -1,14 +1,13 @@
-import{ useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import NoteContext from '../../context/notes/NoteContext'
-import ToggleContext from '../../context/toggle/ToggleContext'
+import { toast } from 'react-toastify';
 import { getStorage, resetStorage } from '../../modules/storage'
+import { useNoteContext } from '../../context/NoteState'
+import { useToggleContext } from '../../context/ToggleState'
 
 export default function Modal() {
-    const { fetchApp, deleteNote, setNotes, noteToDelete } = useContext(NoteContext)
-    const { showAlert, modal, setModal, setLoadbar } = useContext(ToggleContext)
+    const { fetchApp, deleteNote, noteToDelete } = useNoteContext()
+    const { modal, setModal, setProgress } = useToggleContext()
     const redirect = useNavigate()
-    const { REACT_APP_DELETEUSER } = process.env
     const name = getStorage('name')
 
     function handleCancel(event) {
@@ -17,32 +16,23 @@ export default function Modal() {
     }
 
     async function logOut() {
-        setLoadbar([1 / 3, true])
-        setLoadbar([1, true])
-        setTimeout(() => {
-            showAlert('Account deleted successfully!', 'green')
-            setLoadbar([0, false])
-            setModal([{}, false, ''])
-            setNotes([])
-            resetStorage()
-            redirect('/login')
-        }, 300);
+        setProgress(100)
+        toast.success('Logged out successfully!')
+        setModal([{}, false, ''])
+        resetStorage()
+        redirect('/login')
     }
 
     async function delUser() {
         setModal([{}, false, ''])
-        setLoadbar([1 / 3, true])
-        const { success, error } = await fetchApp(REACT_APP_DELETEUSER, 'DELETE', {})
-        setLoadbar([1, true])
-        setTimeout(() => {
-            success ? showAlert('Account deleted successfully!', 'green') : showAlert(error, 'red')
-            setLoadbar([0, false])
-            if (!success) return
-            setNotes([])
-            resetStorage()
-            redirect('/signup')
-            setModal([{}, false, ''])
-        }, 300);
+        setProgress(33)
+        const { success, error } = await fetchApp('api/auth/delete', 'DELETE', {})
+        setProgress(100)
+        if (!success) return toast.error(error)
+        toast.success('Account deleted successfully!')
+        resetStorage()
+        redirect('/signup')
+        setModal([{}, false, ''])
     }
 
     return <div>

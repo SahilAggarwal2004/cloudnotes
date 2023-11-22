@@ -4,12 +4,11 @@ import { getStorage } from '../modules/storage';
 import Logo from './Logo';
 
 export default function Welcome() {
-  document.title = 'CloudNotes - Notes on Cloud'
-
   const redirect = useNavigate();
   const [welcome, setWelcome] = useState(false);
-
+  
   useEffect(() => {
+    document.title = 'CloudNotes - Notes on Cloud'
     getStorage('name') ? redirect('/dashboard') : setWelcome(true)
     return () => { setWelcome(false) }
     // eslint-disable-next-line

@@ -1,38 +1,35 @@
-import{ useContext, useRef, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import NoteContext from '../../context/notes/NoteContext';
-import ToggleContext from '../../context/toggle/ToggleContext';
+import { toast } from 'react-toastify';
 import { getStorage } from '../../modules/storage';
 import Logo from '../Logo';
 import Password from './Password';
-
+import { useNoteContext } from '../../context/NoteState';
+import { useToggleContext } from '../../context/ToggleState';
 
 export default function Signup() {
-    document.title = 'Signup | CloudNotes'
-
-    const { fetchApp } = useContext(NoteContext)
-    const { showAlert, setLoadbar } = useContext(ToggleContext)
+    const { fetchApp } = useNoteContext()
+    const { setProgress } = useToggleContext()
     const name = useRef();
     const email = useRef();
     const password = useRef();
     const redirect = useNavigate();
-    // In react app, we can create environment variables to hide something confidential from public. They can be stored in a file named .env.local which is by default present in .gitignore and must be names like REACT_APP_NAME to be accessible in react app. These variables are stored in a js object and can be accessed in the application as shown below
-    const { REACT_APP_SIGNUP } = process.env
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => { if (getStorage('name')) redirect('/dashboard') }, []);
+    useEffect(() => {
+        if (getStorage('name')) redirect('/dashboard')
+        else document.title = 'Signup | CloudNotes'
+    }, []);
 
     async function submit(event) {
         event.preventDefault()
-        setLoadbar([1 / 3, true])
-        const json = await fetchApp(REACT_APP_SIGNUP, 'POST', { name: name.current.value, email: email.current.value, password: password.current.value })
-        setLoadbar([1, true])
-        setTimeout(() => {
-            setLoadbar([0, false])
-            if (!json.success) return
-            showAlert('Account created successfully! Please confirm your account via email to proceed!', 'green')
-            redirect('/login')
-        }, 300);
+        setProgress(33)
+        const json = await fetchApp('api/auth/signup', 'POST', { name: name.current.value, email: email.current.value, password: password.current.value })
+        setProgress(100)
+        if (!json.success) return
+        toast.success('Account created successfully! Please confirm your account via email to proceed!')
+        redirect('/login')
     }
 
     return <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
