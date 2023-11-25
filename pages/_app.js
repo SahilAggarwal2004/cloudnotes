@@ -30,7 +30,7 @@ export default function MyApp({ Component, pageProps }) {
 
     useEffect(() => {
         if (getStorage('name') && onlyGuest.includes(router.pathname)) router.replace('/dashboard')
-        else if (onlyUser.includes(router.pathname)) router.replace('/');
+        else if (!getStorage('name') && onlyUser.includes(router.pathname)) router.replace('/');
         else setLoading(false)
     }, [router.pathname]);
 
