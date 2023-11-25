@@ -1,14 +1,13 @@
-import { useNavigate } from 'react-router-dom'
+import { useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { getStorage, resetStorage } from '../../modules/storage'
-import { useNoteContext } from '../../context/NoteState'
-import { useToggleContext } from '../../context/ToggleState'
+import { useNoteContext } from '../../contexts/NoteProvider';
+import { useToggleContext } from '../../contexts/ToggleProvider';
 
-export default function Modal() {
+export default function Modal({ router }) {
     const { fetchApp, deleteNote, noteToDelete } = useNoteContext()
     const { modal, setModal, setProgress } = useToggleContext()
-    const redirect = useNavigate()
-    const name = getStorage('name')
+    const name = useMemo(() => getStorage('name'), [])
 
     function handleCancel(event) {
         event.preventDefault()
@@ -20,7 +19,7 @@ export default function Modal() {
         toast.success('Logged out successfully!')
         setModal([{}, false, ''])
         resetStorage()
-        redirect('/login')
+        router.replace('/account/account/login')
     }
 
     async function delUser() {
@@ -31,7 +30,7 @@ export default function Modal() {
         if (!success) return toast.error(error)
         toast.success('Account deleted successfully!')
         resetStorage()
-        redirect('/signup')
+        router.replace('/account/signup')
         setModal([{}, false, ''])
     }
 

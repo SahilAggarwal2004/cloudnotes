@@ -1,9 +1,8 @@
 import { useState, useContext, useRef, createContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import axios from "axios";
 import { setStorage, getStorage, resetStorage } from "../modules/storage";
-import { useToggleContext } from "./ToggleState";
+import { useToggleContext } from "./ToggleProvider";
 import { queryKey } from "../constants";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -17,14 +16,14 @@ import { useQueryClient } from "@tanstack/react-query";
 //     )
 // }
 
-// In react app, we can create environment variables to hide something confidential from public. They can be stored in a file named .env.local which is by default present in .gitignore and must be names like REACT_APP_NAME to be accessible in react app. These variables are stored in a js object and can be accessed in the application as shown below
-axios.defaults.baseURL = process.env.REACT_APP_HOST
-const dimensions = window.screen.width + window.screen.height
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_HOST
+
+const dimensions = typeof screen !== 'undefined' && screen.width + screen.height
 
 const NoteContext = createContext(); // creating a new context. In a context, we will add states related to a particular thing which we want to become accessible to all our components.
 export const useNoteContext = () => useContext(NoteContext); // now the value that NoteContext.Provider provides has been stored inside this variable using useContext(Context)
 
-const NoteState = (props) => { // props parameter will store every component(even their children components) which will be closed inside the tag of this function imported in a component(ideally that component will be App.js as it contains all the components and we usually want our context to be accessed by all components). All these components will be able to access our context using the useContext hook(useContext and the context we created are to be imported in the every component which needs to use the context).
+export default function NoteProvider({ children, router }) { // props parameter will store every component(even their children components) which will be closed inside the tag of this function imported in a component(ideally that component will be App.js as it contains all the components and we usually want our context to be accessed by all components). All these components will be able to access our context using the useContext hook(useContext and the context we created are to be imported in the every component which needs to use the context).
 
     const client = useQueryClient();
     const { setProgress, setSpinner, setModal, setNewNote } = useToggleContext()
@@ -34,7 +33,6 @@ const NoteState = (props) => { // props parameter will store every component(eve
     const [noteToEdit, setNoteToEdit] = useState([{}, false]);
     const tagColor = useRef();
     const editTagColor = useRef();
-    const redirect = useNavigate();
 
     async function fetchApp(api, method = 'GET', body = null, token) {
         // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
@@ -53,7 +51,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
             toast.error(json.error)
             if (json.error.toLowerCase().includes('session expired')) {
                 resetStorage()
-                redirect('/login')
+                router.replace('/account/login')
             }
         }
         return json
@@ -131,7 +129,7 @@ const NoteState = (props) => { // props parameter will store every component(eve
         if (json?.error?.toLowerCase().includes('session expired')) {
             toast.error(json.error)
             resetStorage();
-            redirect('/login')
+            router.replace('/account/login')
         } else setSpinner(false)
     }
 
@@ -139,8 +137,6 @@ const NoteState = (props) => { // props parameter will store every component(eve
     // value attribute stores the value(can be anything) to be passed to the components using the context.
     return <NoteContext.Provider value={{ fetchApp, addNote, deleteNote, editNote, noteToDelete, setNoteToDelete, noteToEdit, setNoteToEdit, tagColor, editTagColor, queryFn, onError }}>
         {/* passing the notes and well as note functions(to perform operations on notes) as value in a js object */}
-        {props.children}
+        {children}
     </NoteContext.Provider>
 }
-
-export default NoteState;

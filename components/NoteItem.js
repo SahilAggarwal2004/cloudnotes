@@ -2,8 +2,8 @@ import Speech from 'react-text-to-speech';
 import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
 import { GrVolume, GrVolumeMute } from 'react-icons/gr';
 import { getStorage } from '../modules/storage';
-import { useNoteContext } from '../context/NoteState';
-import { useToggleContext } from '../context/ToggleState';
+import { useNoteContext } from '../contexts/NoteProvider';
+import { useToggleContext } from '../contexts/ToggleProvider';
 
 export default function NoteItem({ note, editTag, editTagColor, setEditDescLength }) {
     const { _id, date, tag, title, description } = note;

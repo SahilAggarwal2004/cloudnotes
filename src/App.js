@@ -33,7 +33,7 @@ function App() {
 				<Route path="/dashboard" element={<Notes />} />
 				<Route path="/about" element={<About />} />
 				<Route path="/signup" element={<Signup />} />
-				<Route path="/login" element={<Login />} />
+				<Route path="/account/login" element={<Login />} />
 				<Route path="/forgot" element={<Forgot />} />
 				<Route path="/offline" element={<Offline />} />
 				<Route path="/account/confirm/:token" element={<Confirm />} />

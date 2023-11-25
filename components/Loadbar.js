@@ -1,4 +1,4 @@
-import { useToggleContext } from '../context/ToggleState'
+import { useToggleContext } from "../contexts/ToggleProvider"
 
 export default function Loadbar() {
     const { loadbar } = useToggleContext()

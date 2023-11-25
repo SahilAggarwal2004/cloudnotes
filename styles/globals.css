@@ -1,4 +1,3 @@
-/* ./my-app/src/tailwind.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,7 +7,7 @@
 }
 
 .welcome-btn {
-    @apply p-1 relative hover:after:scale-100 after:content-[''] after:h-0.5 after:w-full after:absolute after:scale-0 after:left-0 after:top-[calc(100%)] after:z-10 after:border after:opacity-90 after:border-black normal:after:border-white after:transition-transform after:duration-300
+    @apply p-1 relative hover:after:scale-100 after:content-[''] after:h-0 after:w-full after:absolute after:scale-0 after:left-0 after:top-[calc(100%)] after:z-10 after:border after:opacity-90 after:border-black normal:after:border-white after:transition-transform after:duration-500
 }
 
 .btn {
@@ -25,4 +24,20 @@
 
 .button-animation {
     @apply border-transparent text-white bg-purple-600 hover:bg-purple-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+    width: 2.5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(128, 128, 128, 0.75);
 }
