@@ -26,7 +26,7 @@ export default function Dashboard() {
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
 
-    const { data, error } = useQuery({ queryKey, enabled: Boolean(getStorage('name')), queryFn })
+    const { data, error } = useQuery({ queryKey, queryFn })
     const notes = useMemo(() => data || getStorage(queryKey, []), [data])
     const show = useMemo(() => {
         if (notes) setStorage(queryKey, notes)

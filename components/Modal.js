@@ -1,13 +1,11 @@
-import { useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { getStorage, resetStorage } from '../../modules/storage'
-import { useNoteContext } from '../../contexts/NoteProvider';
-import { useToggleContext } from '../../contexts/ToggleProvider';
+import { resetStorage } from '../modules/storage'
+import { useNoteContext } from '../contexts/NoteProvider';
+import { useToggleContext } from '../contexts/ToggleProvider';
 
-export default function Modal({ router }) {
+export default function Modal({ name, router }) {
     const { fetchApp, deleteNote, noteToDelete } = useNoteContext()
     const { modal, setModal, setProgress } = useToggleContext()
-    const name = useMemo(() => getStorage('name'), [])
 
     function handleCancel(event) {
         event.preventDefault()

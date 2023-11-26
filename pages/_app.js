@@ -2,18 +2,18 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head'
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Aos from 'aos';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import ToggleProvider from '../contexts/ToggleProvider';
 import NoteProvider from '../contexts/NoteProvider';
-import Loading from '../components/Loading';
-import Container from '../components/container/Container';
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { getStorage } from '../modules/storage';
-import { hideNavbar, onlyGuest, onlyUser } from '../constants';
+import { hideNavbar, onlyGuest } from '../constants';
+import Modal from '../components/Modal';
+import Navbar from '../components/navbar/Navbar';
 
 const api = process.env.NEXT_PUBLIC_API
 const client = new QueryClient({ defaultOptions: { queries: { staleTime: 15000, retry: 1 } } })
@@ -21,6 +21,8 @@ const client = new QueryClient({ defaultOptions: { queries: { staleTime: 15000, 
 export default function MyApp({ Component, pageProps }) {
     const router = useRouter()
     const [loading, setLoading] = useState(true)
+    const name = useMemo(() => getStorage('name'), [router.pathname])
+    pageProps.name = name;
     pageProps.router = router;
 
     useEffect(() => {
@@ -29,8 +31,7 @@ export default function MyApp({ Component, pageProps }) {
     }, [])
 
     useEffect(() => {
-        if (getStorage('name') && onlyGuest.includes(router.pathname)) router.replace('/dashboard')
-        else if (!getStorage('name') && onlyUser.includes(router.pathname)) router.replace('/');
+        if (name && onlyGuest.includes(router.pathname)) router.replace('/');
         else setLoading(false)
     }, [router.pathname]);
 
@@ -119,11 +120,14 @@ export default function MyApp({ Component, pageProps }) {
         <QueryClientProvider client={client}>
             <ToggleProvider>
                 <NoteProvider>
-                    {loading || !router.isReady ? <Loading /> : <>
-                        {!hideNavbar.includes(router.pathname) && <Container router={router} />}
+                    {!loading && router.isReady && <>
+                        {((!hideNavbar.includes(router.pathname)) || (name && router.pathname === '/')) && <>
+                            <Navbar name={name} router={router} />
+                            <Modal name={name} router={router} />
+                        </>}
                         <Component {...pageProps} />
+                        <ToastContainer autoClose={2500} pauseOnFocusLoss={false} pauseOnHover={false} position='bottom-left' closeButton={false} />
                     </>}
-                    <ToastContainer autoClose={2500} pauseOnFocusLoss={false} pauseOnHover={false} position='bottom-left' closeButton={false} />
                 </NoteProvider>
             </ToggleProvider>
         </QueryClientProvider>

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const revision = `${Date.now()}`
-const pages = ['/', '/dashboard', '/about', '/account/forgot', '/account/login', '/account/signup']
+const pages = ['/', '/about', '/account/forgot', '/account/login', '/account/signup']
 const images = ['/images/bg.webp', '/images/creator.webp', '/images/logo.webp']
 
 const withPWA = require('@ducanh2912/next-pwa').default({

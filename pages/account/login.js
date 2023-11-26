@@ -24,7 +24,7 @@ export default function Login({ router }) {
         setStorage('name', name)
         setStorage('token', token)
         toast.success('Logged in successfully!')
-        router.replace('/dashboard')
+        router.replace('/')
     }
 
     return <>
