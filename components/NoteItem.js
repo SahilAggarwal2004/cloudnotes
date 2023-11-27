@@ -21,7 +21,7 @@ export default function NoteItem({ note, editTag, editTagColor, setEditDescLengt
             <div className='space-x-5 flex justify-center mb-1'>
                 <FaRegTrashAlt className="scale-110 cursor-pointer" onClick={() => {
                     if (progress) return
-                    setModal([{}, true, 'deleteNote'])
+                    setModal({ active: true, type: 'deleteNote' })
                     setNoteToDelete(_id)
                 }} />
                 <FaRegEdit className="scale-125 cursor-pointer" onClick={() => {

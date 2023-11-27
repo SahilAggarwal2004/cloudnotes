@@ -87,9 +87,9 @@ export default function NoteProvider({ children, router }) { // props parameter 
 
     // Delete a note
     async function deleteNote(id) {
-        setNoteToDelete('')
-        setModal([{}, false, ''])
         setProgress(33)
+        setModal({ active: false })
+        setNoteToDelete('')
         const json = await fetchApp(`api/notes/delete/${id}`, 'DELETE', {})
         setProgress(100)
         updateNotes(json)

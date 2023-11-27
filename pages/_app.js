@@ -8,12 +8,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import ToggleProvider from '../contexts/ToggleProvider';
 import NoteProvider from '../contexts/NoteProvider';
-import '../styles/globals.css';
-import 'react-toastify/dist/ReactToastify.css';
 import { getStorage } from '../modules/storage';
 import { hideNavbar, onlyGuest } from '../constants';
 import Modal from '../components/Modal';
 import Navbar from '../components/navbar/Navbar';
+import '../styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
+import 'aos/dist/aos.css';
 
 const api = process.env.NEXT_PUBLIC_API
 const client = new QueryClient({ defaultOptions: { queries: { staleTime: 15000, retry: 1 } } })
@@ -25,10 +26,7 @@ export default function MyApp({ Component, pageProps }) {
     pageProps.name = name;
     pageProps.router = router;
 
-    useEffect(() => {
-        Aos.init();
-        Aos.refresh();
-    }, [])
+    useEffect(() => { Aos.init() }, [])
 
     useEffect(() => {
         if (name && onlyGuest.includes(router.pathname)) router.replace('/');
@@ -123,7 +121,7 @@ export default function MyApp({ Component, pageProps }) {
                     {!loading && router.isReady && <>
                         {((!hideNavbar.includes(router.pathname)) || (name && router.pathname === '/')) && <>
                             <Navbar name={name} router={router} />
-                            <Modal name={name} router={router} />
+                            <Modal router={router} />
                         </>}
                         <Component {...pageProps} />
                         <ToastContainer autoClose={2500} pauseOnFocusLoss={false} pauseOnHover={false} position='bottom-left' closeButton={false} />
