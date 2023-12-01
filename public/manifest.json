@@ -1,7 +1,8 @@
 {
   "short_name": "CloudNotes",
   "name": "CloudNotes - Notes on Cloud",
-  "version": "1.0.1",
+  "version": "1.1.0",
+  "id": "1.1.0",
   "manifest_version": 2,
   "description": "CloudNotes is an online platform to save all your notes at one place on the cloud securely for free.",
   "author": "Sahil Aggarwal",
