@@ -122,7 +122,7 @@ export default function MyApp({ Component, pageProps }) {
                 <NoteProvider>
                     {!loading && router.isReady && <>
                         {((!hideNavbar.includes(pathname)) || (name && pathname === '/')) && <>
-                            <Navbar name={name} router={router} />
+                            <Navbar name={name} />
                             <Modal router={router} />
                         </>}
                         <Component {...pageProps} />
