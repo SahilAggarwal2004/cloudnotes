@@ -5,8 +5,7 @@ import Expandable from './Expandable'
 import NavLink from './NavLink'
 import { useToggleContext } from '../../contexts/ToggleProvider'
 
-export default function Navbar({ name, router }) {
-    const { pathname } = router
+export default function Navbar({ name }) {
     const { setModal, hide, setHide, progress, setProgress } = useToggleContext()
     const extendNav = () => setHide(!hide)
 
@@ -19,11 +18,11 @@ export default function Navbar({ name, router }) {
             </div>
             <Expandable expand={!hide}>
                 <div className='mt-3 space-y-0.5 sm:m-0 sm:space-y-0 sm:space-x-4 sm:flex'>
-                    {name ? <NavLink href='/' text='Dashboard' path={pathname} onClick={extendNav} /> : <>
-                        <NavLink href='/account/signup' text='Signup' path={pathname} onClick={extendNav} />
-                        <NavLink href='/account/login' text='Login' path={pathname} onClick={extendNav} />
+                    {name ? <NavLink href='/' text='Dashboard' onClick={extendNav} /> : <>
+                        <NavLink href='/account/signup' text='Signup' onClick={extendNav} />
+                        <NavLink href='/account/login' text='Login' onClick={extendNav} />
                     </>}
-                    <NavLink href='/about' text='About' path={pathname} onClick={extendNav} />
+                    <NavLink href='/about' text='About' onClick={extendNav} />
                 </div>
             </Expandable>
         </div>
