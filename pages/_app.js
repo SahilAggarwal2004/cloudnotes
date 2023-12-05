@@ -2,7 +2,6 @@
 import Head from 'next/head'
 import Script from 'next/script';
 import { useRouter } from 'next/router';
-import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import Aos from 'aos';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -22,18 +21,17 @@ const client = new QueryClient({ defaultOptions: { queries: { staleTime: 15000, 
 
 export default function MyApp({ Component, pageProps }) {
     const router = useRouter()
-    const pathname = usePathname()
     const [loading, setLoading] = useState(true)
-    const name = useMemo(() => getStorage('name'), [pathname])
+    const name = useMemo(() => getStorage('name'), [router.pathname])
     pageProps.name = name;
     pageProps.router = router;
 
     useEffect(() => { Aos.init() }, [])
 
     useEffect(() => {
-        if (name && onlyGuest.includes(pathname)) router.replace('/');
+        if (name && onlyGuest.includes(router.pathname)) router.replace('/');
         else setLoading(false)
-    }, [pathname]);
+    }, [router.pathname]);
 
     return <>
         <Head>
@@ -121,7 +119,7 @@ export default function MyApp({ Component, pageProps }) {
             <ToggleProvider>
                 <NoteProvider>
                     {!loading && router.isReady && <>
-                        {((!hideNavbar.includes(pathname)) || (name && pathname === '/')) && <>
+                        {((!hideNavbar.includes(router.pathname)) || (name && router.pathname === '/')) && <>
                             <Navbar name={name} />
                             <Modal router={router} />
                         </>}
