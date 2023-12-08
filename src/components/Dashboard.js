@@ -10,6 +10,7 @@ import { getStorage, setStorage } from '../modules/storage'
 import { queryKey } from '../constants'
 import { useNoteContext } from '../contexts/NoteProvider';
 import { useToggleContext } from '../contexts/ToggleProvider';
+import useURLState from '../hooks/useURLState';
 
 export default function Dashboard() {
     const { addNote, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, queryFn, onError } = useNoteContext()
@@ -22,7 +23,7 @@ export default function Dashboard() {
     const editDescription = useRef();
     const editTag = useRef();
     const [selTag, setSelTag] = useState('All');
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useURLState('search', '');
     const [addDescLength, setAddDescLength] = useState(0);
     const [editDescLength, setEditDescLength] = useState(0);
 
@@ -68,7 +69,7 @@ export default function Dashboard() {
         <div className='mb-12'>
             <div className='text-center py-4'>
                 <div className='flex flex-col items-center justify-center sm:flex-row sm:justify-end sm:mx-5 sm:space-x-3'>
-                    <input className='text-center border border-grey-600 my-1' placeholder='Search Notes' defaultValue={search} onChange={event => setSearch(event.target.value.toLowerCase())} />
+                    <input className='text-center border border-grey-600 px-1 my-1' placeholder='Search Notes' defaultValue={search} onChange={event => setSearch(event.target.value.toLowerCase())} />
                     <select className='w-min px-1 my-1 border border-grey-600' defaultValue={selTag} onChange={(event) => { setSelTag(event.target.value) }}>
                         {tags.map(tag => <option key={tag} value={tag}>{tag}</option>)}
                     </select>
