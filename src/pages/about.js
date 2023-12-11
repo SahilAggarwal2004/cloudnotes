@@ -79,16 +79,16 @@ export default function About() {
                 <div className='flex flex-col items-center px-10 py-4 m-3 relative mt-24 pt-16 border border-black rounded-sm' data-aos='fade-up'>
                     <img src='/images/creator.webp' alt="Sahil Aggarwal" className='w-36 h-36 rounded-full border-2 border-black absolute top-0 translate-y-[-50%]' />
                     <div className='font-semibold text-lg mt-4' data-aos='fade-up'>Sahil Aggarwal</div>
-                    <div className='text-gray-700 mt-2' data-aos='fade-up'>CSE, 1st Year, MSIT</div>
+                    <div className='text-gray-700 mt-2' data-aos='fade-up'>CSE, 3rd Year, MSIT</div>
                     <div className='text-gray-700 mt-2' data-aos='fade-up'>Full Stack Web Developer</div>
                 </div>
             </div>
             <footer className='w-full text-center bg-purple-600 text-white px-3 py-2 flex flex-col sm:flex-row justify-between items-center space-y-1 sm:space-y-0'>
+                <div>Made with ❤️ by Sahil Aggarwal</div>
                 <div className='flex space-x-4 px-2'>
                     <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer"><FaLinkedin className="scale-125 inline" title='LinkedIn' /></a>
                     <a href="https://github.com/SahilAggarwal2004" target="_blank" rel="noreferrer"><FaGithub className="scale-125 inline" title='GitHub' /></a>
                 </div>
-                <div>Copyright&copy; <strong>CloudNotes</strong> 2022 | All rights reserved</div>
             </footer>
         </div>
     </>
