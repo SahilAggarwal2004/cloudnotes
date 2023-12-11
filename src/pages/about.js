@@ -84,7 +84,7 @@ export default function About() {
                 </div>
             </div>
             <footer className='w-full text-center bg-purple-600 text-white px-3 py-2 flex flex-col sm:flex-row justify-between items-center space-y-1 sm:space-y-0'>
-                <div>Made with ❤️ by Sahil Aggarwal</div>
+                <div>Made with 🤍 by Sahil Aggarwal</div>
                 <div className='flex space-x-4 px-2'>
                     <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer"><FaLinkedin className="scale-125 inline" title='LinkedIn' /></a>
                     <a href="https://github.com/SahilAggarwal2004" target="_blank" rel="noreferrer"><FaGithub className="scale-125 inline" title='GitHub' /></a>
