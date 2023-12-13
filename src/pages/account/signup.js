@@ -21,7 +21,7 @@ export default function Signup({ router }) {
         const json = await fetchApp('api/auth/signup', 'POST', { name: name.current.value, email: email.current.value, password: password.current.value })
         setProgress(100)
         if (!json.success) return
-        toast.success('Account created successfully! Please confirm your account via email to proceed!')
+        toast.success('Account created successfully! Please confirm your account via email to proceed!', { autoClose: 5000, pauseOnFocusLoss: true, pauseOnHover: true })
         router.replace('/account/login')
     }
 
