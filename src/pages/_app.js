@@ -117,7 +117,7 @@ export default function MyApp({ Component, pageProps }) {
 
         <QueryClientProvider client={client}>
             <ToggleProvider>
-                <NoteProvider>
+                <NoteProvider router={router}>
                     {!loading && router.isReady && <>
                         {((!hideNavbar.includes(router.pathname)) || (name && router.pathname === '/')) && <>
                             <Navbar name={name} />
