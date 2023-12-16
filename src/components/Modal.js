@@ -3,14 +3,13 @@ import { toast } from 'react-toastify';
 import { resetStorage } from '../modules/storage'
 import { useNoteContext } from '../contexts/NoteProvider';
 import { useToggleContext } from '../contexts/ToggleProvider';
-import { useCallback } from 'react';
 
 export default function Modal({ router }) {
     const { fetchApp, deleteNote, noteToDelete } = useNoteContext()
     const { modal: { active, type, ...props }, setModal, setProgress } = useToggleContext()
     const { name } = props
 
-    const closeModal = useCallback(() => setModal({ active: false }), []);
+    const closeModal = () => setModal({ active: false })
 
     async function logOut() {
         setProgress(100)
