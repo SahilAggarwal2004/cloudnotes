@@ -1,3 +1,4 @@
 # CloudNotes - Notes on Cloud
+CloudNotes is a web application tailored for quick and convenient note-taking. It offers the flexibility to access your notes from any location at any time. Notably, CloudNotes prioritizes the security of your information through thorough encryption, ensuring that only you have the ability to view your notes. This emphasis on privacy makes CloudNotes a reliable and user-friendly platform for managing your short notes effectively.
 
-CloudNotes is a web application for all your short notes which can be accessed from anywhere, anytime. Here, your notes are totally encrypted so that no one can see your notes except you. This project was inspired from a React Tutorial with many features added additionally.
+This project was inspired from a React Tutorial with many features added additionally.
