@@ -9,7 +9,7 @@ export default function Navbar({ name }) {
     const { setModal, hide, setHide, progress, setProgress } = useToggleContext()
     const extendNav = () => setHide(!hide)
 
-    return <nav className='sticky inset-0 z-20'>
+    return <nav className='sticky inset-0 z-30'>
         <div className='flex bg-purple-700 text-white sm:justify-between items-center py-2 px-4 flex-col sm:flex-row overflow-hidden'>
             <div className={`flex items-center justify-between w-full sm:justify-start ${name && 'sm:space-x-5'}`}>
                 <FaRegUser className={`cursor-pointer scale-125 font-extrabold transition-all ${!name && 'fixed invisible'}`} onClick={() => setModal({ active: true, type: 'user', name })} />
