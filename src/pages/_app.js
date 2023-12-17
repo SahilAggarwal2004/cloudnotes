@@ -44,7 +44,7 @@ export default function MyApp({ Component, pageProps }) {
                 content="cloud, notes, notes cloud, cloudnotes, platform, encryption, security, save, short notes, vercel, reactjs, online, online platform, free, access, anywhere, anytime, fast, independent, web app, world, continue" />
             <meta name="description"
                 content="CloudNotes is an online platform to save all your notes on the cloud. We ensure strong encryption of your notes so that only you can access your notes." />
-            <link rel="manifest" href="./manifest.json" />
+            <link rel="manifest" href="/manifest.json" />
 
             <link rel='preconnect' href={api} />
 
