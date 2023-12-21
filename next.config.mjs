@@ -1,6 +1,6 @@
 import withPWAInit from '@serwist/next'
 
-const pages = ['/', '/about', '/account/forgot', '/account/login', '/account/signup', '/_offline']
+const pages = ['/', '/about', '/account/forgot', '/account/login', '/account/signup']
 const images = ['bg.webp', 'creator.webp', 'logo.webp'].map(image => `/images/${image}`)
 const revision = `${Date.now()}`
 
