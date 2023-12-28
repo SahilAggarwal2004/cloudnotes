@@ -6,8 +6,8 @@ import { useNoteContext } from '../contexts/NoteProvider';
 import { useToggleContext } from '../contexts/ToggleProvider';
 
 export default function NoteItem({ note, editTag, editTagColor, setEditDescLength }) {
-    const { _id, date, tag, title, description } = note;
-    const showDate = new Date(Date.parse(date)).toLocaleString()
+    const { _id, description, updatedAt, tag, title } = note;
+    const showDate = new Date(Date.parse(updatedAt)).toLocaleString()
     const { setNoteToDelete, setNoteToEdit } = useNoteContext()
     const { setModal, progress } = useToggleContext()
     const tagColors = getStorage('tagColors')
