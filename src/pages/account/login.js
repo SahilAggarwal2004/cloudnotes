@@ -2,28 +2,22 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRef } from 'react';
-import { toast } from 'react-toastify';
 import { setStorage } from '../../modules/storage';
 import Logo from '../../components/Logo';
 import Password from '../../components/Password';
 import { useNoteContext } from '../../contexts/NoteProvider';
-import { useToggleContext } from '../../contexts/ToggleProvider';
 
 export default function Login({ router }) {
     const { fetchApp } = useNoteContext()
-    const { setProgress } = useToggleContext()
     const email = useRef();
     const password = useRef();
 
     async function submit(event) {
         event.preventDefault()
-        setProgress(33)
-        const { success, name, token } = await fetchApp('api/auth/login', 'POST', { email: email.current.value, password: password.current.value })
-        setProgress(100)
+        const { success, name, token } = await fetchApp({ url: 'api/auth/login', method: 'POST', body: { email: email.current.value, password: password.current.value } })
         if (!success) return
         setStorage('name', name)
         setStorage('token', token)
-        toast.success('Logged in successfully!')
         router.replace('/')
     }
 

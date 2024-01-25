@@ -1,21 +1,14 @@
-import { toast } from 'react-toastify';
 import { useNoteContext } from '../../../contexts/NoteProvider';
-import { useToggleContext } from '../../../contexts/ToggleProvider';
 import Head from 'next/head';
 
 export default function Confirm({ router }) {
     const { token } = router.query;
     const { fetchApp } = useNoteContext()
-    const { setProgress } = useToggleContext()
 
     async function verify() {
         if (!token) return
-        setProgress(33)
-        const json = await fetchApp('api/auth/confirm', 'PUT', {}, token);
-        setProgress(100)
-        if (!json.success) return
-        toast.success(json.confirmed ? 'User already confirmed!' : 'Successfully confirmed your CloudNotes account!')
-        router.replace('/account/login')
+        const { success } = await fetchApp({ url: 'api/auth/confirm', method: 'PUT', token });
+        if (success) router.replace('/account/login')
     }
 
     return <>

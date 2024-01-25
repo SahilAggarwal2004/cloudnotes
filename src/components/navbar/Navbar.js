@@ -1,12 +1,14 @@
 import Link from 'next/link'
+import { useState } from 'react'
 import { FaRegUser, FaBars } from 'react-icons/fa'
 import LoadingBar from "react-top-loading-bar"
 import Expandable from './Expandable'
 import NavLink from './NavLink'
-import { useToggleContext } from '../../contexts/ToggleProvider'
+import { useNoteContext } from '../../contexts/NoteProvider'
 
 export default function Navbar({ name }) {
-    const { setModal, hide, setHide, progress, setProgress } = useToggleContext()
+    const { setModal, progress, setProgress } = useNoteContext()
+    const [hide, setHide] = useState(true)
     const extendNav = () => setHide(!hide)
 
     return <nav className='sticky inset-0 z-30'>

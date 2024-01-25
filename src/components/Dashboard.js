@@ -1,67 +1,65 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from 'next/head';
 import { useEffect, useRef, useState, useMemo, useLayoutEffect } from 'react'
-import { FaPlus as FaPlusBold, FaRegSave } from 'react-icons/fa'
+import ReorderList, { ReorderIcon } from 'react-reorder-list';
+import { FaPlus as FaPlusBold } from 'react-icons/fa'
 import { FaPlus, FaXmark } from 'react-icons/fa6'
-import { toast } from 'react-toastify';
 import { useQuery } from '@tanstack/react-query'
 import NoteItem from '../components/NoteItem'
-import { getStorage, setStorage } from '../modules/storage'
-import { queryKey } from '../constants'
+import { setStorage } from '../modules/storage'
+import { colors, defaultColor, queryKey } from '../constants'
 import { useNoteContext } from '../contexts/NoteProvider';
-import { useToggleContext } from '../contexts/ToggleProvider';
 import useURLState from '../hooks/useURLState';
+import useTagColors from '../hooks/useTagColors'
+import Loading from './Loading';
 
 export default function Dashboard() {
-    const { addNote, noteToEdit, setNoteToEdit, editNote, tagColor, editTagColor, queryFn, onError } = useNoteContext()
-    const { newNote, setNewNote, spinner, progress } = useToggleContext()
-    const tags = ['All'];
-    const title = useRef(); // defining a reference
-    const description = useRef();
-    const tag = useRef();
-    const editTitle = useRef();
-    const editDescription = useRef();
-    const editTag = useRef();
-    const [selTag, setSelTag] = useState('All');
+    const { fetchApp, onError } = useNoteContext()
+    const { getTagColor, setTagColor } = useTagColors()
+    const [newNote, setNewNote] = useState(false)
+    const form = useRef()
+    const titleRef = useRef();
+    const [description, setDescription] = useState('');
+    const tagRef = useRef();
+    const [tagColor, setColor] = useState(defaultColor);
+    const [selTag, setSelTag] = useState('');
     const [search, setSearch] = useURLState('search', '');
-    const [addDescLength, setAddDescLength] = useState(0);
-    const [editDescLength, setEditDescLength] = useState(0);
 
-    const { data, error } = useQuery({ queryKey, queryFn })
-    const notes = useMemo(() => data || getStorage(queryKey, []), [data])
+    const { data, error, isFetching } = useQuery({
+        queryKey, queryFn: async () => {
+            const { notes } = await fetchApp({ url: 'api/notes/fetch', showToast: false })
+            return notes
+        }
+    })
+    const notes = useMemo(() => {
+        if (data) setStorage(queryKey, data)
+        return data || []
+    }, [data])
+    const tags = notes.reduce((arr, { tag }) => arr.includes(tag) ? arr : arr.concat(tag), []);
     const show = useMemo(() => {
-        if (notes) setStorage(queryKey, notes)
-        return notes.filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search))
-    }, [notes, search])
-    notes.forEach(note => { if (!tags.includes(note.tag)) tags.push(note.tag) });
-    const showLength = (selTag === 'All' ? show : show.filter(({ tag }) => tag === selTag)).length
+        return (selTag ? notes.filter(({ tag }) => tag === selTag) : notes).filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search))
+    }, [notes, search, selTag])
 
-    useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
+    useEffect(() => { if (!newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
 
     useLayoutEffect(() => {
-        if (!error) return
-        onError(error)
-    }, [error])
+        if (isFetching) return
+        if (error || !data) onError(error)
+    }, [isFetching])
 
-    function addNewNote() {
-        setNewNote(true)
-        setAddDescLength(0)
-        title.current.value = ''
-        description.current.value = ''
-        tag.current.value = ''
+    async function addNote(event) {
+        event.preventDefault()
+        const tag = tagRef.current.value || 'General'
+        const { success } = await fetchApp({ url: 'api/notes/add', method: 'POST', body: { title: titleRef.current.value, description, tag } })
+        if (!success) return
+        setNewNote(false)
+        setTagColor(tag, tagColor)
     }
 
-    function handleAdd() {
-        // accessing ref data and performing functions (some are present in current and some outside current)
-        if (title.current.value.length < 1) toast.error('Please provide title to the note')
-        else if (description.current.value.length < 1) toast.error('Please provide description to the note')
-        else if (!progress) addNote(title.current.value, description.current.value, tag.current.value)
-    }
-
-    function handleEdit() {
-        if (editTitle.current.value.length < 1) toast.error('Please provide title to the note')
-        else if (editDescription.current.value.length < 1) toast.error('Please provide description to the note')
-        else if (!progress) editNote({ ...noteToEdit[0], editTitle: editTitle.current.value, editDescription: editDescription.current.value, editTag: editTag.current.value })
+    async function handlePositionChange({ newItems, revert }) {
+        const order = newItems.slice(0, -1).map(({ key }) => key)
+        const { success } = await fetchApp({ url: 'api/notes/order', method: 'PUT', body: { order } })
+        if (!success) revert()
     }
 
     return <>
@@ -69,8 +67,9 @@ export default function Dashboard() {
         <div className='mb-12'>
             <div className='text-center py-4'>
                 <div className='flex flex-col items-center justify-center sm:flex-row sm:justify-end sm:mx-5 sm:space-x-3'>
-                    <input className='text-center border border-grey-600 px-1 my-1' placeholder='Search Notes' defaultValue={search} onChange={event => setSearch(event.target.value.toLowerCase())} />
-                    <select className='w-min px-1 my-1 border border-grey-600' defaultValue={selTag} onChange={(event) => { setSelTag(event.target.value) }}>
+                    <input className='text-center border border-grey-600 px-1 my-1' placeholder='Search Notes' defaultValue={search} onChange={e => setSearch(e.target.value.toLowerCase())} />
+                    <select className='w-min px-1 my-1 border border-grey-600' value={selTag} onChange={e => setSelTag(e.target.value)}>
+                        <option key='All' value=''>All</option>
                         {tags.map(tag => <option key={tag} value={tag}>{tag}</option>)}
                     </select>
                 </div>
@@ -81,64 +80,41 @@ export default function Dashboard() {
                         Notes: <strong>{notes.length}</strong>/100
                     </div>
                 </div>
-                <div className={`grid grid-cols-1 p-5 ${(showLength !== 0 || newNote) && 'sm:grid-cols-2 normal:grid-cols-3 gap-x-5 gap-y-7'}`}>
-                    {showLength === 0 && <>
-                        {spinner ? <div className='fixed top-[calc(50%-0.6875rem)] left-[calc(50%-0.6875rem)] w-[1.375rem] h-[1.375rem] border-2 border-transparent border-t-black border-b-black rounded-[50%] animate-spin-fast' /> : !newNote && <h4 className='fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center'>No Notes To Display!</h4>}
-                    </>}
-                    {show.map(note => note._id !== noteToEdit[0]._id && (selTag === note.tag || selTag === 'All') ?
-                        <NoteItem key={note._id} note={note} editTag={editTag} editTagColor={editTagColor} setEditDescLength={setEditDescLength} /> :
-                        note._id === noteToEdit[0]._id && <div key={note._id} className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${noteToEdit[1] ? '' : 'hidden'}`} data-aos='fade-right' data-aos-once='true' data-aos-offset={20}>
-                            <div className={`absolute top-0 translate-y-[-50%] flex`}>
-                                <input type='text' list='tagList' ref={editTag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} defaultValue={noteToEdit[0].tag} onChange={event => editTagColor.current.value = getStorage('tagColors')?.[event.target.value] || editTagColor.current.value} autoComplete='off' />
-                                <input type='color' ref={editTagColor} list='tagColors' className={`bg-gray-200 text-xs text-center rounded-r-2xl text-black focus:outline-0`} defaultValue='#e5e7eb' />
-                            </div>
-                            <input type='text' ref={editTitle} className='text-lg text-bold text-center w-full focus:outline-0 placeholder:text-gray-600' placeholder='Add title' minLength={1} maxLength={20} defaultValue={noteToEdit[0].title} />
-                            <hr className='w-full my-2' />
-                            <textarea ref={editDescription} placeholder='Add description' rows='5' maxLength={1000} className='text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0' defaultValue={noteToEdit[0].description} onChange={() => { setEditDescLength(editDescription.current.value.length) }} />
-                            <div className='text-xs text-right w-full mb-10 pr-1'>{editDescLength}/1000</div>
-                            <div className='space-x-4 absolute bottom-[1.375rem] flex'>
-                                <FaRegSave className="cursor-pointer scale-110" onClick={handleEdit} />
-                                <FaXmark className="cursor-pointer scale-x-[1.2] scale-y-125" onClick={() => setNoteToEdit([{}, false])} />
-                            </div>
-                        </div>
-                    )}
-                    {!spinner && <div className={`flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative ${!newNote && 'hidden'}`}>
+                {show.length || newNote ? <ReorderList useOnlyIconToDrag watchChildrenUpdates disabled={isFetching || selTag || search} props={{ className: 'grid grid-cols-1 p-5 sm:grid-cols-2 normal:grid-cols-3 gap-x-5 gap-y-7' }} onPositionChange={handlePositionChange}>
+                    {show.map(note => <NoteItem key={note._id} note={note} getTagColor={getTagColor} setTagColor={setTagColor}>
+                        {!isFetching && <ReorderIcon />}
+                    </NoteItem>)}
+                    {newNote && <form ref={form} className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative' onSubmit={addNote}>
                         <div className={`absolute top-0 translate-y-[-50%] flex`}>
-                            <input type='text' list='tagList' ref={tag} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} onChange={event => tagColor.current.value = getStorage('tagColors')?.[event.target.value] || tagColor.current.value} autoComplete='off' />
-                            <datalist id='tagList'>
-                                {tags.filter(tag => tag !== 'All').map(tag => <option key={tag} value={tag} />)}
-                            </datalist>
-                            <input type='color' ref={tagColor} list='tagColors' className={`bg-gray-200 text-xs text-center rounded-r-2xl text-black focus:outline-0`} defaultValue='#e5e7eb' />
-                            <datalist id='tagColors'>
-                                <option value='#e5e7eb' /><option value='#ffffff' />
-                                <option value='#ff8080' /><option value='#ffaa80' />
-                                <option value='#ffd480' /><option value='#ffff80' />
-                                <option value='#d5ff80' /><option value='#aaff80' />
-                                <option value='#80ff80' /><option value='#ffaa80' />
-                                <option value='#80ffaa' /><option value='#80ffd4' />
-                                <option value='#80ffff' /><option value='#80d4ff' />
-                                <option value='#80aaff' /><option value='#8080ff' />
-                                <option value='#aa80ff' /><option value='#d580ff' />
-                                <option value='#ff80d5' /><option value='#ff80aa' />
-                            </datalist>
-                        </div>
-                        <input type='text' ref={title} className='text-lg text-bold text-center w-full focus:outline-0 placeholder:text-gray-600' placeholder='Add title' minLength={1} maxLength={20} />
-                        <hr className='w-full my-2' />
-                        <textarea ref={description} placeholder='Add description' rows='5' maxLength={1000} className='text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0' onChange={() => setAddDescLength(description.current.value.length)} />
-                        <div className='text-xs text-right w-full mb-10 pr-1'>{addDescLength}/1000</div>
-                        <div className='space-x-3 absolute bottom-[1.375rem] flex'>
-                            <FaPlus className="cursor-pointer scale-110 font-bold" onClick={handleAdd} />
-                            <FaXmark className="cursor-pointer scale-x-[1.2] scale-y-125" onClick={() => {
-                                setNewNote(false)
-                                tagColor.current.value = '#e5e7eb';
+                            <input type='text' list='tag-list' ref={tagRef} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} autoComplete='off' onChange={e => {
+                                const tagColor = getTagColor(e.target.value, false)
+                                if (tagColor) setColor(tagColor)
                             }} />
+                            <datalist id='tag-list'>{tags.map(tag => <option key={tag} value={tag} />)}</datalist>
+                            <input type='color' value={tagColor} list='tag-colors' className={`bg-gray-200 text-xs text-center rounded-r-2xl text-black focus:outline-0`} onChange={e => setColor(e.target.value)} />
+                            <datalist id='tag-colors'>
+                                {colors.map(color => <option key={color} value={color} />)}
+                            </datalist>
                         </div>
-                    </div>}
-                </div>
+                        <input type='text' ref={titleRef} className='text-lg text-bold text-center w-full focus:outline-0 placeholder:text-gray-600' placeholder='Add title' required maxLength={20} />
+                        <hr className='w-full my-2' />
+                        <textarea value={description} placeholder='Add description' rows='5' required maxLength={1000} className='text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0' onChange={e => setDescription(e.target.value)} />
+                        <div className='text-xs text-right w-full mb-10 pr-1'>{description.length}/1000</div>
+                        <div className='space-x-3 absolute bottom-[1.375rem] flex'>
+                            <button className="cursor-pointer scale-110 font-bold disabled:opacity-60" disabled={isFetching}>
+                                <FaPlus />
+                            </button>
+                            <FaXmark className="cursor-pointer scale-x-[1.2] scale-y-125" onClick={() => setNewNote(false)} />
+                        </div>
+                    </form>}
+                </ReorderList> : isFetching ? <Loading /> : <h4 className='fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center'>No Notes To Display!</h4>}
             </div>
-            <div className='z-20 fixed bottom-[2.625rem] right-[4vw] sm:right-[3vw] text-center py-3 px-4 rounded-full text-white bg-purple-700 cursor-pointer' onClick={!spinner ? (newNote ? handleAdd : addNewNote) : null}>
+            <button className='z-20 fixed bottom-[2.625rem] right-[4vw] sm:right-[3vw] text-center py-3 px-4 rounded-full text-white bg-purple-700 cursor-pointer disabled:opacity-60' disabled={isFetching} onClick={() => {
+                if (newNote) return form.current.submit()
+                else setNewNote(true)
+            }}>
                 <FaPlusBold className='scale-110' />
-            </div>
+            </button>
         </div>
     </>
 }

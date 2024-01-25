@@ -16,7 +16,6 @@ const withPWA = withPWAInit({
 const nextConfig = {
   experimental: {
     nextScriptWorkers: true,
-    optimizePackageImports: ['']
   }
 }
 

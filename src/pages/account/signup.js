@@ -6,21 +6,17 @@ import { toast } from 'react-toastify';
 import Logo from '../../components/Logo';
 import Password from '../../components/Password';
 import { useNoteContext } from '../../contexts/NoteProvider';
-import { useToggleContext } from '../../contexts/ToggleProvider';
 
 export default function Signup({ router }) {
     const { fetchApp } = useNoteContext()
-    const { setProgress } = useToggleContext()
     const name = useRef();
     const email = useRef();
     const password = useRef();
 
     async function submit(event) {
         event.preventDefault()
-        setProgress(33)
-        const json = await fetchApp('api/auth/signup', 'POST', { name: name.current.value, email: email.current.value, password: password.current.value })
-        setProgress(100)
-        if (!json.success) return
+        const { success, error } = await fetchApp({ url: 'api/auth/signup', method: 'POST', body: { name: name.current.value, email: email.current.value, password: password.current.value }, showToast: false })
+        if (!success) return toast.error(error)
         toast.success('Account created successfully! Please confirm your account via email to proceed!', { autoClose: 5000, pauseOnFocusLoss: true, pauseOnHover: true })
         router.replace('/account/login')
     }

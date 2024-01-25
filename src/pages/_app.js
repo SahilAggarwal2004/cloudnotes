@@ -6,10 +6,9 @@ import { useEffect, useMemo, useState } from 'react';
 import Aos from 'aos';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
-import ToggleProvider from '../contexts/ToggleProvider';
 import NoteProvider from '../contexts/NoteProvider';
 import { getStorage } from '../modules/storage';
-import { hideNavbar, onlyGuest } from '../constants';
+import { hideNavbar, onlyGuest, queryKey } from '../constants';
 import Modal from '../components/Modal';
 import Navbar from '../components/navbar/Navbar';
 import '../styles/globals.css';
@@ -17,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'aos/dist/aos.css';
 
 const api = process.env.NEXT_PUBLIC_API
-const client = new QueryClient({ defaultOptions: { queries: { staleTime: 15000, retry: 1 } } })
+const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, placeholderData: getStorage(queryKey, []), retry: 1 } } })
 
 export default function MyApp({ Component, pageProps }) {
     const router = useRouter()
@@ -116,18 +115,16 @@ export default function MyApp({ Component, pageProps }) {
         </Script>
 
         <QueryClientProvider client={client}>
-            <ToggleProvider>
-                <NoteProvider router={router}>
-                    {!loading && router.isReady && <>
-                        {((!hideNavbar.includes(router.pathname)) || (name && router.pathname === '/')) && <>
-                            <Navbar name={name} />
-                            <Modal router={router} />
-                        </>}
-                        <Component {...pageProps} />
-                        <ToastContainer autoClose={2500} pauseOnFocusLoss={false} pauseOnHover={false} position='bottom-left' closeButton={false} />
+            <NoteProvider router={router}>
+                {!loading && router.isReady && <>
+                    {((!hideNavbar.includes(router.pathname)) || (name && router.pathname === '/')) && <>
+                        <Navbar name={name} />
+                        <Modal router={router} />
                     </>}
-                </NoteProvider>
-            </ToggleProvider>
+                    <Component {...pageProps} />
+                    <ToastContainer stacked autoClose={3000} pauseOnFocusLoss={false} position='bottom-left' />
+                </>}
+            </NoteProvider>
         </QueryClientProvider>
     </>
 }

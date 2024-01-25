@@ -1,12 +1,10 @@
-import { useToggleContext } from "../contexts/ToggleProvider"
+import { useNoteContext } from "../contexts/NoteProvider"
 
 export default function Loadbar() {
-    const { loadbar } = useToggleContext()
+    const { loadbar } = useNoteContext()
     const [w, visibility] = loadbar
 
-    return (
-        <div className={`${visibility ? '' : 'opacity-0'}`}>
-            <div className={`${w === 0 ? 'w-0' : w === 1 / 3 ? 'w-1/3' : 'w-full'} bg-red-600 transition-all duration-300 ease-in h-[0.15rem]`} />
-        </div>
-    )
+    return <div className={`${visibility ? '' : 'opacity-0'}`}>
+        <div className={`${w === 0 ? 'w-0' : w === 1 / 3 ? 'w-1/3' : 'w-full'} bg-red-600 transition-all duration-300 ease-in h-[0.15rem]`} />
+    </div>
 }

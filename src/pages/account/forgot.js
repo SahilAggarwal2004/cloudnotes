@@ -2,15 +2,12 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import { toast } from 'react-toastify';
 import Logo from '../../components/Logo';
 import Password from '../../components/Password';
 import { useNoteContext } from '../../contexts/NoteProvider';
-import { useToggleContext } from '../../contexts/ToggleProvider';
 
 export default function Forgot({ router }) {
     const { fetchApp } = useNoteContext()
-    const { setProgress } = useToggleContext()
     const email = useRef();
     const otp = useRef();
     const password = useRef();
@@ -18,21 +15,14 @@ export default function Forgot({ router }) {
 
     async function submit(event) {
         event.preventDefault()
-        setProgress(33)
         if (!stage) {
-            const { success, error } = await fetchApp('api/auth/otp', 'POST', { email: email.current.value })
-            if (success) {
-                toast.success('OTP sent to your email!')
-                setStage(1)
-            }
+            const { success, error } = await fetchApp({ url: 'api/auth/otp', method: 'POST', body: { email: email.current.value } })
+            if (success) setStage(1)
             else if (error === "OTP already sent!") setStage(stage + 1)
         } else {
-            const { success } = await fetchApp('api/auth/forgot', 'PUT', { email: email.current.value, otp: otp.current.value, password: password.current.value })
-            if (!success) return
-            toast.success('Password reset successful!')
-            router.replace('/account/login')
+            const { success } = await fetchApp({ url: 'api/auth/forgot', method: 'PUT', body: { email: email.current.value, otp: otp.current.value, password: password.current.value } })
+            if (success) router.replace('/account/login')
         }
-        setProgress(100)
     }
 
     return <>
