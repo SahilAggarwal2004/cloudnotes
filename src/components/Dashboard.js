@@ -80,7 +80,7 @@ export default function Dashboard() {
                         Notes: <strong>{notes.length}</strong>/100
                     </div>
                 </div>
-                {show.length || newNote ? <ReorderList useOnlyIconToDrag watchChildrenUpdates disabled={isFetching || selTag || search} props={{ className: 'grid grid-cols-1 p-5 sm:grid-cols-2 normal:grid-cols-3 gap-x-5 gap-y-7' }} onPositionChange={handlePositionChange}>
+                {show.length || newNote ? <ReorderList useOnlyIconToDrag watchChildrenUpdates preserveOrder disabled={isFetching || selTag || search} props={{ className: 'grid grid-cols-1 p-5 sm:grid-cols-2 normal:grid-cols-3 gap-x-5 gap-y-7' }} onPositionChange={handlePositionChange}>
                     {show.map(note => <NoteItem key={note._id} note={note} getTagColor={getTagColor} setTagColor={setTagColor}>
                         {!isFetching && <ReorderIcon />}
                     </NoteItem>)}
