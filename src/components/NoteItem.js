@@ -16,7 +16,6 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
 
     async function editNote(event) {
         event.preventDefault()
-        alert(1)
         const editTitle = editTitleRef.current.value
         const editTag = editTagRef.current.value || 'General'
         if (title === editTitle && description === editDescription && tag === editTag) setProgress(100)

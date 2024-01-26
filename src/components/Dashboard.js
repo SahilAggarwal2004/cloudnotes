@@ -40,7 +40,7 @@ export default function Dashboard() {
         return (selTag ? notes.filter(({ tag }) => tag === selTag) : notes).filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search))
     }, [notes, search, selTag])
 
-    useEffect(() => { if (!newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
+    useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
 
     useLayoutEffect(() => {
         if (isFetching) return
