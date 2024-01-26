@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import NoteProvider from '../contexts/NoteProvider';
 import { getStorage } from '../modules/storage';
-import { hideNavbar, onlyGuest, queryKey } from '../constants';
+import { hideNavbar, onlyGuest } from '../constants';
 import Modal from '../components/Modal';
 import Navbar from '../components/navbar/Navbar';
 import '../styles/globals.css';
@@ -16,7 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'aos/dist/aos.css';
 
 const api = process.env.NEXT_PUBLIC_API
-const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, placeholderData: getStorage(queryKey, []), retry: 1 } } })
+const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, retry: 1 } } })
 
 export default function MyApp({ Component, pageProps }) {
     const router = useRouter()

@@ -48,7 +48,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
         </> : <>
             <div className='bg-gray-200 rounded-2xl absolute top-0 translate-y-[-50%] text-xs text-black px-2 py-px border' style={{ backgroundColor: tagColor }}>{tag}</div>
             <div className='flex items-center justify-center w-full relative'>
-                <h3 className='text-lg text-bold pl-1 pr-5' style={{ wordBreak: 'break-word' }}>{title}</h3>
+                <h3 className='text-lg text-bold px-4' style={{ wordBreak: 'break-word' }}>{title}</h3>
                 <span className='absolute right-0'>{children}</span>
             </div>
             <hr className='w-full my-2' />

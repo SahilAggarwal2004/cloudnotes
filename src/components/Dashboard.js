@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from 'next/head';
-import { useEffect, useRef, useState, useMemo, useLayoutEffect } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import ReorderList, { ReorderIcon } from 'react-reorder-list';
 import { FaPlus as FaPlusBold } from 'react-icons/fa'
 import { FaPlus, FaXmark } from 'react-icons/fa6'
 import { useQuery } from '@tanstack/react-query'
 import NoteItem from '../components/NoteItem'
-import { setStorage } from '../modules/storage'
+import { getStorage, setStorage } from '../modules/storage'
 import { colors, defaultColor, queryKey } from '../constants'
 import { useNoteContext } from '../contexts/NoteProvider';
 import useURLState from '../hooks/useURLState';
@@ -14,7 +14,7 @@ import useTagColors from '../hooks/useTagColors'
 import Loading from './Loading';
 
 export default function Dashboard() {
-    const { fetchApp, onError } = useNoteContext()
+    const { fetchApp } = useNoteContext()
     const { getTagColor, setTagColor } = useTagColors()
     const [newNote, setNewNote] = useState(false)
     const form = useRef()
@@ -25,7 +25,7 @@ export default function Dashboard() {
     const [selTag, setSelTag] = useState('');
     const [search, setSearch] = useURLState('search', '');
 
-    const { data, error, isFetching } = useQuery({
+    const { data, isFetching } = useQuery({
         queryKey, queryFn: async () => {
             const { notes } = await fetchApp({ url: 'api/notes/fetch', showToast: false })
             return notes
@@ -33,7 +33,7 @@ export default function Dashboard() {
     })
     const notes = useMemo(() => {
         if (data) setStorage(queryKey, data)
-        return data || []
+        return data || getStorage(queryKey, [])
     }, [data])
     const tags = notes.reduce((arr, { tag }) => arr.includes(tag) ? arr : arr.concat(tag), []);
     const show = useMemo(() => {
@@ -41,11 +41,6 @@ export default function Dashboard() {
     }, [notes, search, selTag])
 
     useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
-
-    useLayoutEffect(() => {
-        if (isFetching) return
-        if (error || !data) onError(error)
-    }, [isFetching])
 
     async function addNote(event) {
         event.preventDefault()
