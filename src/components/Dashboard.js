@@ -17,7 +17,6 @@ export default function Dashboard() {
     const { fetchApp } = useNoteContext()
     const { getTagColor, setTagColor } = useTagColors()
     const [newNote, setNewNote] = useState(false)
-    const form = useRef()
     const titleRef = useRef();
     const [description, setDescription] = useState('');
     const tagRef = useRef();
@@ -81,7 +80,7 @@ export default function Dashboard() {
                     {show.map(note => <NoteItem key={note._id} note={note} getTagColor={getTagColor} setTagColor={setTagColor}>
                         {!disableReordering && <ReorderIcon />}
                     </NoteItem>)}
-                    {newNote && <form ref={form} className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative' onSubmit={addNote}>
+                    {newNote && <form className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative' onSubmit={addNote}>
                         <div className={`absolute top-0 translate-y-[-50%] flex`}>
                             <input type='text' list='tag-list' ref={tagRef} className={`bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600`} placeholder='Add tag' maxLength={12} autoComplete='off' onChange={e => {
                                 const tagColor = getTagColor(e.target.value, false)
@@ -106,10 +105,7 @@ export default function Dashboard() {
                     </form>}
                 </ReorderList> : isFetching ? <Loading /> : <h4 className='fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center'>No Notes To Display!</h4>}
             </div>
-            <button className='z-20 fixed bottom-[2.625rem] right-[4vw] sm:right-[3vw] text-center py-3 px-4 rounded-full text-white bg-purple-700 cursor-pointer disabled:opacity-60' disabled={isFetching} onClick={() => {
-                if (newNote) return form.current.submit()
-                else setNewNote(true)
-            }}>
+            <button className='z-20 fixed bottom-[2.625rem] right-[4vw] sm:right-[3vw] text-center py-3 px-4 rounded-full text-white bg-purple-700 cursor-pointer disabled:opacity-60' disabled={isFetching} onClick={() => setNewNote(true)}>
                 <FaPlusBold className='scale-110' />
             </button>
         </div>
