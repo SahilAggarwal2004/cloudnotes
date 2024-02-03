@@ -14,7 +14,7 @@ import useTagColors from '../hooks/useTagColors'
 import Loading from './Loading';
 
 export default function Dashboard() {
-    const { fetchApp } = useNoteContext()
+    const { fetchApp, progress } = useNoteContext()
     const { getTagColor, setTagColor } = useTagColors()
     const [newNote, setNewNote] = useState(false)
     const titleRef = useRef();
@@ -39,7 +39,7 @@ export default function Dashboard() {
         return (selTag ? notes.filter(({ tag }) => tag === selTag) : notes).filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search))
     }, [notes, search, selTag])
 
-    const disableReordering = isFetching || selTag || search
+    const disableReordering = progress || selTag || search
 
     useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
 
