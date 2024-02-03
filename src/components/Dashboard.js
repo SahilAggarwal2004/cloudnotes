@@ -39,7 +39,7 @@ export default function Dashboard() {
         return (selTag ? notes.filter(({ tag }) => tag === selTag) : notes).filter(({ title, description, tag }) => [title, description, tag].join('~~').toLowerCase().includes(search))
     }, [notes, search, selTag])
 
-    const disableReordering = progress || selTag || search
+    const disableReordering = isFetching || selTag || search
 
     useEffect(() => { if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }) }, [newNote])
 
@@ -78,7 +78,7 @@ export default function Dashboard() {
                 </div>
                 {show.length || newNote ? <ReorderList useOnlyIconToDrag watchChildrenUpdates preserveOrder={!isFetching} disabled={disableReordering} props={{ className: 'grid grid-cols-1 p-5 sm:grid-cols-2 normal:grid-cols-3 gap-x-5 gap-y-7' }} onPositionChange={handlePositionChange}>
                     {show.map(note => <NoteItem key={note._id} note={note} getTagColor={getTagColor} setTagColor={setTagColor}>
-                        {!disableReordering && <ReorderIcon />}
+                        {!disableReordering && !progress && <ReorderIcon />}
                     </NoteItem>)}
                     {newNote && <form className='flex flex-col items-center border border-grey-600 rounded px-2 py-4 relative' onSubmit={addNote}>
                         <div className='absolute top-0 translate-y-[-50%] flex'>
