@@ -27,7 +27,7 @@ export default function Dashboard() {
     const { data, isFetching } = useQuery({
         queryKey, queryFn: async () => {
             const { notes } = await fetchApp({ url: 'api/notes/fetch', showToast: false })
-            return notes || null
+            return notes
         }
     })
     const notes = useMemo(() => {
