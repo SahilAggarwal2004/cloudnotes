@@ -1,5 +1,6 @@
-import Speech from 'react-text-to-speech';
-import { useRef, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import Speech, { HighlightedText } from 'react-text-to-speech';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { FaRegTrashAlt, FaRegEdit, FaRegSave } from 'react-icons/fa'
 import { FaXmark } from 'react-icons/fa6';
 import { GrVolume, GrVolumeMute } from 'react-icons/gr';
@@ -10,9 +11,34 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
     const tagColor = getTagColor(tag)
     const [edit, setEdit] = useState(false)
     const editTitleRef = useRef()
-    const [editDescription, setEditDescription] = useState(description)
+    const [editDescription, setEditDescription] = useState()
     const editTagRef = useRef()
-    const [editTagColor, setEditTagColor] = useState(tagColor)
+    const [editTagColor, setEditTagColor] = useState()
+
+    const text = <>
+        <div className='bg-gray-200 rounded-2xl absolute top-0 translate-y-[-50%] text-xs text-black px-2 py-px border' style={{ backgroundColor: tagColor }}>
+            <span className='hidden'>The tag is </span>
+            {tag}
+        </div>
+        <div className='flex items-center justify-center w-full relative'>
+            <h3 className='text-lg text-bold px-4' style={{ wordBreak: 'break-word' }}>
+                <span className='hidden'>The title is </span>
+                {title}
+            </h3>
+            <span className='absolute right-0'>{children}</span>
+        </div>
+        <hr className='w-full my-2' />
+        <p className='text-sm text-gray-600 mb-10 whitespace-pre-line' style={{ wordBreak: 'break-word' }}>
+            <span className='hidden'>The description is </span>
+            {description}
+        </p>
+    </>
+
+    useLayoutEffect(() => {
+        if (edit) return
+        setEditDescription(description)
+        setEditTagColor(tagColor)
+    }, [edit])
 
     async function editNote(event) {
         event.preventDefault()
@@ -46,13 +72,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
                 <FaXmark className="cursor-pointer scale-x-[1.2] scale-y-125" onClick={() => setEdit(false)} />
             </div>
         </> : <>
-            <div className='bg-gray-200 rounded-2xl absolute top-0 translate-y-[-50%] text-xs text-black px-2 py-px border' style={{ backgroundColor: tagColor }}>{tag}</div>
-            <div className='flex items-center justify-center w-full relative'>
-                <h3 className='text-lg text-bold px-4' style={{ wordBreak: 'break-word' }}>{title}</h3>
-                <span className='absolute right-0'>{children}</span>
-            </div>
-            <hr className='w-full my-2' />
-            <p className='text-sm text-gray-600 mb-10 whitespace-pre-line' style={{ wordBreak: 'break-word' }}>{description}</p>
+            <HighlightedText id={_id} className='flex flex-col items-center w-full'>{text}</HighlightedText>
             <div className='absolute bottom-1.5'>
                 <div className='space-x-5 flex justify-center mb-1'>
                     <button type='button' className="scale-110 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setModal({ active: true, type: 'deleteNote', note: _id })}>
@@ -61,9 +81,9 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
                     <button className="scale-125 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setEdit(true)}>
                         <FaRegEdit />
                     </button>
-                    <div className='cursor-pointer font-bold scale-110'>
-                        <Speech id={_id} text={`The tag is ${tag}. The title is ${title}. The description is ${description}.`} startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} useStopOverPause={true} />
-                    </div>
+                    <button type='button' className='cursor-pointer font-bold scale-110 disabled:opacity-60' disabled={progress}>
+                        <Speech id={_id} text={text} useStopOverPause highlightText startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} highlightProps={{ style: { backgroundColor: 'yellow' } }} />
+                    </button>
                 </div>
                 <p className='text-2xs text-gray-600 self-end'>Last Updated: {new Date(Date.parse(updatedAt)).toLocaleString()}</p>
             </div>
