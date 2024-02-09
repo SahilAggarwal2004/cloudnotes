@@ -17,19 +17,19 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
 
     const text = <>
         <div className='bg-gray-200 rounded-2xl absolute top-0 translate-y-[-50%] text-xs text-black px-2 py-px border' style={{ backgroundColor: tagColor }}>
-            <span className='hidden'>The tag is </span>
+            <span className='hidden'>The tag is</span>
             {tag}
         </div>
         <div className='flex items-center justify-center w-full relative'>
             <h3 className='text-lg text-bold px-4' style={{ wordBreak: 'break-word' }}>
-                <span className='hidden'>The title is </span>
+                <span className='hidden'>. The title is</span>
                 {title}
             </h3>
             <span className='absolute right-0'>{children}</span>
         </div>
         <hr className='w-full my-2' />
         <p className='text-sm text-gray-600 mb-10 whitespace-pre-line' style={{ wordBreak: 'break-word' }}>
-            <span className='hidden'>The description is </span>
+            <span className='hidden'>. The description is</span>
             {description}
         </p>
     </>
@@ -82,7 +82,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
                         <FaRegEdit />
                     </button>
                     <button type='button' className='cursor-pointer font-bold scale-110 disabled:opacity-60' disabled={progress}>
-                        <Speech id={_id} text={text} useStopOverPause highlightText startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} highlightProps={{ style: { backgroundColor: 'yellow' } }} />
+                        <Speech id={_id} text={text} useStopOverPause highlightText startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} />
                     </button>
                 </div>
                 <p className='text-2xs text-gray-600 self-end'>Last Updated: {new Date(Date.parse(updatedAt)).toLocaleString()}</p>
