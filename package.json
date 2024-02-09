@@ -21,8 +21,7 @@
     "react-reorder-list": "^0.6.5",
     "react-text-to-speech": "^0.8.11",
     "react-toastify": "^10.0.4",
-    "react-top-loading-bar": "^2.3.1",
-    "tts-react": "^3.0.5"
+    "react-top-loading-bar": "^2.3.1"
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.9.1",

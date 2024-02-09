@@ -44,9 +44,6 @@ dependencies:
   react-top-loading-bar:
     specifier: ^2.3.1
     version: 2.3.1(react@18.2.0)
-  tts-react:
-    specifier: ^3.0.5
-    version: 3.0.5(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
   '@builder.io/partytown':
@@ -3425,17 +3422,6 @@ packages:
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
-    dev: false
-
-  /tts-react@3.0.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-K69R/vTCm83UxqiPiARzlx8yXTqYmwHKAyww2OCylh+5BjB+YnGRRbAjVn7+OC2GinocSQhWUw4f+vmiN1+0Cw==}
-    engines: {node: '>=18.16.0', npm: '>=9.5.1'}
-    peerDependencies:
-      react: '>=17.0.0'
-      react-dom: '>=17.0.0'
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /type-check@0.4.0:
