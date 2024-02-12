@@ -12,8 +12,8 @@ dependencies:
     specifier: ^8.4.4
     version: 8.4.4
   '@tanstack/react-query':
-    specifier: ^5.18.1
-    version: 5.18.1(react@18.2.0)
+    specifier: ^5.20.1
+    version: 5.20.1(react@18.2.0)
   aos:
     specifier: ^2.3.4
     version: 2.3.4
@@ -33,11 +33,11 @@ dependencies:
     specifier: ^5.0.1
     version: 5.0.1(react@18.2.0)
   react-reorder-list:
-    specifier: ^0.6.5
-    version: 0.6.5(react@18.2.0)
+    specifier: ^0.6.6
+    version: 0.6.6(react@18.2.0)
   react-text-to-speech:
-    specifier: ^0.8.12
-    version: 0.8.12(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.8.13
+    version: 0.8.13(react-dom@18.2.0)(react@18.2.0)
   react-toastify:
     specifier: ^10.0.4
     version: 10.0.4(react-dom@18.2.0)(react@18.2.0)
@@ -575,16 +575,16 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@tanstack/query-core@5.18.1:
-    resolution: {integrity: sha512-fYhrG7bHgSNbnkIJF2R4VUXb4lF7EBiQjKkDc5wOlB7usdQOIN4LxxHpDxyE3qjqIst1WBGvDtL48T0sHJGKCw==}
+  /@tanstack/query-core@5.20.1:
+    resolution: {integrity: sha512-OONHHYG5vzjob4An+EfzbW7TRyb+sCA0AEgHzUIMlV9NYlF7wIwbla3PUfB3ocnaK1gZyROf0Lux/CBSu0exBQ==}
     dev: false
 
-  /@tanstack/react-query@5.18.1(react@18.2.0):
-    resolution: {integrity: sha512-PdI07BbsahZ+04PxSuDQsQvBWe008eWFk/YYWzt8fvzt2sALUM0TpAJa/DFpqa7+SSo7j1EQR6Jx6znXNHyaXw==}
+  /@tanstack/react-query@5.20.1(react@18.2.0):
+    resolution: {integrity: sha512-KRkOtJ47tv9B3EXfjHkbPkiFzOzYCOid8BrYBozk0rm9JpDB2xSf71q8w1PRudlQW6QUQIEDI9E6NIMh6AlLUw==}
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-core': 5.18.1
+      '@tanstack/query-core': 5.20.1
       react: 18.2.0
     dev: false
 
@@ -2882,17 +2882,17 @@ packages:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: true
 
-  /react-reorder-list@0.6.5(react@18.2.0):
-    resolution: {integrity: sha512-T1OWymttRVLg2+3n0uBbi/hHGcvnUSUUUKxwlBj/H4vYEIY42V5BZbmSvd/PwGj6e2smyUu9C84zwr1ewK2onA==}
+  /react-reorder-list@0.6.6(react@18.2.0):
+    resolution: {integrity: sha512-Pu3vaCn/KNkagmaSxLPS9SeHWJyiAubhLy+vt44eKZHWyU1umLd6qQFXz+dnJbnCgH8OAPKbX8V/KzFkv8mJFg==}
     peerDependencies:
-      react: '>=16.0.0'
+      react: '>=17.0.0'
     dependencies:
       drag-drop-touch: 1.3.1
       react: 18.2.0
     dev: false
 
-  /react-text-to-speech@0.8.12(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-RZdIKndG8518/Qv13Eb4MNP/MnVnBBQsRc3pdmPowGzsXf56/Yv2/0YoqlkaXzy5jaBg4mkzS4tHUicLA3YflA==}
+  /react-text-to-speech@0.8.13(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-I6IAosn2gUd/hoxsbeCRkmmVCff9L96v+H4LcoylWrq0uIh+JjKvjxMhOpHDr34MGsdSNe6MMIxP0okO1oopSg==}
     peerDependencies:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
