@@ -174,9 +174,9 @@ export default function MyApp({ Component, pageProps }) {
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-DK5RMXJJMJ" strategy="worker" />
       <Script id="google-analytics" strategy="worker">
         {`window.dataLayer = window.dataLayer || [];
-            function gtag() {dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'G-DK5RMXJJMJ');`}
+          function gtag() {dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', 'G-DK5RMXJJMJ');`}
       </Script>
 
       <QueryClientProvider client={client}>
