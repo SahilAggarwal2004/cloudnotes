@@ -14,12 +14,12 @@ const { maxTitle, maxDescription, maxTag } = charLimit;
 export default function NoteItem({ note: { _id, description, updatedAt, tag, title }, getTagColor, setTagColor, children }) {
   const { fetchApp, setModal, progress, setProgress } = useNoteContext();
   const tagColor = getTagColor(tag);
+  const [markdown, setMarkdown] = useState("");
   const [edit, setEdit] = useState(false);
   const editTitleRef = useRef();
   const [editDescription, setEditDescription] = useState();
   const editTagRef = useRef();
   const [editTagColor, setEditTagColor] = useState();
-  const markdown = document.querySelector(`.markdown-${_id}`)?.outerHTML || "";
 
   const text = (
     <>
@@ -43,9 +43,11 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
   );
 
   useLayoutEffect(() => {
-    if (edit) return;
-    setEditDescription(description);
-    setEditTagColor(tagColor);
+    if (edit) setMarkdown(document.querySelector(`.markdown-${_id}`)?.outerHTML || "");
+    else {
+      setEditDescription(description);
+      setEditTagColor(tagColor);
+    }
   }, [edit]);
 
   async function editNote(event) {
