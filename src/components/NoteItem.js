@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Speech, { HighlightedText } from "react-text-to-speech";
 import Markdown from "react-markdown";
 import parse from "html-react-parser";
@@ -19,7 +19,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
   const [editDescription, setEditDescription] = useState();
   const editTagRef = useRef();
   const [editTagColor, setEditTagColor] = useState();
-  const markdown = useMemo(() => document.querySelector(`.markdown-${_id}`)?.outerHTML || "", [description]);
+  const markdown = document.querySelector(`.markdown-${_id}`)?.outerHTML || "";
 
   const text = (
     <>
