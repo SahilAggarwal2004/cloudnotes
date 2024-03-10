@@ -54,10 +54,10 @@ export default function Dashboard() {
         <title>Dashboard | CloudNotes</title>
       </Head>
       <div className="mb-12">
-        <div className="text-center py-4">
-          <div className="flex flex-col items-center justify-center sm:flex-row sm:justify-end sm:mx-5 sm:space-x-3">
-            <input className="text-center border border-grey-600 px-1 my-1" placeholder="Search Notes" defaultValue={search} onChange={(e) => setSearch(e.target.value.toLowerCase())} />
-            <select className="w-min px-1 my-1 border border-grey-600" value={selTag} onChange={(e) => setSelTag(e.target.value)}>
+        <div className="py-4 text-center">
+          <div className="flex flex-col items-center justify-center sm:mx-5 sm:flex-row sm:justify-end sm:space-x-3">
+            <input className="border-grey-600 my-1 border px-1 text-center" placeholder="Search Notes" defaultValue={search} onChange={(e) => setSearch(e.target.value.toLowerCase())} />
+            <select className="border-grey-600 my-1 w-min border px-1" value={selTag} onChange={(e) => setSelTag(e.target.value)}>
               <option key="All" value="">
                 All
               </option>
@@ -68,10 +68,10 @@ export default function Dashboard() {
               ))}
             </select>
           </div>
-          <div className="grid grid-cols-10 m-5 items-center">
-            <span className="hidden sm:inline sm:col-span-2" />
-            <h2 className="text-xl font-bold col-span-5 sm:col-span-6 text-left sm:text-center">Your Notes</h2>
-            <div className="text-right col-span-5 sm:col-span-2">
+          <div className="m-5 grid grid-cols-10 items-center">
+            <span className="hidden sm:col-span-2 sm:inline" />
+            <h2 className="col-span-5 text-left text-xl font-bold sm:col-span-6 sm:text-center">Your Notes</h2>
+            <div className="col-span-5 text-right sm:col-span-2">
               Notes: <strong>{notes.length}</strong>/100
             </div>
           </div>
@@ -90,7 +90,7 @@ export default function Dashboard() {
             <h4 className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">No Notes To Display!</h4>
           )}
         </div>
-        <button className="z-20 fixed bottom-[2.625rem] right-[4vw] sm:right-[3vw] text-center py-3 px-4 rounded-full text-white bg-purple-700 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setNewNote(true)}>
+        <button className="fixed bottom-[2.625rem] right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]" disabled={progress} onClick={() => setNewNote(true)}>
           <FaPlusBold className="scale-110" />
         </button>
       </div>

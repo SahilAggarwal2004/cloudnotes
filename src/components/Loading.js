@@ -1,7 +1,7 @@
 export default function Loading({ text }) {
   return (
-    <div className="fixed top-0 w-full h-full flex flex-col space-y-2 items-center justify-center">
-      <div className="w-[1.375rem] h-[1.375rem] border-2 border-transparent border-t-black border-b-black rounded-[50%] animate-spin-fast" />
+    <div className="fixed top-0 flex h-full w-full flex-col items-center justify-center space-y-2">
+      <div className="h-[1.375rem] w-[1.375rem] animate-spin-fast rounded-[50%] border-2 border-transparent border-b-black border-t-black" />
       {text && <p>{text}</p>}
     </div>
   );

@@ -1,10 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import Speech, { HighlightedText } from "react-text-to-speech";
-import { useLayoutEffect, useRef, useState } from "react";
+import Markdown from "react-markdown";
+import parse from "html-react-parser";
 import { FaRegTrashAlt, FaRegEdit, FaRegSave } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { GrVolume, GrVolumeMute } from "react-icons/gr";
 import { useNoteContext } from "../contexts/NoteProvider";
+import { charLimit } from "../constants";
+
+const { maxTitle, maxDescription, maxTag } = charLimit;
 
 export default function NoteItem({ note: { _id, description, updatedAt, tag, title }, getTagColor, setTagColor, children }) {
   const { fetchApp, setModal, progress, setProgress } = useNoteContext();
@@ -14,25 +19,26 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
   const [editDescription, setEditDescription] = useState();
   const editTagRef = useRef();
   const [editTagColor, setEditTagColor] = useState();
+  const markdown = useMemo(() => document.querySelector(`.markdown-${_id}`)?.outerHTML || "", [description]);
 
   const text = (
     <>
-      <div className="bg-gray-200 rounded-2xl absolute top-0 translate-y-[-50%] text-xs text-black px-2 py-px border" style={{ backgroundColor: tagColor }}>
+      <div className="absolute top-0 translate-y-[-50%] rounded-2xl border bg-gray-200 px-2 py-px text-xs text-black" style={{ backgroundColor: tagColor }}>
         <span className="hidden">The tag is</span>
         {tag}
       </div>
-      <div className="flex items-center justify-center w-full relative">
-        <h3 className="text-lg text-bold px-4" style={{ wordBreak: "break-word" }}>
+      <div className="relative flex w-full items-center justify-center">
+        <h3 className="text-bold px-2 text-lg" style={{ wordBreak: "break-word" }}>
           <span className="hidden">. The title is</span>
           {title}
         </h3>
         <span className="absolute right-0">{children}</span>
       </div>
-      <hr className="w-full my-2" />
-      <p className="text-sm text-gray-600 mb-10 whitespace-pre-line" style={{ wordBreak: "break-word" }}>
+      <hr className="my-2 w-full" />
+      <div className="mb-10 w-full whitespace-pre-line px-2 text-justify text-sm text-gray-600" style={{ wordBreak: "break-word" }}>
         <span className="hidden">. The description is</span>
-        {description}
-      </p>
+        <div className="prose-sm prose-p:my-0 prose-a:font-semibold prose-a:text-blue-700 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-ul:my-0 prose-li:my-0 prose-li:list-disc prose-li:text-left">{markdown ? parse(markdown) : <Markdown className={`markdown-${_id}`}>{description}</Markdown>}</div>
+      </div>
     </>
   );
 
@@ -54,17 +60,17 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
   }
 
   return (
-    <form className="flex flex-col items-center h-full border border-grey-600 rounded px-2 py-4 relative" onSubmit={editNote}>
+    <form className="border-grey-600 relative flex h-full flex-col items-center rounded border px-4 py-4" onSubmit={editNote}>
       {edit ? (
         <>
-          <div className="absolute top-0 -translate-y-1/2 flex">
+          <div className="absolute top-0 flex -translate-y-1/2">
             <input
               type="text"
               list="tagList"
               ref={editTagRef}
-              className="bg-gray-200 text-xs text-center rounded-l-2xl text-black pl-1.5 sm:pl-2 py-px focus:outline-0 placeholder:text-gray-600"
+              className="rounded-l-2xl bg-gray-200 py-px pl-1.5 text-center text-xs text-black placeholder:text-gray-600 focus:outline-0 sm:pl-2"
               placeholder="Add tag"
-              maxLength={12}
+              maxLength={maxTag}
               defaultValue={tag}
               autoComplete="off"
               onChange={(e) => {
@@ -72,40 +78,42 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
                 if (tagColor) setEditTagColor(tagColor);
               }}
             />
-            <input type="color" value={editTagColor} list="tag-colors" className="bg-gray-200 text-xs text-center rounded-r-2xl text-black focus:outline-0" onChange={(e) => setEditTagColor(e.target.value)} />
+            <input type="color" value={editTagColor} list="tag-colors" className="rounded-r-2xl bg-gray-200 focus:outline-0" onChange={(e) => setEditTagColor(e.target.value)} />
           </div>
-          <div className="flex items-center justify-center w-full relative">
-            <input type="text" ref={editTitleRef} className="text-lg text-bold text-center w-full pl-1 pr-5 focus:outline-0 placeholder:text-gray-600" placeholder="Add title" required maxLength={20} defaultValue={title} />
+          <div className="relative flex w-full items-center justify-center">
+            <input type="text" ref={editTitleRef} className="text-bold w-full pl-1 pr-5 text-center text-lg placeholder:text-gray-600 focus:outline-0" placeholder="Add title" required maxLength={maxTitle} defaultValue={title} />
             <span className="absolute right-0">{children}</span>
           </div>
-          <hr className="w-full my-2" />
-          <textarea placeholder="Add description" rows="5" required maxLength={1000} className="text-sm text-center text-gray-600 mb-1 mx-2 w-full focus:outline-0" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
-          <div className="text-xs text-right w-full mb-10 pr-1">{editDescription.length}/1000</div>
-          <div className="space-x-4 absolute bottom-[1.375rem] flex">
-            <button className="cursor-pointer scale-110">
+          <hr className="my-2 w-full" />
+          <textarea placeholder="Add description" rows="8" required maxLength={maxDescription} className="mx-2 mb-1 w-full px-2 text-sm text-gray-600 focus:outline-0" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+          <div className="mb-10 w-full pr-1 text-right text-xs">
+            {editDescription.length}/{maxDescription}
+          </div>
+          <div className="absolute bottom-[1.375rem] flex space-x-4">
+            <button className="scale-110 cursor-pointer">
               <FaRegSave />
             </button>
-            <FaXmark className="cursor-pointer scale-x-[1.2] scale-y-125" onClick={() => setEdit(false)} />
+            <FaXmark className="scale-x-[1.2] scale-y-125 cursor-pointer" onClick={() => setEdit(false)} />
           </div>
         </>
       ) : (
         <>
-          <HighlightedText id={_id} className="flex flex-col items-center w-full">
+          <HighlightedText id={_id} className="flex w-full flex-col items-center">
             {text}
           </HighlightedText>
           <div className="absolute bottom-1.5">
-            <div className="space-x-5 flex justify-center mb-1">
+            <div className="mb-1 flex justify-center space-x-5">
               <button type="button" className="scale-110 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}>
                 <FaRegTrashAlt />
               </button>
               <button className="scale-125 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setEdit(true)}>
                 <FaRegEdit />
               </button>
-              <button type="button" className="cursor-pointer font-bold scale-110 disabled:opacity-60" disabled={progress}>
+              <button type="button" className="scale-110 cursor-pointer font-bold disabled:opacity-60" disabled={progress}>
                 <Speech id={_id} text={text} useStopOverPause highlightText startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} />
               </button>
             </div>
-            <p className="text-2xs text-gray-600 self-end">Last Updated: {new Date(Date.parse(updatedAt)).toLocaleString()}</p>
+            <p className="self-end text-2xs text-gray-600">Last Updated: {new Date(Date.parse(updatedAt)).toLocaleString()}</p>
           </div>
         </>
       )}

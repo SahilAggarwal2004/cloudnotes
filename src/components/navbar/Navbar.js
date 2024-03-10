@@ -13,16 +13,16 @@ export default function Navbar({ name }) {
 
   return (
     <nav className="sticky inset-0 z-30">
-      <div className="flex bg-purple-700 text-white sm:justify-between items-center py-2 px-4 flex-col sm:flex-row overflow-hidden">
-        <div className={`flex items-center justify-between w-full sm:justify-start ${name && "sm:space-x-5"}`}>
-          <FaRegUser className={`cursor-pointer scale-125 font-extrabold transition-all ${!name && "fixed invisible"}`} onClick={() => setModal({ active: true, type: "user", name })} />
+      <div className="flex flex-col items-center overflow-hidden bg-purple-700 px-4 py-2 text-white sm:flex-row sm:justify-between">
+        <div className={`flex w-full items-center justify-between sm:justify-start ${name && "sm:space-x-5"}`}>
+          <FaRegUser className={`scale-125 cursor-pointer font-extrabold transition-all ${!name && "invisible fixed"}`} onClick={() => setModal({ active: true, type: "user", name })} />
           <Link href="/">
-            <h2 className="text-xl text-center font-semibold">CloudNotes</h2>
+            <h2 className="text-center text-xl font-semibold">CloudNotes</h2>
           </Link>
-          <FaBars className="sm:invisible scale-125" onClick={extendNav} />
+          <FaBars className="scale-125 sm:invisible" onClick={extendNav} />
         </div>
         <Expandable expand={!hide}>
-          <div className="mt-3 space-y-0.5 sm:m-0 sm:space-y-0 sm:space-x-4 sm:flex">
+          <div className="mt-3 space-y-0.5 sm:m-0 sm:flex sm:space-x-4 sm:space-y-0">
             {name ? (
               <NavLink href="/" text="Dashboard" onClick={extendNav} />
             ) : (

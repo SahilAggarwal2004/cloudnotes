@@ -9,8 +9,8 @@ export default function Welcome() {
       <Head>
         <title>CloudNotes - Notes on Cloud</title>
       </Head>
-      <div className="flex container fixed inset-0 normal:text-white normal:text-opacity-90 justify-center min-w-full">
-        <div className="container col-span-3 flex flex-col justify-evenly items-center min-w-[30vw] h-full normal:bg-purple-600">
+      <div className="container fixed inset-0 flex min-w-full justify-center normal:text-white normal:text-opacity-90">
+        <div className="container col-span-3 flex h-full min-w-[30vw] flex-col items-center justify-evenly normal:bg-purple-600">
           <div className="flex flex-col items-center">
             <Logo type="white" width={64} height={64} />
             <Logo type="black" width={64} height={64} />
@@ -35,7 +35,7 @@ export default function Welcome() {
             </div>
           </div>
         </div>
-        <img src="/images/bg.webp" alt="CloudNotes" className="fixed normal:static h-full object-cover w-full -z-10 normal:z-0 normal:min-w-[70vw]" />
+        <img src="/images/bg.webp" alt="CloudNotes" className="fixed -z-10 h-full w-full object-cover normal:static normal:z-0 normal:min-w-[70vw]" />
       </div>
     </>
   );
