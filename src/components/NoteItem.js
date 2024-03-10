@@ -43,8 +43,8 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
   );
 
   useLayoutEffect(() => {
-    if (edit) setMarkdown(document.querySelector(`.markdown-${_id}`)?.outerHTML || "");
-    else {
+    setMarkdown(document.querySelector(`.markdown-${_id}`)?.innerHTML || "");
+    if (!edit) {
       setEditDescription(description);
       setEditTagColor(tagColor);
     }
