@@ -2,6 +2,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import Speech, { HighlightedText } from "react-text-to-speech";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import parse from "html-react-parser";
 import { FaRegTrashAlt, FaRegEdit, FaRegSave } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
@@ -35,9 +36,17 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
         <span className="absolute right-0">{children}</span>
       </div>
       <hr className="my-2 w-full" />
-      <div className="mb-10 w-full whitespace-pre-line px-2 text-justify text-sm text-gray-600" style={{ wordBreak: "break-word" }}>
+      <div className="mb-10 w-full whitespace-pre-line px-2 text-left text-sm text-gray-600" style={{ wordBreak: "break-word" }}>
         <span className="hidden">. The description is</span>
-        <div className="prose-sm prose-p:my-0 prose-a:font-semibold prose-a:text-blue-700 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-ul:my-0 prose-li:my-0 prose-li:list-disc prose-li:text-left">{markdown ? parse(markdown) : <Markdown className={`markdown-${_id}`}>{description}</Markdown>}</div>
+        <div className="prose-sm leading-[1.4375] prose-p:my-0 prose-a:font-semibold prose-a:text-[#0366d6] prose-code:bg-[#f3f4f4] prose-code:px-1 prose-code:py-0.5 prose-ul:my-0 prose-li:my-0 prose-li:list-disc prose-li:text-left">
+          {markdown ? (
+            parse(markdown)
+          ) : (
+            <Markdown className={`markdown-${_id}`} remarkPlugins={[remarkGfm]}>
+              {description}
+            </Markdown>
+          )}
+        </div>
       </div>
     </>
   );
