@@ -4,6 +4,7 @@ import Speech, { HighlightedText } from "react-text-to-speech";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import parse from "html-react-parser";
+import Textarea from "react-textarea-autosize";
 import { FaRegTrashAlt, FaRegEdit, FaRegSave } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { GrVolume, GrVolumeMute } from "react-icons/gr";
@@ -92,15 +93,15 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
             <input type="color" value={editTagColor} list="tag-colors" className="rounded-r-2xl bg-gray-200 focus:outline-0" onChange={(e) => setEditTagColor(e.target.value)} />
           </div>
           <div className="relative flex w-full items-center justify-center">
-            <input type="text" ref={editTitleRef} className="text-bold w-full pl-1 pr-5 text-center text-lg placeholder:text-gray-600 focus:outline-0" placeholder="Add title" required maxLength={maxTitle} defaultValue={title} />
+            <input type="text" ref={editTitleRef} className="text-bold w-full px-5 text-center text-lg placeholder:text-gray-600 focus:outline-0" placeholder="Add title" required maxLength={maxTitle} defaultValue={title} />
             <span className="absolute right-0">{children}</span>
           </div>
           <hr className="my-2 w-full" />
-          <textarea placeholder="Add description" rows="8" required maxLength={maxDescription} className="mx-2 mb-1 w-full px-2 text-sm text-gray-600 focus:outline-0" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
+          <Textarea placeholder="Add description" minRows={5} maxRows={20} required maxLength={maxDescription} className="mx-2 mb-1 w-full px-2 text-sm text-gray-600 focus:outline-0" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} />
           <div className="mb-10 w-full pr-1 text-right text-xs">
             {editDescription.length}/{maxDescription}
           </div>
-          <div className="absolute bottom-[1.375rem] flex space-x-4">
+          <div className="absolute bottom-6 flex space-x-4">
             <button className="scale-110 cursor-pointer">
               <FaRegSave />
             </button>
@@ -109,7 +110,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
         </>
       ) : (
         <>
-          <HighlightedText id={_id} className="flex w-full flex-col items-center">
+          <HighlightedText id={_id} className="flex w-full flex-col items-center mb-5">
             {text}
           </HighlightedText>
           <div className="absolute bottom-1.5">

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import Textarea from "react-textarea-autosize";
 import { FaPlus, FaXmark } from "react-icons/fa6";
 import { charLimit, colors, defaultColor } from "../constants";
 import { useNoteContext } from "../contexts/NoteProvider";
@@ -51,7 +52,7 @@ export default function AddNote({ tags, setNewNote, getTagColor, setTagColor }) 
       </div>
       <input type="text" ref={titleRef} className="text-bold w-full text-center text-lg placeholder:text-gray-600 focus:outline-0" placeholder="Add title" required maxLength={maxTitle} />
       <hr className="my-2 w-full" />
-      <textarea value={description} placeholder="Add description" rows="5" required maxLength={maxDescription} className="mx-2 mb-1 w-full text-center text-sm text-gray-600 focus:outline-0" onChange={(e) => setDescription(e.target.value)} />
+      <Textarea value={description} placeholder="Add description" minRows={5} maxRows={20} required maxLength={maxDescription} className="mx-2 mb-1 w-full text-center text-sm text-gray-600 focus:outline-0" onChange={(e) => setDescription(e.target.value)} />
       <div className="mb-10 w-full pr-1 text-right text-xs">
         {description.length}/{maxDescription}
       </div>
