@@ -38,7 +38,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
       <hr className="my-2 w-full" />
       <div className="mb-10 w-full whitespace-pre-line px-2 text-left text-sm text-gray-600" style={{ wordBreak: "break-word" }}>
         <span className="hidden">. The description is</span>
-        <div className="prose-sm leading-[1.4375] prose-p:my-0 prose-a:font-semibold prose-a:text-[#0366d6] prose-code:bg-[#f3f4f4] prose-code:px-1 prose-code:py-0.5 prose-ul:my-0 prose-li:my-0 prose-li:list-disc prose-li:text-left">
+        <div className="markdown">
           {markdown ? (
             parse(markdown)
           ) : (

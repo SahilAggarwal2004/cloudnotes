@@ -26,6 +26,10 @@
     @apply border-transparent text-white bg-purple-600 hover:bg-purple-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600
 }
 
+.markdown {
+    @apply prose-sm leading-[1.4375] prose-p:my-0 prose-a:font-semibold prose-a:text-[#0366d6] prose-pre:bg-[#f3f4f4] prose-code:bg-[#f3f4f4] prose-table:border prose-table:border-[#d8d8d8] prose-table:border-collapse prose-th:border prose-table:w-[99%] prose-table:table-fixed prose-th:border-[#d8d8d8] prose-th:text-center prose-th:p-2 prose-td:border prose-td:border-[#d8d8d8] prose-td:p-2 prose-code:px-1 prose-code:py-0.5 prose-code:border-r-2 prose-ul:my-0 prose-li:my-0 prose-li:list-disc prose-li:text-left
+}
+
 * {
     -webkit-tap-highlight-color: transparent;
 }
