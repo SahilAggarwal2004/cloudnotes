@@ -3,7 +3,6 @@ import { useLayoutEffect, useRef, useState } from "react";
 import Speech, { HighlightedText } from "react-text-to-speech";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
 import parse from "html-react-parser";
 import Textarea from "react-textarea-autosize";
 import { FaRegTrashAlt, FaRegEdit, FaRegSave } from "react-icons/fa";
@@ -44,7 +43,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
           {markdown ? (
             parse(markdown)
           ) : (
-            <Markdown className={`markdown-${_id}`} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+            <Markdown className={`markdown-${_id}`} remarkPlugins={[remarkGfm]}>
               {description}
             </Markdown>
           )}
@@ -123,7 +122,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
                 <FaRegEdit />
               </button>
               <button type="button" className="scale-110 cursor-pointer font-bold disabled:opacity-60" disabled={progress}>
-                <Speech id={_id} text={text} useStopOverPause highlightText startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} />
+                <Speech id={_id} text={text} useStopOverPause startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} highlightText highlightProps={{ style: { backgroundColor: "yellow", color: "black" } }} />
               </button>
             </div>
             <p className="self-end text-2xs text-gray-600">Last Updated: {new Date(Date.parse(updatedAt)).toLocaleString()}</p>
