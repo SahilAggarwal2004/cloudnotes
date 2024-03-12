@@ -3,6 +3,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import Speech, { HighlightedText } from "react-text-to-speech";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import parse from "html-react-parser";
 import Textarea from "react-textarea-autosize";
 import { FaRegTrashAlt, FaRegEdit, FaRegSave } from "react-icons/fa";
@@ -43,7 +44,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
           {markdown ? (
             parse(markdown)
           ) : (
-            <Markdown className={`markdown-${_id}`} remarkPlugins={[remarkGfm]}>
+            <Markdown className={`markdown-${_id}`} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
               {description}
             </Markdown>
           )}
@@ -110,7 +111,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
         </>
       ) : (
         <>
-          <HighlightedText id={_id} className="flex w-full flex-col items-center mb-5">
+          <HighlightedText id={_id} className="mb-5 flex w-full flex-col items-center">
             {text}
           </HighlightedText>
           <div className="absolute bottom-1.5">
