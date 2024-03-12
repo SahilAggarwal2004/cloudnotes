@@ -11,7 +11,7 @@
   "dependencies": {
     "@serwist/next": "^8.4.4",
     "@serwist/sw": "^8.4.4",
-    "@tanstack/react-query": "^5.26.3",
+    "@tanstack/react-query": "^5.27.4",
     "aos": "^2.3.4",
     "axios": "^1.6.7",
     "html-react-parser": "^5.1.8",
