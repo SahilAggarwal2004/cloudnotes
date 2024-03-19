@@ -21,8 +21,8 @@ dependencies:
     specifier: ^1.6.8
     version: 1.6.8
   html-react-parser:
-    specifier: ^5.1.8
-    version: 5.1.8(@types/react@18.2.64)(react@18.2.0)
+    specifier: ^5.1.9
+    version: 5.1.9(@types/react@18.2.64)(react@18.2.0)
   next:
     specifier: ^14.1.3
     version: 14.1.3(react-dom@18.2.0)(react@18.2.0)
@@ -42,8 +42,8 @@ dependencies:
     specifier: ^0.6.6
     version: 0.6.6(react@18.2.0)
   react-text-to-speech:
-    specifier: ^0.10.0
-    version: 0.10.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.11.0
+    version: 0.11.0(react-dom@18.2.0)(react@18.2.0)
   react-textarea-autosize:
     specifier: ^8.5.3
     version: 8.5.3(@types/react@18.2.64)(react@18.2.0)
@@ -2290,8 +2290,8 @@ packages:
       htmlparser2: 9.1.0
     dev: false
 
-  /html-react-parser@5.1.8(@types/react@18.2.64)(react@18.2.0):
-    resolution: {integrity: sha512-oAXgUB4JYHFg4le3RQZtoge1TGMkwXSZPiWiexwdx3AuldgG+QEvbwMrscSViu90JNje3V4Zq5gCUSoTxa0W0A==}
+  /html-react-parser@5.1.9(@types/react@18.2.64)(react@18.2.0):
+    resolution: {integrity: sha512-MP0MQDEGlzkJT0OwY//tKYrgIzBM1frYLxx9RF7ALdIjI+MCMumydcNovXDX4X/iDi1zfgaU28VxoNXZn7EPjQ==}
     peerDependencies:
       '@types/react': 17 || 18
       react: 0.14 || 15 || 16 || 17 || 18
@@ -2304,7 +2304,7 @@ packages:
       html-dom-parser: 5.0.8
       react: 18.2.0
       react-property: 2.0.2
-      style-to-js: 1.1.10
+      style-to-js: 1.1.11
     dev: false
 
   /html-url-attributes@3.0.0:
@@ -3775,8 +3775,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-text-to-speech@0.10.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-uqsiUy2SPvAg+ACwqUSB/T/zWrcmqe3KJ9LYA7HWUWJp+4DLlwtOjj39mFblV3cwexvt67jmArUDbAU7cL5kXA==}
+  /react-text-to-speech@0.11.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-l/+KasI2ge2aH6DfFlhVqYZ8F788mON6I/NTvIMb6lhzJJJSrLcBODd52H3OBFZfBLTnm0myRfZ59dBXOTTx3w==}
     peerDependencies:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
@@ -4213,8 +4213,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /style-to-js@1.1.10:
-    resolution: {integrity: sha512-VC7MBJa+y0RZhpnLKDPmVRLRswsASLmixkiZ5R8xZpNT9VyjeRzwnXd2pBzAWdgSGv/pCNNH01gPCCUsB9exYg==}
+  /style-to-js@1.1.11:
+    resolution: {integrity: sha512-yHpYzXzEkx7iDjGEmE8Eyl4K/hWIm36FXPdRsl2NHEpbigLeawLVsv6tcYp+2xNhfpCrut4w08dYqeCxWMdRxw==}
     dependencies:
       style-to-object: 1.0.5
     dev: false
