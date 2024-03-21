@@ -43,7 +43,7 @@ export default function Dashboard() {
   }, [newNote]);
 
   async function handlePositionChange({ newItems, revert }) {
-    const order = newItems.slice(0, -1).map(({ key }) => key);
+    const order = newItems.flatMap((item) => (item?.key ? [item.key] : []));
     const { success } = await fetchApp({ url: "api/notes/order", method: "PUT", body: { order } });
     if (!success) revert();
   }
@@ -76,7 +76,7 @@ export default function Dashboard() {
             </div>
           </div>
           {show.length || newNote ? (
-            <ReorderList useOnlyIconToDrag watchChildrenUpdates preserveOrder={!isFetching} disabled={disableReordering} props={{ className: "grid grid-cols-1 p-5 sm:grid-cols-2 normal:grid-cols-3 gap-x-5 gap-y-7" }} onPositionChange={handlePositionChange}>
+            <ReorderList useOnlyIconToDrag watchChildrenUpdates preserveOrder={!isFetching} disabled={disableReordering} props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 p-5 sm:grid-cols-2 normal:grid-cols-3" }} onPositionChange={handlePositionChange}>
               {show.map((note) => (
                 <NoteItem key={note._id} note={note} getTagColor={getTagColor} setTagColor={setTagColor}>
                   {!disableReordering && !progress && <ReorderIcon />}
