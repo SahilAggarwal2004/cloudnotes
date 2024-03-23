@@ -52,7 +52,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
         </div>
       </>
     ),
-    [title, description, tag, markdown],
+    [title, description, tag, children, markdown],
   );
 
   useLayoutEffect(() => {
