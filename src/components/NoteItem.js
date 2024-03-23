@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Speech, { HighlightedText } from "react-text-to-speech";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -23,36 +23,33 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
   const editTagRef = useRef();
   const [editTagColor, setEditTagColor] = useState();
 
-  const text = useMemo(
-    () => (
-      <>
-        <div className="absolute top-0 translate-y-[-50%] rounded-2xl border bg-gray-200 px-2 py-px text-xs text-black" style={{ backgroundColor: tagColor }}>
-          <span className="hidden">The tag is</span>
-          {tag}
+  const text = (
+    <>
+      <div className="absolute top-0 translate-y-[-50%] rounded-2xl border bg-gray-200 px-2 py-px text-xs text-black" style={{ backgroundColor: tagColor }}>
+        <span className="hidden">The tag is</span>
+        {tag}
+      </div>
+      <div className="relative flex w-full items-center justify-center">
+        <h3 className="text-bold px-2 text-lg" style={{ wordBreak: "break-word" }}>
+          <span className="hidden">. The title is</span>
+          {title}
+        </h3>
+        <span className="absolute right-0">{children}</span>
+      </div>
+      <hr className="my-2 w-full" />
+      <div className="mb-10 w-full whitespace-pre-line px-2 text-left text-sm text-gray-600" style={{ wordBreak: "break-word" }}>
+        <span className="hidden">. The description is</span>
+        <div className="markdown">
+          {markdown ? (
+            parse(markdown)
+          ) : (
+            <Markdown className={`markdown-${_id}`} remarkPlugins={[remarkGfm]}>
+              {description}
+            </Markdown>
+          )}
         </div>
-        <div className="relative flex w-full items-center justify-center">
-          <h3 className="text-bold px-2 text-lg" style={{ wordBreak: "break-word" }}>
-            <span className="hidden">. The title is</span>
-            {title}
-          </h3>
-          <span className="absolute right-0">{children}</span>
-        </div>
-        <hr className="my-2 w-full" />
-        <div className="mb-10 w-full whitespace-pre-line px-2 text-left text-sm text-gray-600" style={{ wordBreak: "break-word" }}>
-          <span className="hidden">. The description is</span>
-          <div className="markdown">
-            {markdown ? (
-              parse(markdown)
-            ) : (
-              <Markdown className={`markdown-${_id}`} remarkPlugins={[remarkGfm]}>
-                {description}
-              </Markdown>
-            )}
-          </div>
-        </div>
-      </>
-    ),
-    [title, description, tag, children, markdown],
+      </div>
+    </>
   );
 
   useLayoutEffect(() => {
