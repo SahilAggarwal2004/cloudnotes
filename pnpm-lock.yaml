@@ -42,8 +42,8 @@ dependencies:
     specifier: ^0.6.7
     version: 0.6.7(react@18.2.0)
   react-text-to-speech:
-    specifier: ^0.12.3
-    version: 0.12.3(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.12.4
+    version: 0.12.4(react-dom@18.2.0)(react@18.2.0)
   react-textarea-autosize:
     specifier: ^8.5.3
     version: 8.5.3(@types/react@18.2.64)(react@18.2.0)
@@ -3779,8 +3779,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-text-to-speech@0.12.3(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-hR/a4RI8X1NtGUsGOm/3ngvn+jsGYDsuWHEZ3A3XqQDIQXG/Q1mXyIrDlvXZg6p2JN5umFwG3uLDhqYh3U1Qcw==}
+  /react-text-to-speech@0.12.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-9UKSj+/uzf+zDUZQBN+5MT2vFbnpLHB/iOU7axjXuJyEECEgD2PZyWtrtcqxEy6f5UzUuTftkftl/rrxlyfwRA==}
     peerDependencies:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
