@@ -23,7 +23,7 @@ export default function AddNote({ tags, setNewNote, getTagColor, setTagColor }) 
   }
 
   return (
-    <form className="border-grey-600 relative flex flex-col items-center rounded border px-2 py-4" onSubmit={addNote}>
+    <form className="border-grey-600 relative flex h-full flex-col items-center rounded border px-2 py-4" onSubmit={addNote}>
       <div className="absolute top-0 flex translate-y-[-50%]">
         <input
           type="text"
