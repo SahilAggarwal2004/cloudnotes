@@ -43,7 +43,7 @@ export default function Dashboard() {
   }, [newNote]);
 
   async function handlePositionChange({ newItems, revert }) {
-    const order = newItems.flatMap((item) => (item?.key ? [item.key] : []));
+    const order = newItems.slice(0, -1).map(({ key }) => key);
     const { success } = await fetchApp({ url: "api/notes/order", method: "PUT", body: { order } });
     if (!success) revert();
   }
@@ -82,7 +82,7 @@ export default function Dashboard() {
                   {!disableReordering && !progress && <ReorderIcon />}
                 </NoteItem>
               ))}
-              {newNote && <AddNote tags={tags} setNewNote={setNewNote} getTagColor={getTagColor} setTagColor={setTagColor} />}
+              {newNote && <AddNote tags={tags} setNewNote={setNewNote} getTagColor={getTagColor} setTagColor={setTagColor} data-disable-reorder />}
             </ReorderList>
           ) : isFetching ? (
             <Loading />

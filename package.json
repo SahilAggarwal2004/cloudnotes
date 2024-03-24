@@ -20,15 +20,15 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-markdown": "^9.0.1",
-    "react-reorder-list": "^0.6.7",
-    "react-text-to-speech": "^0.12.4",
+    "react-reorder-list": "^0.7.0",
+    "react-text-to-speech": "^0.12.5",
     "react-textarea-autosize": "^8.5.3",
     "react-toastify": "^10.0.5",
     "react-top-loading-bar": "^2.3.1",
     "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
-    "@builder.io/partytown": "^0.10.0",
+    "@builder.io/partytown": "^0.10.1",
     "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
