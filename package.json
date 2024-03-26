@@ -11,7 +11,7 @@
   "dependencies": {
     "@serwist/next": "^8.4.4",
     "@serwist/sw": "^8.4.4",
-    "@tanstack/react-query": "^5.28.6",
+    "@tanstack/react-query": "^5.28.8",
     "aos": "^2.3.4",
     "axios": "^1.6.8",
     "html-react-parser": "^5.1.9",
@@ -21,7 +21,7 @@
     "react-icons": "^5.0.1",
     "react-markdown": "^9.0.1",
     "react-reorder-list": "^0.7.0",
-    "react-text-to-speech": "^0.12.5",
+    "react-text-to-speech": "^0.12.6",
     "react-textarea-autosize": "^8.5.3",
     "react-toastify": "^10.0.5",
     "react-top-loading-bar": "^2.3.1",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.10.1",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.11",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.4",
