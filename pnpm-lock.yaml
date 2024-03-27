@@ -12,8 +12,8 @@ dependencies:
     specifier: ^8.4.4
     version: 8.4.4
   '@tanstack/react-query':
-    specifier: ^5.28.8
-    version: 5.28.8(react@18.2.0)
+    specifier: ^5.28.9
+    version: 5.28.9(react@18.2.0)
   aos:
     specifier: ^2.3.4
     version: 2.3.4
@@ -42,8 +42,8 @@ dependencies:
     specifier: ^0.7.0
     version: 0.7.0(react@18.2.0)
   react-text-to-speech:
-    specifier: ^0.12.8
-    version: 0.12.8(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.12.9
+    version: 0.12.9(react-dom@18.2.0)(react@18.2.0)
   react-textarea-autosize:
     specifier: ^8.5.3
     version: 8.5.3(@types/react@18.2.64)(react@18.2.0)
@@ -607,16 +607,16 @@ packages:
       tailwindcss: 3.4.1
     dev: true
 
-  /@tanstack/query-core@5.28.8:
-    resolution: {integrity: sha512-cx64XHeB0kvKxFt22ibvegPeOxnaWVFUbAuhXoIrb7+XePEexHWoB9Kq5n9qroNPkRwQZwgFAP9HNbQz5ohoIg==}
+  /@tanstack/query-core@5.28.9:
+    resolution: {integrity: sha512-hNlfCiqZevr3GRVPXS3MhaGW5hjcxvCsIQ4q6ff7EPlvFwYZaS+0d9EIIgofnegDaU2BbCDlyURoYfRl5rmzow==}
     dev: false
 
-  /@tanstack/react-query@5.28.8(react@18.2.0):
-    resolution: {integrity: sha512-4XYhoRmcThqziB32HsyiBLNXJcukaeGfYwAQ+fZqUUE3ZP4oB/Zy41UJdql+TUg98+vsezfbixxAwAbGHfc5Hg==}
+  /@tanstack/react-query@5.28.9(react@18.2.0):
+    resolution: {integrity: sha512-vwifBkGXsydsLxFOBMe3+f8kvtDoqDRDwUNjPHVDDt+FoBetCbOWAUHgZn4k+CVeZgLmy7bx6aKeDbe3e8koOQ==}
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-core': 5.28.8
+      '@tanstack/query-core': 5.28.9
       react: 18.2.0
     dev: false
 
@@ -3779,8 +3779,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-text-to-speech@0.12.8(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-YFlENYDWduv99gmY93kCsGLTgVdfvJfYwN/AGOpD0fGyeDaEBD/gFRJ1tRlqAzAcTjS2n88As6cIk7+YqqbWZg==}
+  /react-text-to-speech@0.12.9(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-USs+A9pT4myyO4QkQu2YaA3zxvJYA3toWEsO9VGFrN+H41SrvThzgjXmve36gQCL4FL+8VlS0zkTNXrqnyH9YQ==}
     peerDependencies:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
