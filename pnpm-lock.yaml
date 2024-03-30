@@ -39,11 +39,11 @@ dependencies:
     specifier: ^9.0.1
     version: 9.0.1(@types/react@18.2.64)(react@18.2.0)
   react-reorder-list:
-    specifier: ^0.7.0
-    version: 0.7.0(react@18.2.0)
+    specifier: ^0.7.1
+    version: 0.7.1(react@18.2.0)
   react-text-to-speech:
-    specifier: ^0.12.10
-    version: 0.12.10(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.13.0
+    version: 0.13.0(react-dom@18.2.0)(react@18.2.0)
   react-textarea-autosize:
     specifier: ^8.5.3
     version: 8.5.3(@types/react@18.2.64)(react@18.2.0)
@@ -3774,8 +3774,8 @@ packages:
     resolution: {integrity: sha512-+PbtI3VuDV0l6CleQMsx2gtK0JZbZKbpdu5ynr+lbsuvtmgbNcS3VM0tuY2QjFNOcWxvXeHjDpy42RO+4U2rug==}
     dev: false
 
-  /react-reorder-list@0.7.0(react@18.2.0):
-    resolution: {integrity: sha512-9YFOQKUcr6p9ZOM7JBHRkVLgwnCsUpwLP5gEFknW3zj5mgGsXa5m2MCYj7vGLqhA+BXZCnG2ETybcrH4KVTOlg==}
+  /react-reorder-list@0.7.1(react@18.2.0):
+    resolution: {integrity: sha512-PbdFHINh2pc4wjV4Ar2WzO1aeWELpeNd2cW3KPb4LVYS8uUUf8hJ89ppgLPjo06INDtZg7cqiznFJ3BXwWAf3Q==}
     peerDependencies:
       react: '>=17.0.0'
     dependencies:
@@ -3783,8 +3783,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-text-to-speech@0.12.10(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-E8vH6ZcZxSbtOBKK9CAM8EgDw9h0jStg8uYEmeP+wF28QgK0mxfAj/eLuvVFb13Mi/qVR6R4aFB1Hc+lZjat/w==}
+  /react-text-to-speech@0.13.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-lJjb4ZZKUGZaclVWxhvaZKIYWALL74pk3/yw18vN+P3DQkm3DJaajJmloXOUjfnamCPTFBKl0LLY+k4rVvO89g==}
     peerDependencies:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
