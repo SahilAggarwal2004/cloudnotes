@@ -20,7 +20,7 @@ export default function Signup({ router }) {
     event.preventDefault();
     const { success, error } = await fetchApp({ url: "api/auth/signup", method: "POST", body: { name: name.current.value, email: email.current.value, password: password.current.value }, showToast: false });
     if (!success) return toast.error(error);
-    toast.success("Account created successfully! Please confirm your account via email to proceed!", { autoClose: 5000, pauseOnFocusLoss: true, pauseOnHover: true });
+    toast.success("Account created successfully! Please confirm your account via email to proceed!", { autoClose: 5000, pauseOnFocusLoss: true });
     router.replace("/account/login");
   }
 
