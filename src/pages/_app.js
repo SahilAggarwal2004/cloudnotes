@@ -3,7 +3,7 @@ import Head from "next/head";
 import Script from "next/script";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import Aos from "aos";
+import { init } from "aos";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import NoteProvider from "../contexts/NoteProvider";
@@ -26,7 +26,7 @@ export default function MyApp({ Component, pageProps }) {
   pageProps.router = router;
 
   useEffect(() => {
-    Aos.init();
+    init();
   }, []);
 
   useEffect(() => {
