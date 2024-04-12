@@ -26,4 +26,8 @@ export const resetStorage = () => {
   removeStorage("name");
   removeStorage("token");
   removeStorage(queryKey);
+  for (let i = 0; i < sessionStorage.length; i++) {
+    const key = sessionStorage.key(i);
+    removeStorage(key);
+  }
 };
