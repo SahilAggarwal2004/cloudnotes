@@ -67,9 +67,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
     [title, description, tag, children, markdown],
   );
 
-  useLayoutEffect(() => {
-    if (edit?.flag) return cancelEdit;
-  }, [edit?.flag, pathname]);
+  useLayoutEffect(() => cancelEdit, [pathname]);
 
   useLayoutEffect(() => {
     setMarkdown(document.querySelector(`.markdown-${_id}`)?.innerHTML || "");
