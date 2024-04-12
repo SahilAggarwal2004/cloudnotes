@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useLayoutEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import Speech, { HighlightedText } from "react-text-to-speech";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -10,18 +11,29 @@ import { FaXmark } from "react-icons/fa6";
 import { GrVolume, GrVolumeMute } from "react-icons/gr";
 import { useNoteContext } from "../contexts/NoteProvider";
 import { charLimit } from "../constants";
-import useStorage from "../hooks/useStorage";
+import { getStorage, setStorage } from "../modules/storage";
 
 const { maxTitle, maxDescription, maxTag } = charLimit;
 
 export default function NoteItem({ note: { _id, description, updatedAt, tag, title }, getTagColor, setTagColor, children }) {
   const { fetchApp, setModal, progress, setProgress } = useNoteContext();
+  const pathname = usePathname();
   const tagColor = getTagColor(tag);
   const [markdown, setMarkdown] = useState("");
-  const [edit, setEdit] = useStorage(_id, false);
+  const [edit, setEdit] = useState(getStorage(_id, false, false));
 
-  const handleEdit = (obj) => setEdit((prev) => ({ ...prev, ...obj }));
-  const cancelEdit = () => setEdit(false);
+  const handleEdit = (obj) => {
+    setEdit((prev) => {
+      prev = { ...prev, ...obj };
+      setStorage(_id, prev, false);
+      return prev;
+    });
+  };
+
+  const cancelEdit = () => {
+    setStorage(_id, false, false);
+    setEdit(false);
+  };
 
   const text = useMemo(
     () => (
@@ -56,19 +68,20 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
   );
 
   useLayoutEffect(() => {
+    cancelEdit();
+  }, [pathname]);
+
+  useLayoutEffect(() => {
     setMarkdown(document.querySelector(`.markdown-${_id}`)?.innerHTML || "");
     if (edit?.flag) {
       window.addEventListener("beforeunload", cancelEdit);
-      return () => {
-        cancelEdit();
-        window.removeEventListener("beforeunload", cancelEdit);
-      };
+      return () => window.removeEventListener("beforeunload", cancelEdit);
     }
   }, [edit?.flag]);
 
   async function editNote(event) {
     event.preventDefault();
-    const editTag = edit.Tag || "General";
+    const editTag = edit.tag || "General";
     if (title === edit.title && description === edit.description && tag === edit.tag) setProgress(100);
     else var { success } = await fetchApp({ url: `api/notes/update/${_id}`, method: "PUT", body: { title: edit.title, description: edit.description, tag: editTag } });
     if (success === false) return;
@@ -78,7 +91,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
 
   return (
     <form className="border-grey-600 relative flex h-full flex-col items-center rounded border px-4 py-4" onSubmit={editNote}>
-      {edit.flag ? (
+      {edit?.flag ? (
         <>
           <div className="absolute top-0 flex -translate-y-1/2">
             <input
@@ -123,7 +136,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
               <button type="button" className="scale-110 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}>
                 <FaRegTrashAlt />
               </button>
-              <button className="scale-125 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setEdit({ flag: true, title, description, tag, tagColor })}>
+              <button className="scale-125 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => handleEdit({ flag: true, title, description, tag, tagColor })}>
                 <FaRegEdit />
               </button>
               <button type="button" className="scale-110 cursor-pointer font-bold disabled:opacity-60" disabled={progress}>
