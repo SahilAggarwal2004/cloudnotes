@@ -18,7 +18,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
   const { fetchApp, setModal, progress, setProgress } = useNoteContext();
   const tagColor = getTagColor(tag);
   const [markdown, setMarkdown] = useState("");
-  const [edit, setEdit] = useStorage(_id, false);
+  const [edit, setEdit] = useStorage("edit" + _id, false);
 
   const handleEdit = (obj) => setEdit((prev) => ({ ...prev, ...obj }));
   const cancelEdit = () => setEdit(false);
@@ -68,7 +68,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
 
   async function editNote(event) {
     event.preventDefault();
-    const editTag = edit.Tag || "General";
+    const editTag = edit.tag || "General";
     if (title === edit.title && description === edit.description && tag === edit.tag) setProgress(100);
     else var { success } = await fetchApp({ url: `api/notes/update/${_id}`, method: "PUT", body: { title: edit.title, description: edit.description, tag: editTag } });
     if (success === false) return;
@@ -78,7 +78,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
 
   return (
     <form className="border-grey-600 relative flex h-full flex-col items-center rounded border px-4 py-4" onSubmit={editNote}>
-      {edit.flag ? (
+      {edit?.flag ? (
         <>
           <div className="absolute top-0 flex -translate-y-1/2">
             <input

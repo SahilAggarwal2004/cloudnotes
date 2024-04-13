@@ -2,12 +2,12 @@
 import Head from "next/head";
 import Script from "next/script";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { init } from "aos";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import NoteProvider from "../contexts/NoteProvider";
-import { getStorage } from "../modules/storage";
+import { clearSessionStorage, getStorage } from "../modules/storage";
 import { hideNavbar, onlyGuest } from "../constants";
 import Modal from "../components/Modal";
 import Navbar from "../components/navbar/Navbar";
@@ -25,13 +25,14 @@ export default function MyApp({ Component, pageProps }) {
   pageProps.name = name;
   pageProps.router = router;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setLoading(false);
     init();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (router.pathname !== "/") clearSessionStorage("edit");
     if (name && onlyGuest.includes(router.pathname)) router.replace("/");
-    else setLoading(false);
   }, [router.pathname]);
 
   return (

@@ -22,12 +22,16 @@ export const getStorage = (key, fallbackValue, local = true) => {
   return value;
 };
 
+export function clearSessionStorage(prefix = "") {
+  for (let i = 0; i < sessionStorage.length; i++) {
+    const key = sessionStorage.key(i);
+    if (key.startsWith(prefix)) removeStorage(key, false);
+  }
+}
+
 export const resetStorage = () => {
   removeStorage("name");
   removeStorage("token");
   removeStorage(queryKey);
-  for (let i = 0; i < sessionStorage.length; i++) {
-    const key = sessionStorage.key(i);
-    removeStorage(key);
-  }
+  clearSessionStorage();
 };
