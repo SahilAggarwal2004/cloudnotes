@@ -1,10 +1,10 @@
-import withPWAInit from "@serwist/next";
+import withSerwistInit from '@serwist/next';
 
-const pages = ["/", "/about", "/account/forgot", "/account/login", "/account/signup"];
+const pages = ["/", "/about", "/account/forgot", "/account/login", "/account/signup", "/_offline"];
 const images = ["bg.webp", "creator.webp", "logo.webp"].map((image) => `/images/${image}`);
-const revision = `${Date.now()}`;
+const revision = Date.now().toString();
 
-const withPWA = withPWAInit({
+const withPWA = withSerwistInit({
   swSrc: "src/sw.js",
   swDest: "public/sw.js",
   exclude: [/public\/sw.js/],
