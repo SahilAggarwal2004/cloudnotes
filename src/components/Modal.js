@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { resetStorage } from "../modules/storage";
 import { useNoteContext } from "../contexts/NoteProvider";
 
 export default function Modal({ router }) {
+  const client = useQueryClient();
   const {
     fetchApp,
     modal: { active, type, ...props },
@@ -16,6 +18,7 @@ export default function Modal({ router }) {
     setProgress(100);
     setModal({ active: false });
     toast.success("Logged out successfully!");
+    client.clear();
     resetStorage();
     router.replace("/account/login");
   }
