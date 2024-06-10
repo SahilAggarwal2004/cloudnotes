@@ -40,15 +40,13 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
         <hr className="my-2 w-full" />
         <div className="mb-10 w-full whitespace-pre-line px-2 text-left text-sm text-gray-600" style={{ wordBreak: "break-word" }}>
           <span className="hidden">. The description is</span>
-          <div className="markdown">
-            {markdown ? (
-              parse(markdown)
-            ) : (
-              <Markdown className={`markdown-${_id}`} remarkPlugins={[remarkGfm]}>
-                {description}
-              </Markdown>
-            )}
-          </div>
+          {markdown ? (
+            <div className="markdown">{parse(markdown)}</div>
+          ) : (
+            <Markdown className={`markdown-${_id} markdown`} remarkPlugins={[remarkGfm]}>
+              {description}
+            </Markdown>
+          )}
         </div>
       </>
     ),
