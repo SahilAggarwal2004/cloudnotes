@@ -43,7 +43,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
           {markdown ? (
             <div className="markdown">{parse(markdown)}</div>
           ) : (
-            <Markdown className={`markdown-${_id} markdown`} remarkPlugins={[remarkGfm]}>
+            <Markdown className={`markdown-${_id} hidden`} remarkPlugins={[remarkGfm]}>
               {description}
             </Markdown>
           )}
