@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Speech, { HighlightedText } from "react-text-to-speech";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -7,7 +7,7 @@ import parse from "html-react-parser";
 import Textarea from "react-textarea-autosize";
 import { FaRegTrashAlt, FaRegEdit, FaRegSave } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import { GrVolume, GrVolumeMute } from "react-icons/gr";
+import { GrVolume, GrVolumeMute, GrShareOption } from "react-icons/gr";
 import { useNoteContext } from "../contexts/NoteProvider";
 import { charLimit } from "../constants";
 import useStorage from "../hooks/useStorage";
@@ -53,7 +53,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
     [title, description, tag, children, markdown],
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setMarkdown(document.querySelector(`.markdown-${_id}`)?.innerHTML || "");
     if (edit?.flag) {
       window.addEventListener("beforeunload", cancelEdit);
@@ -118,13 +118,16 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
           </HighlightedText>
           <div className="absolute bottom-1.5">
             <div className="mb-1 flex justify-center space-x-5">
-              <button type="button" className="scale-110 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}>
+              <button type="button" className="scale-110 disabled:opacity-60" disabled={progress} onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}>
                 <FaRegTrashAlt />
               </button>
-              <button className="scale-125 cursor-pointer disabled:opacity-60" disabled={progress} onClick={() => setEdit({ flag: true, title, description, tag, tagColor })}>
+              <button type="button" className="scale-125 disabled:opacity-60" disabled={progress} onClick={() => setEdit({ flag: true, title, description, tag, tagColor })}>
                 <FaRegEdit />
               </button>
-              <button type="button" className="scale-110 cursor-pointer font-bold disabled:opacity-60" disabled={progress}>
+              <button type="button" className="scale-110 disabled:opacity-60" disabled={progress} onClick={() => setModal({ active: true, type: "shareNote", note: _id })}>
+                <GrShareOption />
+              </button>
+              <button type="button" className="scale-110 disabled:opacity-60" disabled={progress}>
                 <Speech id={_id} text={text} useStopOverPause startBtn={<GrVolume />} stopBtn={<GrVolumeMute />} highlightText highlightProps={{ style: { backgroundColor: "yellow", color: "black" } }} />
               </button>
             </div>

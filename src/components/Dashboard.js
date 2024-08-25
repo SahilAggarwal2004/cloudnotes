@@ -74,7 +74,7 @@ export default function Dashboard() {
             <span className="hidden sm:col-span-2 sm:inline" />
             <h2 className="col-span-5 text-left text-xl font-bold sm:col-span-6 sm:text-center">Your Notes</h2>
             <div className="col-span-5 text-right sm:col-span-2">
-              Notes: <strong>{notes.length}</strong>/100
+              Notes: <strong>{notes.length}</strong>/25
             </div>
           </div>
           {show.length || newNote ? (

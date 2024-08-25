@@ -19,7 +19,7 @@ export default function Confirm({ router }) {
       <div>
         <div className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] space-y-5 text-center">
           <h3 className="font-semibold">Confirm your CloudNotes account</h3>
-          <button className="btn" onClick={verify}>
+          <button className="btn text-base" onClick={verify}>
             Click Here!
           </button>
         </div>

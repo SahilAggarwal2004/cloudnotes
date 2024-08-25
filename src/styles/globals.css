@@ -1,6 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 .welcome-btn-container {
     @apply transition-transform duration-300 hover:translate-x-2
@@ -11,7 +10,7 @@
 }
 
 .btn {
-    @apply my-1 bg-purple-700 text-white py-1 px-2 border-2 border-white rounded-md transition-all duration-500 hover:bg-white hover:text-purple-700 hover:border-purple-700
+    @apply my-1 bg-purple-700 text-white py-1 px-2 border-2 border-white rounded-md transition-all duration-500 hover:bg-white hover:text-purple-700 hover:border-purple-700 text-sm
 }
 
 .center {
@@ -30,6 +29,10 @@
     @apply prose text-sm leading-5 *:w-max *:max-w-full *:my-0 prose-pre:w-full prose-th:border prose-table:w-full prose-table:table-fixed prose-th:p-2 prose-td:border prose-td:p-2 prose-li:my-0
 }
 
+.share-markdown {
+    @apply prose max-w-[90vw] overflow-x-scroll whitespace-pre-wrap break-words leading-snug *:my-0 *:w-max *:max-w-full prose-headings:my-1 prose-pre:w-full prose-li:my-0 prose-table:w-full prose-table:table-fixed prose-th:border prose-th:p-2 prose-td:border prose-td:p-2
+}
+
 * {
     -webkit-tap-highlight-color: transparent;
 }
@@ -45,3 +48,5 @@
 ::-webkit-scrollbar-thumb {
     background-color: rgb(128, 128, 128, 0.75);
 }
+
+@tailwind utilities;

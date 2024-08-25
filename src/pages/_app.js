@@ -2,7 +2,7 @@
 import Head from "next/head";
 import Script from "next/script";
 import { useRouter } from "next/router";
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { init } from "aos";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
@@ -25,12 +25,12 @@ export default function MyApp({ Component, pageProps }) {
   pageProps.name = name;
   pageProps.router = router;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setLoading(false);
     init();
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (router.pathname !== "/") clearSessionStorage("edit");
     if (name && onlyGuest.includes(router.pathname)) router.replace("/");
   }, [router.pathname]);

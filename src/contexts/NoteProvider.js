@@ -35,7 +35,7 @@ export default function NoteProvider({ children, router }) {
     // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
     setProgress(33);
     try {
-      var { data } = await axios({ url, method, data: body, headers: { token, dimensions, "Content-Type": "application/json" } });
+      var { data } = await axios({ url, method, data: body, headers: { token, dimensions } });
       if (showToast) toast.success(data.msg);
       if (url.startsWith("api/notes/")) {
         client.setQueryData(queryKey, data.notes);
