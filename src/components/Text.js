@@ -34,7 +34,7 @@ export default function Text({ title, value }) {
   return (
     <div className="flex flex-col items-center space-y-3 px-4 text-justify sm:px-5 md:px-6">
       <div className="flex flex-col w-[80vw] max-w-60 items-center space-y-2.5">
-        <span className="text-3xl font-medium">{title}</span>
+        <span className="text-3xl font-medium text-center">{title}</span>
         <div className="flex items-center space-x-3">
           <button title="Copy text" onClick={copy}>
             <FaCopy />
