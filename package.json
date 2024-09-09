@@ -9,17 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.52.1",
+    "@tanstack/react-query": "^5.55.4",
     "aos": "^2.3.4",
-    "axios": "^1.7.5",
-    "html-react-parser": "^5.1.12",
-    "next": "^14.2.6",
+    "axios": "^1.7.7",
+    "html-react-parser": "^5.1.15",
+    "next": "^14.2.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-markdown": "^9.0.1",
     "react-reorder-list": "^0.7.2",
-    "react-text-to-speech": "^0.16.2",
+    "react-text-to-speech": "^0.16.3",
     "react-textarea-autosize": "^8.5.3",
     "react-toastify": "^10.0.5",
     "react-top-loading-bar": "^2.3.1",
@@ -27,14 +27,14 @@
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.10.2",
-    "@serwist/next": "^9.0.5",
-    "@tailwindcss/typography": "^0.5.14",
+    "@serwist/next": "^9.0.7",
+    "@tailwindcss/typography": "^0.5.15",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
-    "eslint-config-next": "^14.2.6",
-    "postcss": "^8.4.41",
+    "eslint-config-next": "^14.2.8",
+    "postcss": "^8.4.45",
     "prettier-plugin-tailwindcss": "^0.6.6",
-    "serwist": "^9.0.5",
+    "serwist": "^9.0.7",
     "tailwindcss": "^3.4.10"
   }
 }
