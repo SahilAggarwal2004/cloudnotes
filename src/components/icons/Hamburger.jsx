@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Hamburger({ open }) {
   const genericHamburgerLine = `h-1 w-6 rounded-full bg-white transition transform duration-[250]`;
 

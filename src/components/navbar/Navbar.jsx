@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { useState } from "react";
-import { FaBars, FaChevronDown } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
 import LoadingBar from "react-top-loading-bar";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 import Expandable from "./Expandable";
 import NavLink from "./NavLink";
 import { useNoteContext } from "../../contexts/NoteProvider";
-import { toast } from "react-toastify";
 import Hamburger from "../icons/Hamburger";
+import { resetStorage } from "../../modules/storage";
 
 export default function Navbar({ name, router }) {
   const { noteId } = router.query;
