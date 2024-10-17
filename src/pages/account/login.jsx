@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRef } from "react";
 import { setStorage } from "../../modules/storage";
-import Logo from "../../components/Logo";
+import Logo from "../../components/icons/Logo";
 import Password from "../../components/Password";
 import { useNoteContext } from "../../contexts/NoteProvider";
 

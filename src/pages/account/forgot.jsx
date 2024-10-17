@@ -2,7 +2,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import Logo from "../../components/Logo";
+import Logo from "../../components/icons/Logo";
 import Password from "../../components/Password";
 import { useNoteContext } from "../../contexts/NoteProvider";
 import { charLimit } from "../../constants";

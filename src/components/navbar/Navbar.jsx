@@ -31,10 +31,10 @@ export default function Navbar({ name, router }) {
 
   return (
     <>
-      <nav className="sticky inset-0 z-30">
-        <div className="flex flex-col items-center overflow-hidden bg-purple-700 px-4 py-2 text-white sm:flex-row sm:justify-between">
+      <div className="sticky inset-0 z-40">
+        <nav className="flex flex-col h-10 items-center overflow-hidden bg-purple-700 px-4 py-2 text-white sm:flex-row sm:justify-between">
           <div className={`flex w-full items-center justify-between sm:justify-start ${name && "sm:space-x-4"}`}>
-            <button
+            {name && <button
               type="button"
               onClick={() => {
                 if (!sidebar) setHide(true);
@@ -42,7 +42,7 @@ export default function Navbar({ name, router }) {
               }}
             >
               <Hamburger open={sidebar} />
-            </button>
+            </button>}
             <Link href="/">
               <h2 className="text-center text-xl font-semibold">CloudNotes</h2>
             </Link>
@@ -61,10 +61,11 @@ export default function Navbar({ name, router }) {
               <NavLink href="/about" text="About" onClick={extendNav} />
             </div>
           </Expandable>
-        </div>
+        </nav>
         <LoadingBar color="#dc2626" containerStyle={{ position: "relative" }} shadow={false} progress={progress} waitingTime={300} onLoaderFinished={() => setProgress(0)} />
-      </nav>
-      <div className={`fixed top-10 z-20 h-[calc(100vh-2.5rem)] min-w-48 space-y-2 bg-white p-2 shadow-lg transition-transform duration-[250] ${sidebar ? "" : "-translate-x-full"}`}>
+      </div>
+      <div className={`fixed inset-0 top-10 z-20 bg-gray-50 transition-all duration-[250] ${sidebar ? "bg-opacity-50" : "invisible bg-opacity-0"}`} onClick={() => setSidebar(false)} />
+      <div className={`fixed top-10 z-30 h-[calc(100vh-2.5rem)] min-w-48 space-y-2 bg-white px-2 py-3 shadow-lg transition-transform duration-[250] overflow-y-scroll ${sidebar ? "" : "-translate-x-full"}`}>
         <h3 className="mb-2 text-center text-lg font-semibold">Hi, {name}!</h3>
         <hr />
         <div className="flex flex-col text-sm">
@@ -76,7 +77,7 @@ export default function Navbar({ name, router }) {
           ))}
         </div>
         <hr />
-        <div className="flex flex-col space-y-2 text-xs">
+        <div className="flex flex-col space-y-2 text-sm">
           <h3 className="text-base font-semibold">Account Settings</h3>
           <button className="w-max font-semibold text-gray-600 hover:text-gray-900" onClick={logOut}>
             Log Out

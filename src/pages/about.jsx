@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { FaUniversalAccess, FaStar, FaLinkedin, FaKey, FaShippingFast, FaGithub } from "react-icons/fa";
 import { IoIosApps } from "react-icons/io";
 import { GiTwoCoins } from "react-icons/gi";
-import Logo from "../components/Logo";
+import Logo from "../components/icons/Logo";
 import Head from "next/head";
 
 export default function About() {

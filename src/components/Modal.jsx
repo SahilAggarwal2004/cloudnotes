@@ -47,14 +47,14 @@ export default function Modal({ router }) {
         },
         { pending: "Generating URL...", success: "URL copied to clipboard", error: "Something went wrong" },
       )
-      .catch(() => {})
+      .catch(() => { })
       .finally(closeModal);
   }
 
   return (
     <div>
-      <div className={`${active ? "bg-opacity-50" : "invisible bg-opacity-0"} fixed inset-0 z-40 bg-black transition-all duration-700`} onClick={closeModal} />
-      <div className={`fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 bg-white text-center ${active ? "opacity-100" : "hidden"} rounded-md p-4 ${type === "edit" ? "w-4/5" : "w-max"}`}>
+      <div className={`fixed inset-0 z-50 bg-black transition-all duration-700 ${active ? "bg-opacity-50" : "invisible bg-opacity-0"}`} onClick={closeModal} />
+      <div className={`fixed left-1/2 top-1/2 z-[60] -translate-x-1/2 -translate-y-1/2 bg-white text-center ${active ? "opacity-100" : "hidden"} rounded-md p-4 ${type === "edit" ? "w-4/5" : "w-max"}`}>
         {type === "deleteUser" ? (
           <div>
             <h3 className="font-bold">Delete Account?</h3>
