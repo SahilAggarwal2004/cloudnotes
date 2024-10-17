@@ -4,8 +4,6 @@ export const colors = ["#e5e7eb", "#ffffff", "#ff8080", "#ffaa80", "#ffd480", "#
 
 export const defaultColor = colors[0];
 
-export const fetchNotes = ["/", "/note/[noteId]"];
-
 export const hideNavbar = ["/", "/_error"];
 
 export const infinity = Number.MAX_SAFE_INTEGER;

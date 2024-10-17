@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { setStorage, getStorage, resetStorage } from "../modules/storage";
-import { fetchNotes, queryKey } from "../constants";
+import { queryKey } from "../constants";
 import useTagColors from "../hooks/useTagColors";
 
 // Below is the boiler plate(basic structure) for the function to be created inside which we will pass some value (can be state or a function to update the state or anything else):
@@ -36,9 +36,9 @@ export default function NoteProvider({ children, router }) {
 
   const { data, isFetching } = useQuery({
     queryKey,
-    enabled: fetchNotes.includes(router.pathname) && Boolean(getStorage("token")),
+    enabled: Boolean(getStorage("token")),
     queryFn: async () => {
-      const { notes } = await fetchApp({ url: "api/notes/fetch", token, showToast: false });
+      const { notes } = await fetchApp({ url: "api/notes/fetch", showToast: false });
       return notes;
     },
   });
