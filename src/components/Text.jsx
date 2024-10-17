@@ -7,11 +7,10 @@ import { HiVolumeOff, HiVolumeUp } from "react-text-to-speech/icons";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import parse from "html-react-parser";
-import { toast } from "react-toastify";
 import useStorage from "../hooks/useStorage";
 
 export default function Text({ title, value }) {
-  const [showMarkdown, setShowMarkdown] = useStorage("markdown", false);
+  const [showMarkdown, setShowMarkdown] = useStorage("markdown", true);
   const [markdown, setMarkdown] = useState("");
   const text = useMemo(() => <>{showMarkdown ? parse(markdown) : value}</>, [value, markdown]);
   const { Text, speechStatus, start, stop } = useSpeech({ text, highlightText: true });
@@ -20,11 +19,6 @@ export default function Text({ title, value }) {
     stop();
     setMarkdown(document.querySelector(".rtts-markdown")?.innerHTML);
   }, [value, showMarkdown]);
-
-  function copy() {
-    navigator.clipboard.writeText(value);
-    toast.success("Text copied to clipboard!");
-  }
 
   function toggleMarkdown() {
     stop();
@@ -37,8 +31,8 @@ export default function Text({ title, value }) {
         <span className="text-center text-3xl font-medium" style={{ wordBreak: "break-word" }}>
           {title}
         </span>
-        <div className="flex items-center space-x-3">
-          <button title="Copy text" onClick={copy}>
+        <div className="flex items-center space-x-4">
+          <button title="Copy text" onClick={() => copy(value)}>
             <FaCopy />
           </button>
           <button className="scale-150" onClick={toggleMarkdown}>

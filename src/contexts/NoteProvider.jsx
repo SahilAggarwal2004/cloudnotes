@@ -1,9 +1,10 @@
-import { useState, useContext, createContext } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useState, useContext, createContext, useMemo, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { setStorage, getStorage, resetStorage } from "../modules/storage";
-import { queryKey } from "../constants";
+import { fetchNotes, queryKey } from "../constants";
+import useTagColors from "../hooks/useTagColors";
 
 // Below is the boiler plate(basic structure) for the function to be created inside which we will pass some value (can be state or a function to update the state or anything else):
 // const Function = (props) => {
@@ -30,6 +31,24 @@ export default function NoteProvider({ children, router }) {
   // Defining things to be stored in value below:
   const [modal, setModal] = useState({ active: false });
   const [progress, setProgress] = useState(0);
+  const [sidebar, setSidebar] = useState(false);
+  const { getTagColor, setTagColor } = useTagColors();
+
+  const { data, isFetching } = useQuery({
+    queryKey,
+    enabled: fetchNotes.includes(router.pathname) && Boolean(getStorage("token")),
+    queryFn: async () => {
+      const { notes } = await fetchApp({ url: "api/notes/fetch", token, showToast: false });
+      return notes;
+    },
+  });
+
+  const [notes, tags] = useMemo(() => {
+    if (data) setStorage(queryKey, data);
+    const notes = data || getStorage(queryKey, []);
+    const tags = notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []);
+    return [notes, tags];
+  }, [data]);
 
   async function fetchApp({ url, method = "GET", body, token = getStorage("token"), showToast = true }) {
     // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
@@ -54,7 +73,11 @@ export default function NoteProvider({ children, router }) {
     return data;
   }
 
+  useEffect(() => {
+    if (router.pathname !== "/note/[noteId]") setSidebar(false);
+  }, [router.pathname]);
+
   // Context.Provider provides the context to the components using useContext().
   // value attribute stores the value(can be anything) to be passed to the components using the context.
-  return <NoteContext.Provider value={{ fetchApp, modal, setModal, progress, setProgress }}>{children}</NoteContext.Provider>;
+  return <NoteContext.Provider value={{ fetchApp, getTagColor, isFetching, modal, setModal, notes, progress, setProgress, setSidebar, setTagColor, sidebar, tags }}>{children}</NoteContext.Provider>;
 }

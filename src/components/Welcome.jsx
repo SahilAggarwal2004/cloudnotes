@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Head from "next/head";
 import Link from "next/link";
-import Logo from "../components/Logo";
+import Logo from "./Logo";
 
 export default function Welcome() {
   return (

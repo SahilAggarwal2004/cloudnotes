@@ -6,8 +6,8 @@ import { useNoteContext } from "../contexts/NoteProvider";
 
 const { maxTitle, maxDescription, maxTag } = charLimit;
 
-export default function AddNote({ tags, setNewNote, getTagColor, setTagColor }) {
-  const { fetchApp, progress } = useNoteContext();
+export default function AddNote({ tags, setNewNote }) {
+  const { fetchApp, progress, getTagColor, setTagColor } = useNoteContext();
   const titleRef = useRef();
   const [description, setDescription] = useState("");
   const tagRef = useRef();

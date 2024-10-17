@@ -3,37 +3,18 @@ import Head from "next/head";
 import { useEffect, useState, useMemo } from "react";
 import ReorderList, { ReorderIcon } from "react-reorder-list";
 import { FaPlus as FaPlusBold } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
 import NoteItem from "./NoteItem";
-import { getStorage, setStorage } from "../modules/storage";
-import { queryKey } from "../constants";
 import { useNoteContext } from "../contexts/NoteProvider";
 import useURLState from "../hooks/useURLState";
-import useTagColors from "../hooks/useTagColors";
 import Loading from "./Loading";
 import AddNote from "./AddNote";
 
-export default function Dashboard() {
-  const { fetchApp, progress } = useNoteContext();
-  const { getTagColor, setTagColor } = useTagColors();
+export default function Dashboard({ router }) {
+  const { fetchApp, isFetching, notes, progress, tags } = useNoteContext();
   const [newNote, setNewNote] = useState(false);
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
 
-  const { data, isFetching } = useQuery({
-    queryKey,
-    queryFn: async () => {
-      const token = getStorage("token");
-      if (!token) return;
-      const { notes } = await fetchApp({ url: "api/notes/fetch", token, showToast: false });
-      return notes;
-    },
-  });
-  const notes = useMemo(() => {
-    if (data) setStorage(queryKey, data);
-    return data || getStorage(queryKey, []);
-  }, [data]);
-  const tags = notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []);
   const show = useMemo(() => {
     return (selTag ? notes.filter(({ tag }) => tag === selTag) : notes).filter(({ title, description, tag }) => [title, description, tag].join("~~").toLowerCase().includes(search));
   }, [notes, search, selTag]);
@@ -80,11 +61,11 @@ export default function Dashboard() {
           {show.length || newNote ? (
             <ReorderList useOnlyIconToDrag watchChildrenUpdates preserveOrder={!isFetching} disabled={disableReordering} props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 p-5 sm:grid-cols-2 normal:grid-cols-3" }} onPositionChange={handlePositionChange}>
               {show.map((note) => (
-                <NoteItem key={note._id} note={note} getTagColor={getTagColor} setTagColor={setTagColor}>
+                <NoteItem key={note._id} note={note} router={router}>
                   {!disableReordering && !progress && <ReorderIcon />}
                 </NoteItem>
               ))}
-              {newNote && <AddNote tags={tags} setNewNote={setNewNote} getTagColor={getTagColor} setTagColor={setTagColor} data-disable-reorder />}
+              {newNote && <AddNote tags={tags} setNewNote={setNewNote} data-disable-reorder />}
             </ReorderList>
           ) : isFetching ? (
             <Loading />

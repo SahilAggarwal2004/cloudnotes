@@ -186,7 +186,7 @@ export default function MyApp({ Component, pageProps }) {
             <>
               {(!hideNavbar.includes(router.pathname) || (name && router.pathname === "/")) && (
                 <>
-                  <Navbar name={name} />
+                  <Navbar name={name} router={router} />
                   <Modal router={router} />
                 </>
               )}
