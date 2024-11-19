@@ -69,7 +69,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
     event.preventDefault();
     const editTag = edit.tag || "General";
     if (title === edit.title && description === edit.description && tag === edit.tag) setProgress(100);
-    else var { success } = await fetchApp({ url: `api/notes/update/${_id}`, method: "PUT", body: { title: edit.title, description: edit.description, tag: editTag } });
+    else var { success } = await fetchApp({ url: `api/notes/update/${_id}`, method: "PUT", body: { title: edit.title, description: edit.description, tag: editTag, lastUpdatedAt: updatedAt } });
     if (success === false) return;
     cancelEdit();
     setTagColor(editTag, edit.tagColor);
@@ -143,7 +143,7 @@ export default function NoteItem({ note: { _id, description, updatedAt, tag, tit
                 <FaRegTrashAlt />
               </button>
             </div>
-            <p className="self-end text-2xs text-gray-600">Last Updated: {new Date(Date.parse(updatedAt)).toLocaleString()}</p>
+            <p className="self-end text-2xs text-gray-600">Last Updated: {new Date(updatedAt).toLocaleString()}</p>
           </div>
         </>
       )}
