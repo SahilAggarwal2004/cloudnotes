@@ -1,7 +1,7 @@
-import withSerwistInit from '@serwist/next';
+import withSerwistInit from "@serwist/next";
 
 const pages = ["/", "/about", "/account/forgot", "/account/login", "/account/signup", "/_offline"];
-const images = ["bg.webp", "creator.webp", "logo.webp"].map((image) => `/images/${image}`);
+const images = ["bg.webp", "logo.webp"].map((image) => `/images/${image}`);
 const revision = Date.now().toString();
 
 const withPWA = withSerwistInit({

@@ -78,24 +78,6 @@ export default function About() {
             </li>
           </ul>
         </div>
-        <hr className="w-11/12 border-black" />
-        <div className="flex h-[calc(100vh-5.5rem)] w-11/12 flex-col justify-center xs:h-[calc(100vh-4rem)] sm:h-[calc(100vh-2.5rem)] sm:max-w-fit">
-          <h3 className="text-xl font-semibold" data-aos="fade-up">
-            Created By:
-          </h3>
-          <div className="relative m-3 mt-24 flex flex-col items-center rounded-sm border border-black px-10 py-4 pt-16" data-aos="fade-up">
-            <img src="/images/creator.webp" alt="Sahil Aggarwal" className="absolute top-0 h-36 w-36 translate-y-[-50%] rounded-full border-2 border-black" />
-            <div className="mt-4 text-lg font-semibold" data-aos="fade-up">
-              Sahil Aggarwal
-            </div>
-            <div className="mt-2 text-gray-700" data-aos="fade-up">
-              CSE, 3rd Year, MSIT
-            </div>
-            <div className="mt-2 text-gray-700" data-aos="fade-up">
-              Full Stack Web Developer
-            </div>
-          </div>
-        </div>
         <footer className="flex w-full flex-col items-center justify-between space-y-1 bg-purple-600 px-3 py-2 text-center text-white sm:flex-row sm:space-y-0">
           <div>Made with 🤍 by Sahil Aggarwal</div>
           <div className="flex space-x-4 px-2">
