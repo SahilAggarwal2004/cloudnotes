@@ -38,7 +38,7 @@ export default function NoteProvider({ children, router }) {
     queryKey,
     enabled: Boolean(getStorage("token")),
     queryFn: async () => {
-      const { notes } = await fetchApp({ url: "api/notes/fetch", showToast: false });
+      const { notes = null } = await fetchApp({ url: "api/notes/fetch", showToast: false });
       return notes;
     },
   });

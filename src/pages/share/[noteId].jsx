@@ -11,7 +11,7 @@ export default function Id({ router }) {
   const { data, isFetching } = useQuery({
     queryKey: queryKey.concat(noteId),
     queryFn: async () => {
-      const { note } = await fetchApp({ url: `api/notes/fetch/${noteId}`, showToast: false });
+      const { note = null } = await fetchApp({ url: `api/notes/fetch/${noteId}`, showToast: false });
       return note;
     },
   });
