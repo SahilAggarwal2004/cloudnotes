@@ -49,7 +49,7 @@ export default function MyApp({ Component, pageProps }) {
 
         <link rel="preconnect" href={api} />
 
-        <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; img-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src *" />
+        <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; img-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src *;" />
 
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
