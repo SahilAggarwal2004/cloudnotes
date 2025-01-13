@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import Textarea from "react-textarea-autosize";
 import { FaPlus, FaXmark } from "react-icons/fa6";
-import { charLimit, colors, defaultColor } from "../constants";
-import { useNoteContext } from "../contexts/NoteProvider";
+import { charLimit, colors, defaultColor } from "../../constants";
+import { useNoteContext } from "../../contexts/NoteProvider";
 
 const { maxTitle, maxDescription, maxTag } = charLimit;
 
@@ -33,26 +33,45 @@ export default function AddNote({ tags, setNewNote }) {
           placeholder="Add tag"
           maxLength={maxTag}
           autoComplete="off"
-          onChange={(e) => {
-            const tagColor = getTagColor(e.target.value, false);
-            if (tagColor) setColor(tagColor);
-          }}
+          onChange={(e) => setColor(getTagColor(e.target.value))}
         />
         <datalist id="tag-list">
           {tags.map((tag) => (
             <option key={tag} value={tag} />
           ))}
         </datalist>
-        <input type="color" value={tagColor} list="tag-colors" className="rounded-r-2xl bg-gray-200 text-center text-xs text-black focus:outline-0" onChange={(e) => setColor(e.target.value)} />
+        <input
+          type="color"
+          value={tagColor}
+          list="tag-colors"
+          className="rounded-r-2xl bg-gray-200 text-center text-xs text-black focus:outline-0"
+          onChange={(e) => setColor(e.target.value)}
+        />
         <datalist id="tag-colors">
           {colors.map((color) => (
             <option key={color} value={color} />
           ))}
         </datalist>
       </div>
-      <input type="text" ref={titleRef} className="text-bold w-full text-center text-lg placeholder:text-gray-600 focus:outline-0" placeholder="Add title" required maxLength={maxTitle} />
+      <input
+        type="text"
+        ref={titleRef}
+        className="w-full text-center text-lg placeholder:text-gray-600 focus:outline-0"
+        placeholder="Add title"
+        required
+        maxLength={maxTitle}
+      />
       <hr className="my-2 w-full" />
-      <Textarea value={description} placeholder="Add description" minRows={5} maxRows={20} required maxLength={maxDescription} className="mx-2 mb-1 w-full text-center text-sm text-gray-600 focus:outline-0" onChange={(e) => setDescription(e.target.value)} />
+      <Textarea
+        value={description}
+        placeholder="Add description"
+        minRows={5}
+        maxRows={20}
+        required
+        maxLength={maxDescription}
+        className="mx-2 mb-1 w-full text-center text-sm text-gray-600 focus:outline-0"
+        onChange={(e) => setDescription(e.target.value)}
+      />
       <div className="mb-10 w-full pr-1 text-right text-xs">
         {description.length}/{maxDescription}
       </div>

@@ -43,18 +43,35 @@ export default function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffffff" />
-        <meta name="keywords" content="cloud, notes, notes cloud, cloudnotes, platform, encryption, security, save, short notes, vercel, reactjs, online, online platform, free, access, anywhere, anytime, fast, independent, web app, world, continue" />
-        <meta name="description" content="CloudNotes is an online platform to save all your notes on the cloud. We ensure strong encryption of your notes so that only you can access your notes." />
+        <meta
+          name="keywords"
+          content="cloud, notes, notes cloud, cloudnotes, platform, encryption, security, save, short notes, vercel, reactjs, online, online platform, free, access, anywhere, anytime, fast, independent, web app, world, continue"
+        />
+        <meta
+          name="description"
+          content="CloudNotes is an online platform to save all your notes on the cloud. We ensure strong encryption of your notes so that only you can access your notes."
+        />
         <link rel="manifest" href="/manifest.json" />
 
         <link rel="preconnect" href={api} />
 
-        <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; img-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src *;" />
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src 'self'; img-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src *;"
+        />
 
         <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
-        <link rel="apple-touch-startup-image" href="icons/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" href="icons/apple-splash-2732-2048.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
+        <link
+          rel="apple-touch-startup-image"
+          href="icons/apple-splash-2048-2732.jpg"
+          media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="icons/apple-splash-2732-2048.jpg"
+          media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+        />
         <link
           rel="apple-touch-startup-image"
           href="icons/apple-splash-1668-2388.jpg"
@@ -151,8 +168,16 @@ export default function MyApp({ Component, pageProps }) {
           media="(device-width: 414px) and (device-height: 
 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"
         />
-        <link rel="apple-touch-startup-image" href="icons/apple-splash-828-1792.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" href="icons/apple-splash-1792-828.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
+        <link
+          rel="apple-touch-startup-image"
+          href="icons/apple-splash-828-1792.jpg"
+          media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="icons/apple-splash-1792-828.jpg"
+          media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+        />
         <link
           rel="apple-touch-startup-image"
           href="icons/apple-splash-1242-2208.jpg"
@@ -165,10 +190,26 @@ export default function MyApp({ Component, pageProps }) {
           media="(device-width: 414px) and (device-height: 
 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"
         />
-        <link rel="apple-touch-startup-image" href="icons/apple-splash-750-1334.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" href="icons/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
-        <link rel="apple-touch-startup-image" href="icons/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" href="icons/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
+        <link
+          rel="apple-touch-startup-image"
+          href="icons/apple-splash-750-1334.jpg"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="icons/apple-splash-1334-750.jpg"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="icons/apple-splash-640-1136.jpg"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="icons/apple-splash-1136-640.jpg"
+          media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+        />
       </Head>
 
       {/* Google tag (gtag.js) */}

@@ -16,7 +16,10 @@ export default function Welcome() {
             <Logo type="black" width={64} height={64} />
             <h1 className="text-xl font-bold normal:font-semibold">CloudNotes - Notes on Cloud</h1>
           </div>
-          <div className="px-7 text-justify">CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.</div>
+          <div className="px-7 text-justify">
+            CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally
+            encrypted and secured so that no one except you can access your notes.
+          </div>
           <div className="flex flex-col space-y-3">
             <div className="welcome-btn-container">
               <Link className="welcome-btn" href="/account/signup">

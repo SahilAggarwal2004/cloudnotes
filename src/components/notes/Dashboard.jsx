@@ -4,19 +4,21 @@ import { useEffect, useState, useMemo } from "react";
 import ReorderList, { ReorderIcon } from "react-reorder-list";
 import { FaPlus as FaPlusBold } from "react-icons/fa";
 import NoteItem from "./NoteItem";
-import { useNoteContext } from "../contexts/NoteProvider";
-import useURLState from "../hooks/useURLState";
-import Loading from "./Loading";
+import { useNoteContext } from "../../contexts/NoteProvider";
+import useURLState from "../../hooks/useURLState";
+import Loading from "../Loading";
 import AddNote from "./AddNote";
 
-export default function Dashboard({ router }) {
+export default function Dashboard() {
   const { fetchApp, isFetching, notes, progress, tags } = useNoteContext();
   const [newNote, setNewNote] = useState(false);
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
 
   const show = useMemo(() => {
-    return (selTag ? notes.filter(({ tag }) => tag === selTag) : notes).filter(({ title, description, tag }) => [title, description, tag].join("~~").toLowerCase().includes(search));
+    return (selTag ? notes.filter(({ tag }) => tag === selTag) : notes).filter(({ title, description, tag }) =>
+      [title, description, tag].join("~~").toLowerCase().includes(search),
+    );
   }, [notes, search, selTag]);
 
   const disableReordering = isFetching || selTag || search;
@@ -39,7 +41,12 @@ export default function Dashboard({ router }) {
       <div className="mb-12">
         <div className="py-4 text-center">
           <div className="flex flex-col items-center justify-center sm:mx-5 sm:flex-row sm:justify-end sm:space-x-3">
-            <input className="border-grey-600 my-1 border px-1 text-center" placeholder="Search Notes" defaultValue={search} onChange={(e) => setSearch(e.target.value.toLowerCase())} />
+            <input
+              className="border-grey-600 my-1 border px-1 text-center"
+              placeholder="Search Notes"
+              defaultValue={search}
+              onChange={(e) => setSearch(e.target.value.toLowerCase())}
+            />
             <select className="border-grey-600 my-1 w-min border px-1" value={selTag} onChange={(e) => setSelTag(e.target.value)}>
               <option key="All" value="">
                 All
@@ -59,9 +66,16 @@ export default function Dashboard({ router }) {
             </div>
           </div>
           {show.length || newNote ? (
-            <ReorderList useOnlyIconToDrag watchChildrenUpdates preserveOrder={!isFetching} disabled={disableReordering} props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 p-5 sm:grid-cols-2 normal:grid-cols-3" }} onPositionChange={handlePositionChange}>
+            <ReorderList
+              useOnlyIconToDrag
+              watchChildrenUpdates
+              preserveOrder={!isFetching}
+              disabled={disableReordering}
+              props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 p-5 sm:grid-cols-2 normal:grid-cols-3" }}
+              onPositionChange={handlePositionChange}
+            >
               {show.map((note) => (
-                <NoteItem key={note._id} note={note} router={router}>
+                <NoteItem key={note._id} note={note}>
                   {!disableReordering && !progress && <ReorderIcon />}
                 </NoteItem>
               ))}
@@ -73,7 +87,11 @@ export default function Dashboard({ router }) {
             <h4 className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">No Notes To Display!</h4>
           )}
         </div>
-        <button className="fixed bottom-[2.625rem] right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]" disabled={progress} onClick={() => setNewNote(true)}>
+        <button
+          className="fixed bottom-[2.625rem] right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]"
+          disabled={progress}
+          onClick={() => setNewNote(true)}
+        >
           <FaPlusBold className="scale-110" />
         </button>
       </div>

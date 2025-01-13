@@ -56,7 +56,7 @@ export default function NoteProvider({ children, router }) {
     try {
       var { data } = await axios({ url, method, data: body, headers: { token, dimensions } });
       if (showToast) toast.success(data.msg);
-      if (url.startsWith("api/notes/")) {
+      if (data.notes) {
         client.setQueryData(queryKey, data.notes);
         setStorage(queryKey, data.notes);
       }
@@ -64,6 +64,7 @@ export default function NoteProvider({ children, router }) {
       data = error.response?.data || { success: false, error: "Server Down! Please try again later..." };
       const authenticationError = data.error.toLowerCase().includes("session expired");
       if (authenticationError) {
+        client.clear();
         resetStorage();
         router.replace("/account/login");
       }
@@ -79,5 +80,9 @@ export default function NoteProvider({ children, router }) {
 
   // Context.Provider provides the context to the components using useContext().
   // value attribute stores the value(can be anything) to be passed to the components using the context.
-  return <NoteContext.Provider value={{ fetchApp, getTagColor, isFetching, modal, setModal, notes, progress, setProgress, setSidebar, setTagColor, sidebar, tags }}>{children}</NoteContext.Provider>;
+  return (
+    <NoteContext.Provider value={{ fetchApp, getTagColor, isFetching, modal, setModal, notes, progress, setProgress, setSidebar, setTagColor, sidebar, tags }}>
+      {children}
+    </NoteContext.Provider>
+  );
 }

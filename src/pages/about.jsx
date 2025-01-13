@@ -20,7 +20,10 @@ export default function About() {
         <div className="flex h-screen w-11/12 flex-col items-center justify-center sm:w-2/3" data-aos="fade-up">
           <Logo />
           <h2 className="text-2xl font-semibold">CloudNotes - Notes on Cloud</h2>
-          <p className="pt-4">CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally encrypted and secured so that no one except you can access your notes.</p>
+          <p className="pt-4">
+            CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally
+            encrypted and secured so that no one except you can access your notes.
+          </p>
         </div>
         <hr className="w-11/12 border-black" />
         <div className="flex min-h-screen w-11/12 flex-col items-center justify-center py-5 sm:w-2/3">
@@ -80,7 +83,7 @@ export default function About() {
         </div>
         <footer className="flex w-full flex-col items-center justify-between space-y-1 bg-purple-600 px-3 py-2 text-center text-white sm:flex-row sm:space-y-0">
           <div>Made with 🤍 by Sahil Aggarwal</div>
-          <div className="flex space-x-4 px-2">
+          <div className="flex-group px-2">
             <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer">
               <FaLinkedin className="inline scale-125" title="LinkedIn" />
             </a>

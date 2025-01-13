@@ -1,60 +1,65 @@
 @tailwind base;
 @tailwind components;
 
-/* Custom Tailwind Styles */
-.welcome-btn-container {
-    @apply transition-transform duration-300 hover:translate-x-2
-}
-
-.welcome-btn {
-    @apply p-1 relative hover:after:scale-100 after:content-[''] after:h-0 after:w-full after:absolute after:scale-0 after:left-0 after:top-[calc(100%)] after:z-10 after:border after:opacity-90 after:border-black normal:after:border-white after:transition-transform after:duration-500
-}
-
-.btn {
-    @apply my-1 bg-purple-700 text-white py-1 px-2 border-2 border-white rounded-md transition-all duration-500 hover:bg-white hover:text-purple-700 hover:border-purple-700 text-sm
-}
-
-.center {
-    @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-}
-
-.password-icon {
-    @apply absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:bg-gray-100 rounded-full p-1 box-content
-}
-
-.button-animation {
-    @apply border-transparent text-white bg-purple-600 hover:bg-purple-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600
-}
-
-.markdown {
-    @apply prose max-h-[calc(100vh-14rem)] min-w-full overflow-y-scroll px-2 text-sm leading-5 *:my-0 *:w-max *:max-w-full prose-pre:w-full prose-li:my-0 prose-table:w-full prose-table:table-fixed prose-th:border prose-th:p-2 prose-td:border prose-td:p-2
-}
-
-.share-markdown {
-    @apply prose max-w-[90vw] overflow-x-scroll whitespace-pre-wrap break-words leading-snug *:my-0 *:w-max *:max-w-full prose-headings:my-1 prose-pre:w-full prose-li:my-0 prose-table:w-full prose-table:table-fixed prose-th:border prose-th:p-2 prose-td:border prose-td:p-2
-}
-
 /* Global Styles */
 * {
-    -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :root {
-    --hambuger-size: 18px;
+  --hambuger-size: 18px;
 }
 
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
-    width: 2.5px;
+  width: 2.5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
-    margin-left: 10px;
+  background: transparent;
+  margin-left: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgb(128, 128, 128, 0.75);
+  background-color: rgb(128, 128, 128, 0.75);
+}
+
+/* Custom Tailwind Styles */
+.button-animation {
+  @apply border-transparent bg-purple-600 text-white transition-all duration-300 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2;
+}
+
+.btn {
+  @apply my-1 rounded-md border-2 border-white bg-purple-700 px-2 py-1 text-sm text-white transition-all duration-500 hover:border-purple-700 hover:bg-white hover:text-purple-700;
+}
+
+.center {
+  @apply fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+.flex-group {
+  @apply flex items-center justify-center space-x-4;
+}
+
+.hamburger {
+  @apply h-1 w-6 transform rounded-full bg-white transition duration-[250];
+}
+
+.markdown {
+  @apply prose grid grid-cols-1 overflow-y-scroll whitespace-pre-wrap break-words *:my-0 *:w-max *:max-w-full prose-headings:my-1 prose-pre:w-full prose-li:my-0 prose-table:w-full prose-table:table-fixed prose-th:border prose-th:p-2 prose-td:border prose-td:p-2;
+}
+
+.password-icon {
+  @apply absolute right-3 top-1/2 box-content -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100;
+}
+
+.welcome-btn {
+  @apply relative p-1 after:absolute after:left-0 after:top-[calc(100%)] after:z-10 after:h-0 after:w-full after:scale-0 after:border after:border-black after:opacity-90 after:transition-transform after:duration-500 after:content-[''] hover:after:scale-100 normal:after:border-white;
+}
+
+.welcome-btn-container {
+  @apply transition-transform duration-300 hover:translate-x-2;
 }
 
 @tailwind utilities;

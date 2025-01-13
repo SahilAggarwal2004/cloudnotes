@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../components/Loading";
-import Text from "../../components/Text";
+import NoteItem from "../../components/notes/NoteItem";
 import { queryKey } from "../../constants";
 import { useNoteContext } from "../../contexts/NoteProvider";
 
@@ -16,5 +16,15 @@ export default function Id({ router }) {
     },
   });
 
-  return <div className="mt-2 p-4">{data ? <Text title={data.title} value={data.description} /> : isFetching ? <Loading /> : <div className="text-center text-lg font-semibold">Note note found!</div>}</div>;
+  return (
+    <div className="mt-3 flex w-full justify-center">
+      {data ? (
+        <NoteItem note={data} mode="shared" />
+      ) : isFetching ? (
+        <Loading />
+      ) : (
+        <div className="fixed top-0 flex h-full items-center text-lg font-semibold">Note note found!</div>
+      )}
+    </div>
+  );
 }

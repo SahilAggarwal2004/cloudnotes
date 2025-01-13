@@ -4,10 +4,10 @@ import { defaultColor } from "../constants";
 
 export default function useTagColors() {
   const [tagColors, setTagColors] = useState(getStorage("tag-colors", {}));
-  const getTagColor = (tag, returnDefault = true) => tagColors[tag] || (returnDefault ? defaultColor : undefined);
+  const getTagColor = (tag) => tagColors[tag] || defaultColor;
   const setTagColor = (tag, color) =>
     setTagColors((tagColors) => {
-      tagColors[tag] = color === "#000000" ? defaultColor : color;
+      tagColors[tag] = color;
       setStorage("tag-colors", tagColors);
       return tagColors;
     });
