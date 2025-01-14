@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { FaCompress, FaCopy, FaExpand, FaRegCopy, FaRegEdit, FaRegSave, FaRegTrashAlt } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
-import { TbMarkdown, TbMarkdownOff } from "react-icons/tb";
-import { GrVolume, GrVolumeMute, GrShareOption } from "react-icons/gr";
+import { GrVolume, GrVolumeMute, GrShareOption, GrUndo } from "react-icons/gr";
+import { TbMarkdown, TbMarkdownOff, TbMinusVertical } from "react-icons/tb";
 import { useRemark } from "react-remarkify";
 import { useSpeech } from "react-text-to-speech";
 import { HiVolumeOff, HiVolumeUp } from "react-text-to-speech/icons";
@@ -49,7 +49,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
           <span className="absolute right-0">{children}</span>
         </div>
         <hr className={`my-2 w-full ${expanded ? "invisible" : ""}`} />
-        <div className={`markdown px-2 text-left text-sm text-gray-600 ${expanded ? "mb-2 max-h-[calc(100vh-12rem)]" : "mb-10 max-h-[calc(100vh-14rem)] min-w-full"}`}>
+        <div className={`markdown px-2 text-sm text-gray-600 ${expanded ? "mb-2 max-h-[calc(100vh-12rem)] text-justify" : "mb-10 max-h-[calc(100vh-14rem)] min-w-full text-left"}`}>
           {showPlainText ? description : reactContent}
         </div>
       </>
@@ -143,49 +143,39 @@ export default function NoteItem({ note, children, mode = "normal" }) {
               </div>
             ) : (
               <>
-                <div className="flex-group">
-                  <button
-                    type="button"
-                    title="Edit note"
-                    className="scale-125 disabled:opacity-60"
-                    disabled={progress}
-                    onClick={() => handleEdit({ flag: true, title, description, tag, tagColor })}
-                  >
-                    <FaRegEdit />
-                  </button>
-                  {expanded ? (
-                    <button type="button" title="Minimize note" className="scale-110 disabled:opacity-60" disabled={progress} onClick={() => router.push("/")}>
-                      <FaCompress />
+                <div className={`flex items-center justify-center space-x-2 ${progress ? "opacity-60" : ""}`}>
+                  <div className="flex-group">
+                    {expanded ? (
+                      <button type="button" title="Minimize note" className="scale-110" disabled={progress} onClick={() => router.push("/")}>
+                        <FaCompress />
+                      </button>
+                    ) : (
+                      <button type="button" title="Maximize note" className="scale-110" disabled={progress} onClick={() => router.push(`/note/${_id}`)}>
+                        <FaExpand />
+                      </button>
+                    )}
+                    <button type="button" title="Copy note" className="scale-110" disabled={progress} onClick={handleCopy}>
+                      <FaRegCopy />
                     </button>
-                  ) : (
-                    <button type="button" title="Maximize note" className="scale-110 disabled:opacity-60" disabled={progress} onClick={() => router.push(`/note/${_id}`)}>
-                      <FaExpand />
+                    <button type="button" title="Share note" className="scale-110" disabled={progress} onClick={() => setModal({ active: true, type: "shareNote", note: _id })}>
+                      <GrShareOption />
                     </button>
-                  )}
-                  <button type="button" title="Copy note" className="scale-110 disabled:opacity-60" disabled={progress} onClick={handleCopy}>
-                    <FaRegCopy />
-                  </button>
-                  <button
-                    type="button"
-                    title="Share note"
-                    className="scale-110 disabled:opacity-60"
-                    disabled={progress}
-                    onClick={() => setModal({ active: true, type: "shareNote", note: _id })}
-                  >
-                    <GrShareOption />
-                  </button>
-                  <button type="button" className="scale-110 disabled:opacity-60" disabled={progress}>
-                    {isInQueue ? <GrVolumeMute title="Stop reading" onClick={stop} /> : <GrVolume title="Start reading" onClick={start} />}
-                  </button>
-                  <button
-                    type="button"
-                    title="Delete note"
-                    className="scale-110 disabled:opacity-60"
-                    disabled={progress}
-                    onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}
-                  >
-                    <FaRegTrashAlt />
-                  </button>
+                    <button type="button" className="scale-110" disabled={progress}>
+                      {isInQueue ? <GrVolumeMute title="Stop reading" onClick={stop} /> : <GrVolume title="Start reading" onClick={start} />}
+                    </button>
+                  </div>
+                  <TbMinusVertical className="scale-y-[2]" />
+                  <div className="flex-group">
+                    <button type="button" title="Edit note" className="scale-125" disabled={progress} onClick={() => handleEdit({ flag: true, title, description, tag, tagColor })}>
+                      <FaRegEdit />
+                    </button>
+                    <button type="button" title="Undo note" className="scale-125" disabled={progress} onClick={() => setModal({ active: true, type: "undoNote", note: _id, updatedAt })}>
+                      <GrUndo />
+                    </button>
+                    <button type="button" title="Delete note" className="scale-110" disabled={progress} onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}>
+                      <FaRegTrashAlt />
+                    </button>
+                  </div>
                 </div>
                 <p className="self-end text-2xs text-gray-600">Last Updated: {new Date(updatedAt).toLocaleString()}</p>
               </>

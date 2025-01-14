@@ -18,15 +18,20 @@ export default function Modal({ router }) {
   const closeModal = () => setModal({ active: false });
 
   async function deleteUser() {
-    setModal({ active: false });
+    closeModal();
     await fetchApp({ url: "api/auth/delete", method: "DELETE" });
     resetStorage();
     router.replace("/account/signup");
   }
 
   async function deleteNote() {
-    setModal({ active: false });
+    closeModal();
     await fetchApp({ url: `api/notes/delete/${props.note}`, method: "DELETE" });
+  }
+
+  async function undoNote() {
+    closeModal();
+    await fetchApp({ url: `api/notes/undo/${props.note}`, method: "PUT", body: { lastUpdatedAt: props.updatedAt } });
   }
 
   async function shareNote(event) {
@@ -60,7 +65,7 @@ export default function Modal({ router }) {
         {type === "deleteUser" ? (
           <div>
             <h3 className="font-bold">Delete Account?</h3>
-            <p className="text-sm text-red-600">This action is irreversible</p>
+            <p className="pb-2 text-sm text-red-600">This action is irreversible</p>
             <div className="space-x-2">
               <button className="btn" onClick={deleteUser}>
                 Yes
@@ -73,9 +78,22 @@ export default function Modal({ router }) {
         ) : type === "deleteNote" ? (
           <div>
             <h3 className="font-bold">Delete Note?</h3>
-            <p className="text-sm text-red-600">This action is irreversible</p>
+            <p className="pb-2 text-sm text-red-600">This action is irreversible</p>
             <div className="space-x-2">
               <button className="btn" onClick={deleteNote}>
+                Yes
+              </button>
+              <button className="btn" onClick={closeModal}>
+                No
+              </button>
+            </div>
+          </div>
+        ) : type === "undoNote" ? (
+          <div>
+            <h3 className="font-bold">Undo Note?</h3>
+            <p className="pb-2 text-sm">This will revert the note to its previous state</p>
+            <div className="space-x-2">
+              <button className="btn" onClick={undoNote}>
                 Yes
               </button>
               <button className="btn" onClick={closeModal}>
