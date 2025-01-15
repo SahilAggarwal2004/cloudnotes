@@ -20,7 +20,8 @@
     "react-reorder-list": "^0.8.1",
     "react-text-to-speech": "^1.2.1",
     "react-textarea-autosize": "^8.5.7",
-    "react-toastify": "^11.0.2",
+    "react-to-pdf": "^1.0.1",
+    "react-toastify": "^11.0.3",
     "react-top-loading-bar": "^3.0.2",
     "rehype-raw": "^7.0.0",
     "rehype-sanitize": "^6.0.0",
@@ -34,7 +35,8 @@
     "eslint": "^9.18.0",
     "eslint-config-next": "^15.1.4",
     "postcss": "^8.5.1",
-    "prettier-plugin-tailwindcss": "^0.6.9",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.10",
     "serwist": "^9.0.11",
     "tailwindcss": "^3.4.17"
   }

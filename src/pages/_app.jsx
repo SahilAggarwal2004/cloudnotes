@@ -57,7 +57,7 @@ export default function MyApp({ Component, pageProps }) {
 
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; img-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src *;"
+          content="default-src 'self'; img-src * data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src *;"
         />
 
         <meta name="mobile-web-app-capable" content="yes" />
