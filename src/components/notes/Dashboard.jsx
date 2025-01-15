@@ -71,7 +71,7 @@ export default function Dashboard() {
               watchChildrenUpdates
               preserveOrder={!isFetching}
               disabled={disableReordering}
-              props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 p-5 sm:grid-cols-2 normal:grid-cols-3" }}
+              props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 px-2 py-5 xs:px-5 sm:grid-cols-2 normal:grid-cols-3" }}
               onPositionChange={handlePositionChange}
             >
               {show.map((note) => (
