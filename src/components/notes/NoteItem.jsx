@@ -47,7 +47,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
     <div className="flex h-full flex-col">
       <form
         id={`form-${_id}`}
-        className={`relative flex flex-col items-center rounded px-1 pt-4 text-justify sm:px-4 ${expanded ? "w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border pb-4"}`}
+        className={`relative flex flex-col items-center rounded px-1 pt-4 text-justify xs:px-2 sm:px-4 ${expanded ? "w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border pb-4"}`}
         onSubmit={editNote}
       >
         {edit?.flag ? (
@@ -83,7 +83,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
                 maxLength={maxTitle}
                 onChange={(e) => handleEdit({ title: e.target.value })}
               />
-              <span className="absolute right-0">{children}</span>
+              <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
             </div>
             <div className={`flex-group my-2 text-gray-800 ${expanded ? "mt-3" : "scale-95"}`}>
               <button className="scale-110 cursor-pointer">
@@ -117,9 +117,11 @@ export default function NoteItem({ note, children, mode = "normal" }) {
                 <h3 className={expanded ? "text-3xl font-medium" : "px-2 text-xl"} style={{ wordBreak: "break-word" }}>
                   {title}
                 </h3>
-                <span className="absolute right-0">{children}</span>
+                <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
               </div>
-              <div className={`my-2 flex items-center justify-center space-x-2 text-gray-800 ${progress ? "opacity-60" : ""} ${expanded ? "mt-3" : "scale-95"}`}>
+              <div
+                className={`my-2 flex items-center justify-center space-x-2 text-gray-800 ${progress ? "opacity-60" : ""} ${expanded ? "mt-3 scale-95 xs:scale-100" : "scale-90 xs:scale-95"}`}
+              >
                 <div className="flex-group">
                   {shared ? (
                     <button type="button" className="scale-[1.4]" onClick={() => setShowMarkdown((prev) => !prev)}>
@@ -141,31 +143,29 @@ export default function NoteItem({ note, children, mode = "normal" }) {
                       </button>
                     </>
                   )}
-                  <button type="button" title="Copy note" className="scale-110" disabled={progress} onClick={() => copy(description)}>
-                    <FaRegCopy />
-                  </button>
                   <button type="button" className="scale-110" disabled={progress}>
                     {isInQueue ? <GrVolumeMute title="Stop reading" onClick={stop} /> : <GrVolume title="Start reading" onClick={start} />}
                   </button>
-                  {expanded && (
-                    <button
-                      type="button"
-                      title="Download as PDF"
-                      className="scale-110"
-                      disabled={progress}
-                      onClick={() => {
-                        setScreenShot(true);
-                        const pdf = document.getElementById(`pdf-${_id}`);
-                        pdf.classList.remove("hidden");
-                        generatePDF(() => pdf, { filename: `${title}.pdf`, page: { margin: Margin.SMALL } })
-                          .then(() => toast.success("PDF downloaded successfully!"))
-                          .catch(() => toast.error("Failed to generate PDF!"))
-                          .finally(() => setTimeout(() => setScreenShot(false), 100));
-                      }}
-                    >
-                      <FaRegFilePdf />
-                    </button>
-                  )}
+                  <button type="button" title="Copy note" className="scale-110" disabled={progress} onClick={() => copy(description)}>
+                    <FaRegCopy />
+                  </button>
+                  <button
+                    type="button"
+                    title="Download as PDF"
+                    className="scale-110"
+                    disabled={progress}
+                    onClick={() => {
+                      setScreenShot(true);
+                      const pdf = document.getElementById(`pdf-${_id}`);
+                      pdf.classList.remove("hidden");
+                      generatePDF(() => pdf, { filename: `${title}.pdf`, page: { margin: Margin.SMALL } })
+                        .then(() => toast.success("PDF downloaded successfully!"))
+                        .catch(() => toast.error("Failed to generate PDF!"))
+                        .finally(() => setTimeout(() => setScreenShot(false), 100));
+                    }}
+                  >
+                    <FaRegFilePdf />
+                  </button>
                 </div>
                 {!shared && (
                   <>
@@ -207,20 +207,14 @@ export default function NoteItem({ note, children, mode = "normal" }) {
           </>
         )}
       </form>
-      {
-        <>
-          <div id={`screen-${_id}`} className={`fixed left-0 top-0 z-30 h-screen w-screen bg-white ${screenShot ? "block" : "hidden"}`}>
-            <Loading text="Generating PDF..." />
-          </div>
-          <div id={`pdf-${_id}`} className={`w-[896px] flex-col items-center space-y-4 ${screenShot ? "flex" : "hidden"}`}>
-            <h3 className="w-full text-center text-3xl font-medium" style={{ wordBreak: "break-word" }}>
-              {title}
-            </h3>
-            <div className="markdown px-2 text-justify text-gray-600">{reactContent}</div>
-            <p className="w-full scale-95 pb-3 text-center text-sm text-gray-600">Last Updated: {new Date(updatedAt).toLocaleString()}</p>
-          </div>
-        </>
-      }
+      <Loading text="Generating PDF..." className={`z-30 bg-white ${screenShot ? "block" : "hidden"}`} />
+      <div id={`pdf-${_id}`} className={`fixed left-0 top-0 w-[896px] flex-col items-center space-y-4 ${screenShot ? "flex" : "hidden"}`}>
+        <h3 className="w-full text-center text-3xl font-medium" style={{ wordBreak: "break-word" }}>
+          {title}
+        </h3>
+        <div className="markdown px-2 pb-1 text-justify text-gray-600">{reactContent}</div>
+        <p className="w-full scale-95 pb-3 text-center text-sm text-gray-600">Last Updated: {new Date(updatedAt).toLocaleString()}</p>
+      </div>
     </div>
   );
 }
