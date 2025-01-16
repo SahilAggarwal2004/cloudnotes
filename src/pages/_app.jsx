@@ -18,7 +18,7 @@ import "aos/dist/aos.css";
 const api = process.env.NEXT_PUBLIC_API;
 const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, retry: 1 } } });
 
-export default function MyApp({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const name = useMemo(() => getStorage("name"), [router.pathname]);

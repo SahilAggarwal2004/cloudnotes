@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { resetStorage } from "../modules/storage";
 import { useNoteContext } from "../contexts/NoteProvider";
 import { infinity, unitDurations } from "../constants";
 
@@ -9,6 +8,7 @@ export default function Modal({ router }) {
   const {
     fetchApp,
     modal: { active, type, ...props },
+    resetStorage,
     setModal,
   } = useNoteContext();
   const [shareDuration, setShareDuration] = useState(infinity);

@@ -8,7 +8,7 @@ import Password from "../../components/Password";
 import { useNoteContext } from "../../contexts/NoteProvider";
 
 export default function Login({ router }) {
-  const { fetchApp } = useNoteContext();
+  const { fetchApp, setAuthToken } = useNoteContext();
   const email = useRef();
   const password = useRef();
 
@@ -17,7 +17,7 @@ export default function Login({ router }) {
     const { success, name, token } = await fetchApp({ url: "api/auth/login", method: "POST", body: { email: email.current.value, password: password.current.value } });
     if (!success) return;
     setStorage("name", name);
-    setStorage("token", token);
+    setAuthToken(token);
     router.replace("/");
   }
 

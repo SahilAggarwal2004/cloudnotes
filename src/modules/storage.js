@@ -28,10 +28,3 @@ export function clearSessionStorage(prefix = "") {
     if (key.startsWith(prefix)) removeStorage(key, false);
   }
 }
-
-export const resetStorage = () => {
-  removeStorage("name");
-  removeStorage("token");
-  removeStorage(queryKey);
-  clearSessionStorage();
-};

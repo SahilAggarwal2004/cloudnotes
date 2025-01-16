@@ -4,7 +4,7 @@ import { useNoteContext } from "../contexts/NoteProvider";
 
 export default function useEdit({ _id, title, description, tag, updatedAt }) {
   const { fetchApp, setProgress, getTagColor, setTagColor } = useNoteContext();
-  const [edit, setEdit] = useStorage("edit" + _id, false);
+  const [edit, setEdit] = useStorage("edit" + _id, false, false);
 
   const handleEdit = (obj) =>
     setEdit((prev) => {

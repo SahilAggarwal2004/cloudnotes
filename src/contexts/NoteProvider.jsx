@@ -2,9 +2,11 @@ import { useState, useContext, createContext, useMemo, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { setStorage, getStorage, resetStorage } from "../modules/storage";
+
 import { queryKey } from "../constants";
+import useStorage from "../hooks/useStorage";
 import useTagColors from "../hooks/useTagColors";
+import { clearSessionStorage, removeStorage } from "../modules/storage";
 
 // Below is the boiler plate(basic structure) for the function to be created inside which we will pass some value (can be state or a function to update the state or anything else):
 // const Function = (props) => {
@@ -29,6 +31,9 @@ export default function NoteProvider({ children, router }) {
   const client = useQueryClient();
 
   // Defining things to be stored in value below:
+  const [authToken, setAuthToken, clearAuthToken] = useStorage("token");
+  const [storedNotes, setStoredNotes, clearStoredNotes] = useStorage(queryKey, []);
+  const [lastSyncedAt, setLastSyncedAt, clearLastSyncedAt] = useStorage("lastSyncedAt");
   const [modal, setModal] = useState({ active: false });
   const [progress, setProgress] = useState(0);
   const [sidebar, setSidebar] = useState(false);
@@ -36,21 +41,30 @@ export default function NoteProvider({ children, router }) {
 
   const { data, isFetching } = useQuery({
     queryKey,
-    enabled: Boolean(getStorage("token")),
+    enabled: Boolean(authToken),
     queryFn: async () => {
-      const { notes = null } = await fetchApp({ url: "api/notes/fetch", showToast: false });
+      const { notes = null } = await fetchApp({ url: `api/notes/fetch?lastSyncedAt=${lastSyncedAt}`, showToast: false });
       return notes;
     },
   });
 
   const [notes, tags] = useMemo(() => {
-    if (data) setStorage(queryKey, data);
-    const notes = data || getStorage(queryKey, []);
+    if (data) setStoredNotes(data);
+    const notes = data || storedNotes;
     const tags = notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []);
     return [notes, tags];
   }, [data]);
 
-  async function fetchApp({ url, method = "GET", body, token = getStorage("token"), showToast = true }) {
+  function resetStorage() {
+    client.clear();
+    clearAuthToken();
+    clearStoredNotes();
+    clearLastSyncedAt();
+    removeStorage("name");
+    clearSessionStorage();
+  }
+
+  async function fetchApp({ url, method = "GET", body, token = authToken, showToast = true }) {
     // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
     setProgress(33);
     try {
@@ -58,13 +72,13 @@ export default function NoteProvider({ children, router }) {
       if (showToast) toast.success(data.msg);
       if (data.notes) {
         client.setQueryData(queryKey, data.notes);
-        setStorage(queryKey, data.notes);
+        setStoredNotes(data.notes);
       }
+      if (data.syncedAt) setLastSyncedAt(data.syncedAt);
     } catch (error) {
       data = error.response?.data || { success: false, error: "Server Down! Please try again later..." };
       const authenticationError = data.error.toLowerCase().includes("session expired");
       if (authenticationError) {
-        client.clear();
         resetStorage();
         router.replace("/account/login");
       }
@@ -81,7 +95,9 @@ export default function NoteProvider({ children, router }) {
   // Context.Provider provides the context to the components using useContext().
   // value attribute stores the value(can be anything) to be passed to the components using the context.
   return (
-    <NoteContext.Provider value={{ fetchApp, getTagColor, isFetching, modal, setModal, notes, progress, setProgress, setSidebar, setTagColor, sidebar, tags }}>
+    <NoteContext.Provider
+      value={{ fetchApp, getTagColor, isFetching, modal, notes, progress, resetStorage, setAuthToken, setModal, setProgress, setSidebar, setTagColor, sidebar, tags }}
+    >
       {children}
     </NoteContext.Provider>
   );

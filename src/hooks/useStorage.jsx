@@ -1,17 +1,23 @@
 import { useState } from "react";
-import { getStorage, setStorage } from "../modules/storage";
+import { getStorage, removeStorage, setStorage } from "../modules/storage";
 
-export default function useStorage(key, initialValue) {
+export default function useStorage(key, initialValue, local = true) {
   const [storedValue, setStoredValue] = useState(() => {
     if (typeof window === "undefined") return initialValue;
-    return getStorage(key, initialValue, false);
+    return getStorage(key, initialValue, local);
   });
-
-  const setValue = (value) =>
+  function setValue(value) {
     setStoredValue((old) => {
       const updatedValue = typeof value === "function" ? value(old) : value;
-      setStorage(key, updatedValue, false);
+      setStorage(key, updatedValue, local);
       return updatedValue;
     });
-  return [storedValue, setValue];
+  }
+
+  function clearValue() {
+    removeStorage(key, local);
+    setStoredValue(initialValue);
+  }
+
+  return [storedValue, setValue, clearValue];
 }

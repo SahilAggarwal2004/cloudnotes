@@ -2,18 +2,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import LoadingBar from "react-top-loading-bar";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import Expandable from "./Expandable";
 import NavLink from "./NavLink";
 import { useNoteContext } from "../../contexts/NoteProvider";
 import Hamburger from "../icons/Hamburger";
-import { resetStorage } from "../../modules/storage";
 
 export default function Navbar({ name, router }) {
   const { noteId } = router.query;
-  const client = useQueryClient();
-  const { notes, setModal, progress, setProgress, sidebar, setSidebar } = useNoteContext();
+  const { progress, notes, resetStorage, setProgress, setModal, setSidebar, sidebar } = useNoteContext();
   const [hide, setHide] = useState(true);
   const extendNav = () => {
     if (hide) setSidebar(false);
@@ -23,7 +20,6 @@ export default function Navbar({ name, router }) {
   async function logOut() {
     setProgress(100);
     setModal({ active: false });
-    client.clear();
     resetStorage();
     toast.success("Logged out successfully!");
     router.replace("/account/login");
