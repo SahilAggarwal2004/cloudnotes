@@ -14,7 +14,7 @@ export default function Note({ router }) {
 
   return (
     note && (
-      <div className="mt-3 flex w-full justify-center">
+      <div className="flex w-full justify-center">
         <NoteItem note={note} mode="expanded" />
       </div>
     )

@@ -17,7 +17,7 @@ export default function Id({ router }) {
   });
 
   return (
-    <div className="mt-3 flex w-full justify-center">
+    <div className="flex w-full justify-center">
       {data ? (
         <NoteItem note={data} mode="shared" />
       ) : isFetching ? (

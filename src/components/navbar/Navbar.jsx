@@ -69,7 +69,7 @@ export default function Navbar({ name, router }) {
             onClick={() => setSidebar(false)}
           />
           <div
-            className={`fixed top-11 z-30 h-[calc(100vh-2.5rem)] min-w-48 space-y-2 overflow-y-scroll bg-white px-2 py-3 shadow-lg transition-transform duration-[250] ${sidebar ? "" : "-translate-x-full"}`}
+            className={`fixed top-11 z-30 h-[calc(100dvh-2.5rem)] min-w-48 space-y-2 overflow-y-scroll bg-white px-2 py-3 shadow-lg transition-transform duration-[250] ${sidebar ? "" : "-translate-x-full"}`}
           >
             <h3 className="mb-2 text-center text-lg font-semibold">Hi, {name}!</h3>
             <hr />

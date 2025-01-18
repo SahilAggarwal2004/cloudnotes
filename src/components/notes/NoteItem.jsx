@@ -47,7 +47,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
     <div className="flex h-full flex-col">
       <form
         id={`form-${_id}`}
-        className={`relative flex flex-col items-center rounded px-1 pt-4 text-justify xs:px-2 sm:px-4 ${expanded ? "w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border pb-4"}`}
+        className={`relative flex flex-col items-center rounded px-1 py-4 text-justify xs:px-2 sm:px-4 ${expanded ? "min-h-[calc(100dvh-2.875rem)] w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border"}`}
         onSubmit={editNote}
       >
         {edit?.flag ? (
@@ -97,7 +97,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
               minRows={5}
               required
               maxLength={maxDescription}
-              className={`mx-2 mb-1 max-h-[calc(100vh-14rem)] w-full px-2 text-gray-600 focus:outline-0 ${expanded ? "" : "text-sm"}`}
+              className={`mx-2 mb-1 max-h-[calc(100dvh-14rem)] w-full px-2 text-gray-600 focus:outline-0 ${expanded ? "" : "text-sm"}`}
               value={edit.description}
               onChange={(e) => handleEdit({ description: e.target.value })}
             />
@@ -197,11 +197,11 @@ export default function NoteItem({ note, children, mode = "normal" }) {
                 )}
               </div>
               <hr className={`my-2 w-full ${expanded ? "invisible" : ""}`} />
-              <div className={`markdown px-2 text-gray-600 ${expanded ? "text-justify" : "max-h-[calc(100vh-14rem)] min-w-full text-left text-sm"}`}>
+              <div className={`markdown px-2 text-gray-600 ${expanded ? "text-justify" : "max-h-[calc(100dvh-14rem)] min-w-full text-left text-sm"}`}>
                 <Text />
               </div>
             </div>
-            <p className={`bottom-1.5 w-full text-center text-gray-600 ${expanded ? "relative scale-95 pb-3 text-sm" : "absolute text-2xs"}`}>
+            <p className={`w-full text-center text-gray-600 ${expanded ? "mt-auto scale-95 text-sm" : "absolute bottom-1.5 text-2xs"}`}>
               Last Updated: {new Date(updatedAt).toLocaleString()}
             </p>
           </>
