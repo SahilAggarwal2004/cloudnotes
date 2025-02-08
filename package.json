@@ -9,10 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.64.1",
+    "@tanstack/react-query": "^5.66.0",
     "aos": "^2.3.4",
     "axios": "^1.7.9",
-    "next": "^15.1.5",
+    "next": "^15.1.6",
     "react": "^19",
     "react-dom": "^19",
     "react-icons": "^5.4.0",
@@ -32,12 +32,12 @@
     "@serwist/next": "^9.0.11",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.18.0",
-    "eslint-config-next": "^15.1.5",
+    "eslint": "^9.20.0",
+    "eslint-config-next": "^15.1.6",
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.10",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "serwist": "^9.0.11",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3"
   }
 }
