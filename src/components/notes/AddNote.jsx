@@ -53,23 +53,15 @@ export default function AddNote({ tags, setNewNote }) {
           ))}
         </datalist>
       </div>
-      <input
-        type="text"
-        ref={titleRef}
-        className="w-full text-center text-lg placeholder:text-gray-600 focus:outline-0"
-        placeholder="Add title"
-        required
-        maxLength={maxTitle}
-      />
+      <input type="text" ref={titleRef} className="w-full text-center text-lg placeholder:text-gray-600 focus:outline-0" placeholder="Add title" required maxLength={maxTitle} />
       <hr className="my-2 w-full" />
       <Textarea
         value={description}
         placeholder="Add description"
         minRows={5}
         maxRows={20}
-        required
         maxLength={maxDescription}
-        className="mx-2 mb-1 w-full text-center text-sm text-gray-600 focus:outline-0"
+        className="mx-2 mb-1 max-h-[calc(100dvh-14rem)] w-full px-2 text-sm text-gray-600 focus:outline-0"
         onChange={(e) => setDescription(e.target.value)}
       />
       <div className="mb-10 w-full pr-1 text-right text-xs">

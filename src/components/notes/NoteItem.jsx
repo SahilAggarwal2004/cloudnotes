@@ -95,7 +95,6 @@ export default function NoteItem({ note, children, mode = "normal" }) {
             <Textarea
               placeholder="Add description"
               minRows={5}
-              required
               maxLength={maxDescription}
               className={`mx-2 mb-1 max-h-[calc(100dvh-14rem)] w-full px-2 text-gray-600 focus:outline-0 ${expanded ? "" : "text-sm"}`}
               value={edit.description}
