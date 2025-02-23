@@ -1,19 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Head from "next/head";
-import Script from "next/script";
-import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-import { init } from "aos";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { init } from "aos";
+import "aos/dist/aos.css";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import Script from "next/script";
+import { useEffect, useMemo, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import NoteProvider from "../contexts/NoteProvider";
-import { clearSessionStorage, getStorage } from "../modules/storage";
-import { hideNavbar, onlyGuest } from "../constants";
+
 import Modal from "../components/Modal";
 import Navbar from "../components/navbar/Navbar";
+import { hideNavbar, onlyGuest } from "../constants";
+import NoteProvider from "../contexts/NoteProvider";
+import { clearSessionStorage, getStorage } from "../modules/storage";
+import { handleVersionUpdate } from "../modules/update";
 import "../styles/globals.css";
-import "react-toastify/dist/ReactToastify.css";
-import "aos/dist/aos.css";
 
 const api = process.env.NEXT_PUBLIC_API;
 const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, retry: 1 } } });
@@ -28,6 +29,7 @@ export default function App({ Component, pageProps }) {
   useEffect(() => {
     setLoading(false);
     init();
+    if ("serviceWorker" in navigator) window.serwist.register().then(handleVersionUpdate);
   }, []);
 
   useEffect(() => {
