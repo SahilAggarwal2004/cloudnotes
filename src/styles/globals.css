@@ -47,7 +47,7 @@
 }
 
 .markdown {
-  @apply prose prose-th:w-screen prose-th:max-w-full prose-th:border prose-td:border prose-th:p-2 prose-td:p-2 prose-ul:whitespace-normal prose-ol:whitespace-normal prose-headings:my-1 prose-pre:mt-2 prose-pre:mb-1 grid max-w-full grid-cols-1 overflow-y-scroll whitespace-pre-wrap break-words *:my-0 *:w-full *:whitespace-pre-wrap;
+  @apply prose grid max-w-full grid-cols-1 overflow-y-scroll whitespace-pre-wrap break-words *:my-0 *:w-full *:whitespace-pre-wrap prose-headings:my-1 prose-pre:mb-1 prose-pre:mt-2 prose-ol:whitespace-normal prose-ul:whitespace-normal prose-th:w-screen prose-th:max-w-full prose-th:border prose-th:p-2 prose-td:border prose-td:p-2;
 }
 
 .password-icon {
@@ -55,7 +55,7 @@
 }
 
 .welcome-btn {
-  @apply normal:after:border-white relative p-1 after:absolute after:left-0 after:top-[calc(100%)] after:z-10 after:h-0 after:w-full after:scale-0 after:border after:border-black after:opacity-90 after:transition-transform after:duration-500 after:content-[''] hover:after:scale-100;
+  @apply relative p-1 after:absolute after:left-0 after:top-[calc(100%)] after:z-10 after:h-0 after:w-full after:scale-0 after:border after:border-black after:opacity-90 after:transition-transform after:duration-500 after:content-[''] hover:after:scale-100 normal:after:border-white;
 }
 
 .welcome-btn-container {

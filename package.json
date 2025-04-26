@@ -1,6 +1,6 @@
 {
   "name": "cloudnotes",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -11,14 +11,14 @@
   "dependencies": {
     "@tanstack/react-query": "^5.74.4",
     "aos": "^2.3.4",
-    "axios": "^1.8.4",
+    "axios": "^1.9.0",
     "next": "^15.3.1",
     "react": "^19",
     "react-dom": "^19",
     "react-icons": "^5.5.0",
     "react-remarkify": "^0.3.0",
     "react-reorder-list": "^0.8.1",
-    "react-text-to-speech": "^2.0.0",
+    "react-text-to-speech": "^2.0.2",
     "react-textarea-autosize": "^8.5.9",
     "react-to-pdf": "^2.0.0",
     "react-toastify": "^11.0.5",
@@ -29,15 +29,15 @@
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.10.3",
-    "@serwist/next": "^9.0.13",
+    "@serwist/next": "^9.0.14",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9.24.0",
+    "eslint": "^9.25.1",
     "eslint-config-next": "^15.3.1",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "serwist": "^9.0.13",
+    "serwist": "^9.0.14",
     "tailwindcss": "^3"
   }
 }

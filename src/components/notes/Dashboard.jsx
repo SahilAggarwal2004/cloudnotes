@@ -7,19 +7,18 @@ import NoteItem from "./NoteItem";
 import { useNoteContext } from "../../contexts/NoteProvider";
 import useURLState from "../../hooks/useURLState";
 import Loading from "../Loading";
-import AddNote from "./AddNote";
 
 export default function Dashboard() {
-  const { fetchApp, isFetching, notes, progress, tags } = useNoteContext();
-  const [newNote, setNewNote] = useState(false);
+  const { fetchApp, isFetching, newNote, notes, progress, setNewNote, tags } = useNoteContext();
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
 
   const show = useMemo(() => {
-    return (selTag ? notes.filter(({ tag }) => tag === selTag) : notes).filter(({ title, description, tag }) =>
-      [title, description, tag].join("~~").toLowerCase().includes(search),
-    );
-  }, [notes, search, selTag]);
+    let filteredNotes = notes;
+    if (selTag) filteredNotes = filteredNotes.filter(({ tag }) => tag === selTag);
+    if (search) filteredNotes = filteredNotes.filter(({ title, description, tag }) => [title, description, tag].join("~~").toLowerCase().includes(search));
+    return filteredNotes;
+  }, [notes, search, selTag, newNote]);
 
   const disableReordering = isFetching || selTag || search;
 
@@ -79,7 +78,7 @@ export default function Dashboard() {
                   {!disableReordering && !progress && <ReorderIcon />}
                 </NoteItem>
               ))}
-              {newNote && <AddNote tags={tags} setNewNote={setNewNote} data-disable-reorder />}
+              {newNote && <NoteItem note={{ _id: "new" }} data-disable-reorder />}
             </ReorderList>
           ) : isFetching ? (
             <Loading />

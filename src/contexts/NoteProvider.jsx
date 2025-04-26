@@ -34,6 +34,7 @@ export default function NoteProvider({ children, router }) {
   const [authToken, setAuthToken, clearAuthToken] = useStorage("token");
   const [storedNotes, setStoredNotes, clearStoredNotes] = useStorage(queryKey, []);
   const [lastSyncedAt, setLastSyncedAt, clearLastSyncedAt] = useStorage("lastSyncedAt");
+  const [newNote, setNewNote] = useStorage("newNote", false, false);
   const [modal, setModal] = useState({ active: false });
   const [progress, setProgress] = useState(0);
   const [sidebar, setSidebar] = useState(false);
@@ -96,7 +97,24 @@ export default function NoteProvider({ children, router }) {
   // value attribute stores the value(can be anything) to be passed to the components using the context.
   return (
     <NoteContext.Provider
-      value={{ fetchApp, getTagColor, isFetching, modal, notes, progress, resetStorage, setAuthToken, setModal, setProgress, setSidebar, setTagColor, sidebar, tags }}
+      value={{
+        fetchApp,
+        getTagColor,
+        isFetching,
+        modal,
+        newNote,
+        notes,
+        progress,
+        resetStorage,
+        setAuthToken,
+        setModal,
+        setNewNote,
+        setProgress,
+        setSidebar,
+        setTagColor,
+        sidebar,
+        tags,
+      }}
     >
       {children}
     </NoteContext.Provider>

@@ -16,7 +16,7 @@ import remarkGfm from "remark-gfm";
 
 import { charLimit } from "../../constants";
 import { useNoteContext } from "../../contexts/NoteProvider";
-import useEdit from "../../hooks/useEdit";
+import useUpsert from "../../hooks/useUpsert";
 import useStorage from "../../hooks/useStorage";
 import { copy } from "../../modules/utilities";
 import Loading from "../Loading";
@@ -28,7 +28,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
   const router = useRouter();
   const { getTagColor, setModal, progress } = useNoteContext();
   const tagColor = getTagColor(tag);
-  const { edit, handleEdit, cancelEdit, editNote } = useEdit(note);
+  const { upsertState, updateUpsertState, cancelUpsert, handleUpsert } = useUpsert(note);
   const [showMarkdown, setShowMarkdown] = useStorage("markdown", true);
   const [screenShot, setScreenShot] = useState(false);
   const shared = mode === "shared";
@@ -48,40 +48,40 @@ export default function NoteItem({ note, children, mode = "normal" }) {
       <form
         id={`form-${_id}`}
         className={`relative flex flex-col items-center rounded px-1 py-4 text-justify xs:px-2 sm:px-4 ${expanded ? "min-h-[calc(100dvh-2.875rem)] w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border"}`}
-        onSubmit={editNote}
+        onSubmit={handleUpsert}
       >
-        {edit?.flag ? (
+        {upsertState.flag ? (
           <>
             {!expanded && (
               <div className="absolute top-0 flex -translate-y-1/2">
                 <input
                   type="text"
                   list="tagList"
-                  value={edit.tag}
+                  value={upsertState.tag}
                   className="rounded-l-2xl bg-gray-200 py-px pl-1.5 text-center text-xs text-black placeholder:text-gray-600 focus:outline-0 sm:pl-2"
                   placeholder="Add tag"
                   maxLength={maxTag}
                   autoComplete="off"
-                  onChange={(e) => handleEdit({ tag: e.target.value })}
+                  onChange={(e) => updateUpsertState({ tag: e.target.value })}
                 />
                 <input
                   type="color"
-                  value={edit.tagColor}
+                  value={upsertState.tagColor}
                   list="tag-colors"
                   className="rounded-r-2xl bg-gray-200 focus:outline-0"
-                  onChange={(e) => handleEdit({ tagColor: e.target.value })}
+                  onChange={(e) => updateUpsertState({ tagColor: e.target.value })}
                 />
               </div>
             )}
             <div className="relative flex w-full items-center justify-center">
               <input
                 type="text"
-                value={edit.title}
+                value={upsertState.title}
                 className={`w-full px-5 text-center placeholder:text-gray-600 focus:outline-0 ${expanded ? "text-2xl" : "text-xl"}`}
                 placeholder="Add title"
                 required
                 maxLength={maxTitle}
-                onChange={(e) => handleEdit({ title: e.target.value })}
+                onChange={(e) => updateUpsertState({ title: e.target.value })}
               />
               <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
             </div>
@@ -89,7 +89,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
               <button className="scale-110 cursor-pointer">
                 <FaRegSave />
               </button>
-              <FaXmark className="scale-x-[1.2] scale-y-125 cursor-pointer" onClick={cancelEdit} />
+              <FaXmark className="scale-x-[1.2] scale-y-125 cursor-pointer" onClick={() => cancelUpsert()} />
             </div>
             <hr className={`my-2 w-full ${expanded ? "invisible" : ""}`} />
             <Textarea
@@ -97,11 +97,11 @@ export default function NoteItem({ note, children, mode = "normal" }) {
               minRows={5}
               maxLength={maxDescription}
               className={`mx-2 mb-1 max-h-[calc(100dvh-14rem)] w-full px-2 text-gray-600 focus:outline-0 ${expanded ? "" : "text-sm"}`}
-              value={edit.description}
-              onChange={(e) => handleEdit({ description: e.target.value })}
+              value={upsertState.description}
+              onChange={(e) => updateUpsertState({ description: e.target.value })}
             />
             <div className="w-full pr-1 text-right text-xs">
-              {edit.description.length}/{maxDescription}
+              {upsertState.description.length}/{maxDescription}
             </div>
           </>
         ) : (
@@ -175,7 +175,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
                         title="Edit note"
                         className="scale-125"
                         disabled={progress}
-                        onClick={() => handleEdit({ flag: true, title, description, tag, tagColor })}
+                        onClick={() => updateUpsertState({ flag: true, title, description, tag, tagColor })}
                       >
                         <FaRegEdit />
                       </button>
