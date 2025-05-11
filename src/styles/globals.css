@@ -6,10 +6,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-:root {
-  --hambuger-size: 18px;
-}
-
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
   width: 2.5px;

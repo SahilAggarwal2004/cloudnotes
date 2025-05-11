@@ -62,7 +62,12 @@ export default function App({ Component, pageProps }) {
 
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; img-src * data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src *;"
+          content="
+            default-src 'self';
+            script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleads.g.doubleclick.net https://www.google.co.in;
+            style-src 'self' 'unsafe-inline';
+            img-src * data:;
+            connect-src *;"
         />
 
         <meta name="mobile-web-app-capable" content="yes" />
@@ -218,8 +223,8 @@ export default function App({ Component, pageProps }) {
       </Head>
 
       {/* Google tag (gtag.js) */}
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-DK5RMXJJMJ" strategy="worker" />
-      <Script id="google-analytics" strategy="worker">
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-DK5RMXJJMJ" strategy="afterInteractive" />
+      <Script id="google-analytics" strategy="afterInteractive">
         {`window.dataLayer = window.dataLayer || [];
           function gtag() {dataLayer.push(arguments); }
           gtag('js', new Date());
