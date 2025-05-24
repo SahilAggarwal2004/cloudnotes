@@ -77,7 +77,9 @@ export default function NoteProvider({ children, router }) {
       }
       if (data.syncedAt) setLastSyncedAt(data.syncedAt);
     } catch (error) {
-      data = error.response?.data || { success: false, error: "Server Down! Please try again later..." };
+      data = error.response?.data;
+      if (!data) data = { success: false, error: "Please check your internet connectivity" };
+      else if (typeof data === "string") data = { success: false, error: data };
       const authenticationError = data.error.toLowerCase().includes("session expired");
       if (authenticationError) {
         resetStorage();

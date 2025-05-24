@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.75.7",
+    "@tanstack/react-query": "^5.77.0",
     "aos": "^2.3.4",
     "axios": "^1.9.0",
     "next": "^15.3.2",
@@ -18,7 +18,7 @@
     "react-icons": "^5.5.0",
     "react-remarkify": "^0.3.0",
     "react-reorder-list": "^0.8.4",
-    "react-text-to-speech": "^2.0.2",
+    "react-text-to-speech": "^2.0.3",
     "react-textarea-autosize": "^8.5.9",
     "react-to-pdf": "^2.0.0",
     "react-toastify": "^11.0.5",
@@ -32,7 +32,7 @@
     "@serwist/next": "^9.0.14",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9.26.0",
+    "eslint": "^9.27.0",
     "eslint-config-next": "^15.3.2",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
