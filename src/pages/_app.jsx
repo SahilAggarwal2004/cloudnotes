@@ -60,6 +60,8 @@ export default function App({ Component, pageProps }) {
 
         <link rel="preconnect" href={api} />
 
+        <meta name="google-site-verification" content="5_rdfkDpTLo7tXDzIkEfmQb1wH_0AmpbcQOAPhLNBLQ" />
+
         <meta
           httpEquiv="Content-Security-Policy"
           content="
