@@ -16,11 +16,14 @@ export default function Dashboard() {
   const show = useMemo(() => {
     let filteredNotes = notes;
     if (selTag) filteredNotes = filteredNotes.filter(({ tag }) => tag === selTag);
-    if (search) filteredNotes = filteredNotes.filter(({ title, description, tag }) => [title, description, tag].join("~~").toLowerCase().includes(search));
+    if (search) filteredNotes = filteredNotes.filter(({ title, description, tag }) => [tag, title, description].some((str) => str.toLowerCase().includes(search)));
     return filteredNotes;
-  }, [notes, search, selTag, newNote]);
+  }, [notes, search, selTag]);
 
-  const disableReordering = isFetching || selTag || search;
+  const hasFilter = Boolean(selTag || search);
+  const disableReordering = isFetching || hasFilter;
+
+  const getNoteKey = (noteId) => (hasFilter ? `search_${noteId}` : noteId);
 
   useEffect(() => {
     if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
@@ -74,7 +77,7 @@ export default function Dashboard() {
               onPositionChange={handlePositionChange}
             >
               {show.map((note) => (
-                <NoteItem key={note._id} note={note}>
+                <NoteItem key={getNoteKey(note._id)} note={note}>
                   {!disableReordering && !progress && <ReorderIcon />}
                 </NoteItem>
               ))}
