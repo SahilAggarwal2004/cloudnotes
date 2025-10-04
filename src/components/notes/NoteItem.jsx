@@ -47,7 +47,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
     <div className="flex h-full flex-col">
       <form
         id={`form-${_id}`}
-        className={`relative flex flex-col items-center rounded px-1 py-4 text-justify xs:px-2 sm:px-4 ${expanded ? "min-h-[calc(100dvh-2.875rem)] w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border"}`}
+        className={`relative flex flex-col items-center rounded px-1 py-4 xs:px-2 sm:px-4 ${expanded ? "min-h-[calc(100dvh-2.875rem)] w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border"}`}
         onSubmit={handleUpsert}
       >
         {upsertState.flag ? (
@@ -196,9 +196,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
                 )}
               </div>
               <hr className={`my-2 w-full ${expanded ? "invisible" : ""}`} />
-              <div className={`markdown px-2 text-gray-600 ${expanded ? "text-justify" : "max-h-[calc(100dvh-14rem)] min-w-full text-left text-sm"}`}>
-                <Text />
-              </div>
+              <Text className={`markdown px-2 text-gray-600 ${expanded ? "" : "max-h-[calc(100dvh-14rem)] min-w-full text-left text-sm"}`} />
             </div>
             <p className={`w-full text-center text-gray-600 ${expanded ? "mt-auto scale-95 text-sm" : "absolute bottom-1.5 text-2xs"}`}>
               Last Updated: {new Date(updatedAt).toLocaleString()}
@@ -211,7 +209,7 @@ export default function NoteItem({ note, children, mode = "normal" }) {
         <h3 className="w-full text-center text-3xl font-medium" style={{ wordBreak: "break-word" }}>
           {title}
         </h3>
-        <div className="markdown px-2 pb-1 text-justify text-gray-600">{reactContent}</div>
+        <div className="markdown px-2 pb-1 text-gray-600">{reactContent}</div>
         <p className="w-full scale-95 pb-3 text-center text-sm text-gray-600">Last Updated: {new Date(updatedAt).toLocaleString()}</p>
       </div>
     </div>

@@ -9,7 +9,7 @@
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
   width: 2.5px;
-  height: 5px;
+  height: 0px;
 }
 
 ::-webkit-scrollbar-track {
@@ -43,7 +43,7 @@
 }
 
 .markdown {
-  @apply prose grid max-w-full grid-cols-1 overflow-y-scroll whitespace-pre-wrap break-words *:my-0 *:w-full *:whitespace-pre-wrap prose-headings:my-1 prose-pre:mb-1 prose-pre:mt-2 prose-ol:whitespace-normal prose-ul:whitespace-normal prose-th:w-screen prose-th:max-w-full prose-th:border prose-th:p-2 prose-td:border prose-td:p-2;
+  @apply prose grid max-w-full grid-cols-1 overflow-y-scroll whitespace-pre-wrap break-words *:my-0 *:w-full *:whitespace-pre-wrap prose-headings:my-2 prose-pre:my-2 prose-ol:whitespace-normal prose-ul:whitespace-normal prose-table:my-2 prose-table:block prose-table:overflow-x-auto prose-th:w-screen prose-th:max-w-full prose-th:border prose-th:p-2 prose-td:border prose-td:p-2;
 }
 
 .password-icon {
