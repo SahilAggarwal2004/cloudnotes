@@ -2,7 +2,9 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { charLimit } from "../constants";
 
-const { minPassword } = charLimit;
+const {
+  password: { min: minPassword },
+} = charLimit;
 
 export default function Password({ password }) {
   const [show, setShow] = useState(false);

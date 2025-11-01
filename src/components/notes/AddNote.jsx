@@ -4,7 +4,13 @@ import { FaPlus, FaXmark } from "react-icons/fa6";
 import { charLimit, colors, defaultColor } from "../../constants";
 import { useNoteContext } from "../../contexts/NoteProvider";
 
-const { maxTitle, maxDescription, maxTag } = charLimit;
+const {
+  note: {
+    title: { max: maxTitle },
+    description: { max: maxDescription },
+    tag: { max: maxTag },
+  },
+} = charLimit;
 
 export default function AddNote({ tags, setNewNote }) {
   const { fetchApp, progress, getTagColor, setTagColor } = useNoteContext();

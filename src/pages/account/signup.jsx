@@ -8,7 +8,9 @@ import Password from "../../components/Password";
 import { useNoteContext } from "../../contexts/NoteProvider";
 import { charLimit } from "../../constants";
 
-const { minName, maxName } = charLimit;
+const {
+  name: { min: minName, max: maxName },
+} = charLimit;
 
 export default function Signup({ router }) {
   const { fetchApp } = useNoteContext();

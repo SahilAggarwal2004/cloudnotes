@@ -35,7 +35,7 @@
 }
 
 .flex-group {
-  @apply flex items-center justify-center space-x-4;
+  @apply flex items-center justify-center space-x-3 xs:space-x-4;
 }
 
 .hamburger {

@@ -1,4 +1,9 @@
-export const charLimit = { minPassword: 8, minName: 3, maxName: 20, otp: 6, maxTitle: 20, maxDescription: 5000, maxTag: 12 };
+export const charLimit = {
+  name: { min: 3, max: 20 },
+  note: { title: { max: 20 }, description: { max: 5000, maxAI: 4000 }, tag: { max: 12 } },
+  otp: 6,
+  password: { min: 8 },
+};
 
 export const colors = [
   "#e5e7eb",
