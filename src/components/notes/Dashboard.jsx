@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from "next/head";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ReorderList, { ReorderIcon } from "react-reorder-list";
 import { FaPlus as FaPlusBold } from "react-icons/fa";
 import NoteItem from "./NoteItem";
@@ -23,13 +23,12 @@ export default function Dashboard() {
   const hasFilter = Boolean(selTag || search);
   const disableReordering = isFetching || hasFilter;
 
-  const getNoteKey = (noteId) => (hasFilter ? `search_${noteId}` : noteId);
-
   useEffect(() => {
     if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   }, [newNote]);
 
-  async function handlePositionChange({ newItems, revert }) {
+  async function handlePositionChange({ oldItems, newItems, revert }) {
+    console.log(oldItems, newItems)
     const order = newItems.slice(0, -1).map(({ key }) => key);
     const { success } = await fetchApp({ url: "api/notes/order", method: "PUT", body: { order } });
     if (!success) revert();
@@ -77,7 +76,7 @@ export default function Dashboard() {
               onPositionChange={handlePositionChange}
             >
               {show.map((note) => (
-                <NoteItem key={getNoteKey(note._id)} note={note}>
+                <NoteItem key={note._id} note={note}>
                   {!disableReordering && !progress && <ReorderIcon />}
                 </NoteItem>
               ))}

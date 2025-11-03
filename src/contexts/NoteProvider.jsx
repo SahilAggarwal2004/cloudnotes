@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, useMemo, useEffect } from "react";
+import { useState, useContext, createContext, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -49,11 +49,11 @@ export default function NoteProvider({ children, router }) {
     },
   });
 
-  const [notes, tags] = useMemo(() => {
+  const notes = data || storedNotes;
+  const tags = notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []);
+
+  useEffect(() => {
     if (data) setStoredNotes(data);
-    const notes = data || storedNotes;
-    const tags = notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []);
-    return [notes, tags];
   }, [data]);
 
   function resetStorage() {

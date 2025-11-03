@@ -23,8 +23,6 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const name = useMemo(() => getStorage("name"), [router.pathname]);
-  pageProps.name = name;
-  pageProps.router = router;
 
   useEffect(() => {
     setLoading(false);
@@ -243,7 +241,7 @@ export default function App({ Component, pageProps }) {
                   <Modal router={router} />
                 </>
               )}
-              <Component {...pageProps} />
+              <Component {...pageProps} name={name} router={router} />
               <ToastContainer stacked autoClose={3000} pauseOnFocusLoss={false} position="bottom-left" />
             </>
           )}
