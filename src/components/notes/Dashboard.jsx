@@ -28,7 +28,6 @@ export default function Dashboard() {
   }, [newNote]);
 
   async function handlePositionChange({ oldItems, newItems, revert }) {
-    console.log(oldItems, newItems)
     const order = newItems.slice(0, -1).map(({ key }) => key);
     const { success } = await fetchApp({ url: "api/notes/order", method: "PUT", body: { order } });
     if (!success) revert();
