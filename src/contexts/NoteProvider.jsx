@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, useEffect } from "react";
+import { useState, useContext, createContext, useEffect, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -50,7 +50,7 @@ export default function NoteProvider({ children, router }) {
   });
 
   const notes = data || storedNotes;
-  const tags = notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []);
+  const tags = useMemo(() => notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []), [notes]);
 
   useEffect(() => {
     if (data) setStoredNotes(data);
@@ -98,7 +98,7 @@ export default function NoteProvider({ children, router }) {
   // Context.Provider provides the context to the components using useContext().
   // value attribute stores the value(can be anything) to be passed to the components using the context.
   return (
-    <NoteContext.Provider
+    <NoteContext.Provider 
       value={{
         fetchApp,
         getTagColor,
