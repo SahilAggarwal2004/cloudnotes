@@ -4,7 +4,7 @@ import { useNoteContext } from "../../contexts/NoteProvider";
 import NoteItem from "../../components/notes/NoteItem";
 
 export default function Note({ router }) {
-  const { noteId } = router.query;
+  const { noteId, conflict } = router.query;
   const { notes } = useNoteContext();
   const note = useMemo(() => notes.find(({ _id }) => _id === noteId), [notes, noteId]);
 
@@ -15,7 +15,7 @@ export default function Note({ router }) {
   return (
     note && (
       <div className="flex w-full justify-center">
-        <NoteItem note={note} mode="expanded" />
+        <NoteItem propNote={note} mode={conflict ? "conflict" : "expanded"} />
       </div>
     )
   );

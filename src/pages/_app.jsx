@@ -5,14 +5,14 @@ import "aos/dist/aos.css";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Script from "next/script";
-import { useEffect, useMemo, useState } from "react";
+import { Activity, useEffect, useMemo, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 import Modal from "../components/Modal";
 import Navbar from "../components/navbar/Navbar";
 import { hideNavbar, onlyGuest } from "../constants";
 import NoteProvider from "../contexts/NoteProvider";
-import { clearSessionStorage, getStorage } from "../modules/storage";
+import { getStorage } from "../modules/storage";
 import { handleVersionUpdate } from "../modules/update";
 import "../styles/globals.css";
 
@@ -34,7 +34,6 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
-    if (router.pathname !== "/") clearSessionStorage("edit");
     if (name && onlyGuest.includes(router.pathname)) router.replace("/");
   }, [router.pathname]);
 
@@ -233,18 +232,14 @@ export default function App({ Component, pageProps }) {
 
       <QueryClientProvider client={client}>
         <NoteProvider router={router}>
-          {!loading && router.isReady && (
-            <>
-              {(!hideNavbar.includes(router.pathname) || (name && router.pathname === "/")) && (
-                <>
-                  <Navbar name={name} router={router} />
-                  <Modal router={router} />
-                </>
-              )}
-              <Component {...pageProps} name={name} router={router} />
-              <ToastContainer stacked autoClose={3000} pauseOnFocusLoss={false} position="bottom-left" />
-            </>
-          )}
+          <Activity mode={!loading && router.isReady ? "visible" : "hidden"}>
+            <Activity mode={!hideNavbar.includes(router.pathname) || (name && router.pathname === "/") ? "visible" : "hidden"}>
+              <Navbar name={name} router={router} />
+              <Modal router={router} />
+            </Activity>
+            <Component {...pageProps} name={name} router={router} />
+          </Activity>
+          <ToastContainer stacked autoClose={3000} pauseOnFocusLoss={false} position="bottom-left" />
         </NoteProvider>
       </QueryClientProvider>
     </>

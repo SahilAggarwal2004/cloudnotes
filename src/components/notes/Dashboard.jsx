@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from "next/head";
-import { useEffect, useMemo, useState } from "react";
+import { Activity, useEffect, useMemo, useState } from "react";
 import ReorderList, { ReorderIcon } from "react-reorder-list";
 import { FaPlus as FaPlusBold } from "react-icons/fa";
 import NoteItem from "./NoteItem";
@@ -75,11 +75,15 @@ export default function Dashboard() {
               onPositionChange={handlePositionChange}
             >
               {show.map((note) => (
-                <NoteItem key={note._id} note={note}>
-                  {!disableReordering && !progress && <ReorderIcon />}
+                <NoteItem key={note._id} propNote={note}>
+                  <Activity mode={disableReordering || progress ? "hidden" : "visible"}>
+                    <ReorderIcon />
+                  </Activity>
                 </NoteItem>
               ))}
-              {newNote && <NoteItem note={{ _id: "new" }} data-disable-reorder />}
+              <Activity mode={newNote ? "visible" : "hidden"}>
+                <NoteItem propNote={{ _id: "new" }} data-disable-reorder />
+              </Activity>
             </ReorderList>
           ) : isFetching ? (
             <Loading />

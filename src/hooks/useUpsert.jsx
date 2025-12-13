@@ -1,13 +1,16 @@
-import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import useStorage from "./useStorage";
 import { useNoteContext } from "../contexts/NoteProvider";
-import { defaultColor } from "../constants";
+import { defaultColor, queryKey } from "../constants";
+import { getStorage, removeStorage, setStorage } from "../modules/storage";
 
-export default function useUpsert({ _id, title, description = "", tag, updatedAt }) {
-  const { fetchApp, getTagColor, setNewNote, setProgress, setTagColor } = useNoteContext();
+export default function useUpsert({ _id, title, description, tag }) {
+  const client = useQueryClient();
+  const router = useRouter();
+  const { fetchApp, getTagColor, lastSyncedAt, setNewNote, setProgress, setTagColor } = useNoteContext();
   const newNote = _id === "new";
-  const getInitialState = () => ({ flag: newNote, description, tagColor: defaultColor });
-  const [upsertState, setUpsertState] = useStorage("upsert" + _id, getInitialState, false);
+  const [upsertState, setUpsertState, clearUpsertState] = useStorage(`upsert${_id}`, { flag: newNote, description: "", tagColor: defaultColor }, false);
 
   const updateUpsertState = (obj) =>
     setUpsertState((prev) => {
@@ -19,34 +22,43 @@ export default function useUpsert({ _id, title, description = "", tag, updatedAt
       if (ignoreNewNote) return;
       setNewNote(false);
     }
-    setUpsertState(getInitialState);
+    clearUpsertState();
   };
 
-  async function handleUpsert(event) {
-    event.preventDefault();
+  async function handleUpsert({ save, sync, force }) {
     const upsertTag = upsertState.tag || "General";
-    if (title === upsertState.title && description === upsertState.description && tag === upsertState.tag) setProgress(100);
-    else
-      var { success } = await fetchApp({
-        url: newNote ? "api/notes/add" : `api/notes/update/${_id}`,
-        method: newNote ? "POST" : "PUT",
-        body: { title: upsertState.title, description: upsertState.description, tag: upsertTag, lastUpdatedAt: updatedAt },
+    const editKey = `edit${_id}`;
+    if (save) {
+      setStorage(editKey, {
+        title: upsertState.title,
+        description: upsertState.description,
+        tag: upsertTag,
+        updatedAt: upsertState.updatedAt,
+        localUpdatedAt: new Date().toISOString(),
       });
-    if (success === false) return;
-    cancelUpsert();
-    setTagColor(upsertTag, upsertState.tagColor);
-  }
-
-  useEffect(() => {
-    if (upsertState.flag) {
-      const cancelEdit = () => cancelUpsert(true);
-      window.addEventListener("beforeunload", cancelEdit);
-      return () => {
-        cancelEdit();
-        window.removeEventListener("beforeunload", cancelEdit);
-      };
+      setTagColor(upsertTag, upsertState.tagColor);
     }
-  }, [upsertState.flag]);
+    if (sync) {
+      const editState = getStorage(editKey);
+      if (title === editState.title && description === editState.description && tag === editState.tag) setProgress(100);
+      else {
+        const { success, status, updatedAt } = await fetchApp({
+          url: newNote ? "api/notes/add" : `api/notes/update/${_id}${force ? "?force=true" : ""}`,
+          method: newNote ? "POST" : "PUT",
+          body: editState,
+        });
+        if (!success) {
+          if (status === 409) {
+            if (Date.parse(updatedAt) > lastSyncedAt) await client.refetchQueries({ queryKey });
+            router.push(`/note/${_id}?conflict=true`);
+          }
+          return;
+        }
+      }
+      removeStorage(editKey);
+    }
+    cancelUpsert();
+  }
 
   return { upsertState, updateUpsertState, cancelUpsert, handleUpsert };
 }

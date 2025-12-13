@@ -38,4 +38,6 @@ export const onlyGuest = ["/account/signup", "/account/login", "/account/forgot"
 
 export const queryKey = ["notes"];
 
+export const tagColorsLabel = "tag-colors";
+
 export const unitDurations = { minute: 60 * 1000, hour: 60 * 60 * 1000, day: 24 * 60 * 60 * 1000 };

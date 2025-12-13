@@ -3,10 +3,10 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-import { queryKey } from "../constants";
+import { defaultColor, queryKey, tagColorsLabel } from "../constants";
 import useStorage from "../hooks/useStorage";
-import useTagColors from "../hooks/useTagColors";
-import { clearSessionStorage, removeStorage } from "../modules/storage";
+import { useStorageListener } from "../hooks/useStorageListener";
+import { clearStorage, removeStorage, setStorage } from "../modules/storage";
 
 // Below is the boiler plate(basic structure) for the function to be created inside which we will pass some value (can be state or a function to update the state or anything else):
 // const Function = (props) => {
@@ -38,7 +38,6 @@ export default function NoteProvider({ children, router }) {
   const [modal, setModal] = useState({ active: false });
   const [progress, setProgress] = useState(0);
   const [sidebar, setSidebar] = useState(false);
-  const { getTagColor, setTagColor } = useTagColors();
 
   const { data, isFetching } = useQuery({
     queryKey,
@@ -51,6 +50,10 @@ export default function NoteProvider({ children, router }) {
 
   const notes = data || storedNotes;
   const tags = useMemo(() => notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []), [notes]);
+  const tagColors = useStorageListener(tagColorsLabel, {});
+
+  const getTagColor = (tag) => tagColors[tag] || defaultColor;
+  const setTagColor = (tag, color) => setStorage("tag-colors", { ...tagColors, [tag]: color });
 
   useEffect(() => {
     if (data) setStoredNotes(data);
@@ -62,14 +65,15 @@ export default function NoteProvider({ children, router }) {
     clearStoredNotes();
     clearLastSyncedAt();
     removeStorage("name");
-    clearSessionStorage();
+    clearStorage("edit", true);
+    clearStorage("", false);
   }
 
   async function fetchApp({ url, method = "GET", body, token = authToken, showToast = true }) {
     // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
     setProgress(33);
     try {
-      var { data } = await axios({ url, method, data: body, headers: { token, dimensions } });
+      var { status, data } = await axios({ url, method, data: body, headers: { token, dimensions } });
       if (showToast) toast.success(data.msg);
       if (data.notes) {
         client.setQueryData(queryKey, data.notes);
@@ -77,6 +81,7 @@ export default function NoteProvider({ children, router }) {
       }
       if (data.syncedAt) setLastSyncedAt(data.syncedAt);
     } catch (error) {
+      status = error.response?.status || 500;
       data = error.response?.data;
       if (!data) data = { success: false, error: "Please check your internet connectivity" };
       else if (typeof data === "string") data = { success: false, error: data };
@@ -88,7 +93,7 @@ export default function NoteProvider({ children, router }) {
       if (showToast || authenticationError) toast.error(data.error);
     }
     setProgress(100);
-    return data;
+    return { status, ...data };
   }
 
   useEffect(() => {
@@ -98,11 +103,12 @@ export default function NoteProvider({ children, router }) {
   // Context.Provider provides the context to the components using useContext().
   // value attribute stores the value(can be anything) to be passed to the components using the context.
   return (
-    <NoteContext.Provider 
+    <NoteContext.Provider
       value={{
         fetchApp,
         getTagColor,
         isFetching,
+        lastSyncedAt,
         modal,
         newNote,
         notes,

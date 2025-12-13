@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNoteContext } from "../contexts/NoteProvider";
 import { infinity, unitDurations } from "../constants";
+import { removeStorage } from "../modules/storage";
 
 export default function Modal({ router }) {
   const {
@@ -26,12 +27,13 @@ export default function Modal({ router }) {
 
   async function deleteNote() {
     closeModal();
-    await fetchApp({ url: `api/notes/delete/${props.note}`, method: "DELETE" });
+    const { success } = await fetchApp({ url: `api/notes/delete/${props.note}`, method: "DELETE" });
+    if (success) removeStorage(`edit${props.note}`);
   }
 
   async function undoNote() {
     closeModal();
-    await fetchApp({ url: `api/notes/undo/${props.note}`, method: "PUT", body: { lastUpdatedAt: props.updatedAt } });
+    await fetchApp({ url: `api/notes/undo/${props.note}`, method: "PUT", body: { localUpdatedAt: props.localUpdatedAt } });
   }
 
   async function shareNote(event) {

@@ -1,6 +1,6 @@
-export default function Expandable({ children, expand }) {
+export default function Expandable({ children, expand, className = "" }) {
   return (
-    <div className={`grid grid-rows-[0fr] transition-all duration-200 sm:inline-block ${expand && "grid-rows-[1fr]"}`}>
+    <div className={`grid grid-rows-[0fr] overflow-hidden transition-all duration-200 ${expand && "grid-rows-[1fr]"} ${className}`}>
       <div className="min-h-0">{children}</div>
     </div>
   );

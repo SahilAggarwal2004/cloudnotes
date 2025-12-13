@@ -19,7 +19,7 @@ export default function Id({ router }) {
   return (
     <div className="flex w-full justify-center">
       {data ? (
-        <NoteItem note={data} mode="shared" />
+        <NoteItem propNote={data} mode="shared" />
       ) : isFetching ? (
         <Loading />
       ) : (

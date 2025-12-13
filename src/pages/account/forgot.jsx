@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from "next/head";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { Activity, useRef, useState } from "react";
 import Logo from "../../components/icons/Logo";
 import Password from "../../components/Password";
 import { useNoteContext } from "../../contexts/NoteProvider";
@@ -55,21 +55,19 @@ export default function Forgot({ router }) {
                 className={`relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 ${stage ? "rounded-b-none" : ""} focus:z-10 focus:border-purple-600 focus:outline-none focus:ring-purple-600 sm:text-sm`}
                 placeholder="Email address"
               />
-              {Boolean(stage) && (
-                <>
-                  <input
-                    ref={otp}
-                    type="text"
-                    autoComplete="new-password"
-                    minLength={otpLength}
-                    maxLength={otpLength}
-                    required
-                    className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-purple-600 focus:outline-none focus:ring-purple-600 sm:text-sm"
-                    placeholder="Enter OTP"
-                  />
-                  <Password password={password} />
-                </>
-              )}
+              <Activity mode={stage ? "visible" : "hidden"}>
+                <input
+                  ref={otp}
+                  type="text"
+                  autoComplete="new-password"
+                  minLength={otpLength}
+                  maxLength={otpLength}
+                  required
+                  className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-purple-600 focus:outline-none focus:ring-purple-600 sm:text-sm"
+                  placeholder="Enter OTP"
+                />
+                <Password password={password} />
+              </Activity>
             </div>
             <button type="submit" className="button-animation relative flex w-full justify-center rounded-md border px-4 py-2 text-sm font-medium">
               {stage ? "Reset password" : "Send OTP"}

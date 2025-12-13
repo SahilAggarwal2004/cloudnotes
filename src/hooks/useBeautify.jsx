@@ -1,8 +1,11 @@
 import { useCompletion } from "@ai-sdk/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { charLimit } from "../constants";
+import { charLimit, queryKey } from "../constants";
 import { useNoteContext } from "../contexts/NoteProvider";
+import { getStorage, removeStorage, setStorage } from "../modules/storage";
 
 const {
   note: {
@@ -10,8 +13,9 @@ const {
   },
 } = charLimit;
 
-export default function useBeautify(note) {
-  const { _id, description, updatedAt } = note;
+export default function useBeautify({ _id, title, description, tag, updatedAt }) {
+  const client = useQueryClient();
+  const router = useRouter();
   const { fetchApp } = useNoteContext();
   const [beautifyActive, setBeautifyActive] = useState(false);
 
@@ -37,18 +41,29 @@ export default function useBeautify(note) {
     }
   };
 
-  const handleAcceptBeautify = async () => {
+  async function handleAcceptBeautify({ save, sync }) {
     const beautifiedText = completion.slice(0, maxDescription);
-    const { success } = await fetchApp({
-      url: `api/notes/update/${_id}`,
-      method: "PUT",
-      body: { description: beautifiedText, lastUpdatedAt: updatedAt },
-    });
-    if (success) {
+    const editKey = `edit${_id}`;
+    if (save) setStorage(editKey, { title, description: beautifiedText, tag, updatedAt });
+    if (sync) {
+      const { success, status, updatedAt } = await fetchApp({
+        url: `api/notes/update/${_id}`,
+        method: "PUT",
+        body: getStorage(editKey),
+        showToast: false,
+      });
+      if (!success) {
+        if (status === 409) {
+          if (Date.parse(updatedAt) > lastSyncedAt) await client.refetchQueries({ queryKey });
+          router.push(`/note/${_id}?conflict=true`);
+        }
+        return;
+      }
       toast.success("Note beautified successfully!");
-      cancelBeautify();
+      removeStorage(editKey);
     }
-  };
+    cancelBeautify();
+  }
 
   return {
     beautifyActive,
