@@ -35,7 +35,8 @@ const {
 } = charLimit;
 
 export default function NoteItem({ propNote, children, mode = "normal" }) {
-  const storedNote = useStorageListener(`edit${propNote._id}`);
+  const editKey = `edit${propNote._id}`;
+  const storedNote = useStorageListener(editKey);
   const note = { ...propNote, localUpdatedAt: propNote.updatedAt, ...storedNote };
   const { _id, title, description, tag, updatedAt, localUpdatedAt } = note;
   const router = useRouter();
@@ -166,7 +167,7 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                     className="scale-110 cursor-pointer"
                     onClick={() => {
                       toast.success("Accepted cloud version");
-                      removeStorage(`edit${_id}`);
+                      removeStorage(editKey);
                       cancelUpsert();
                       resetQueryParam("conflict");
                     }}
@@ -327,21 +328,36 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                                 onClick={() => setModal({ active: true, type: "shareNote", note: _id })}
                               >
                                 <GrShareOption className="scale-110" />
-                                <span>Share</span>
+                                <span>Share Note</span>
                               </button>
                               <button type="button" className="flex items-center space-x-2 disabled:opacity-60" disabled={progress} onClick={() => startBeautify()}>
                                 <TbSparkles className="scale-110" />
-                                <span>Beautify</span>
+                                <span>Beautify Note</span>
                               </button>
-                              <button
-                                type="button"
-                                className="flex items-center space-x-2 disabled:opacity-60"
-                                disabled={progress}
-                                onClick={() => setModal({ active: true, type: "undoNote", note: _id, localUpdatedAt })}
-                              >
-                                <GrUndo className="scale-110" />
-                                <span>Undo</span>
-                              </button>
+                              {storedNote ? (
+                                <button
+                                  type="button"
+                                  className="flex items-center space-x-2 disabled:opacity-60"
+                                  disabled={progress}
+                                  onClick={() => {
+                                    toast.success("Local changes discarded");
+                                    removeStorage(editKey);
+                                  }}
+                                >
+                                  <GrUndo className="scale-110" />
+                                  <span>Discard Changes</span>
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  className="flex items-center space-x-2 disabled:opacity-60"
+                                  disabled={progress}
+                                  onClick={() => setModal({ active: true, type: "undoNote", note: _id, localUpdatedAt })}
+                                >
+                                  <GrUndo className="scale-110" />
+                                  <span>Undo Note</span>
+                                </button>
+                              )}
                               <button
                                 type="button"
                                 className="flex items-center space-x-2 disabled:opacity-60"
@@ -349,7 +365,7 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                                 onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}
                               >
                                 <FaRegTrashAlt className="scale-110" />
-                                <span>Delete</span>
+                                <span>Delete Note</span>
                               </button>
                             </>
                           )}
