@@ -153,7 +153,8 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                   <button
                     type="button"
                     title="Force save to cloud"
-                    className="scale-110 cursor-pointer"
+                    className="scale-110 cursor-pointer disabled:opacity-60"
+                    disabled={progress}
                     onClick={async () => {
                       await handleUpsert({ save: true, sync: true, force: true });
                       resetQueryParam("conflict");
@@ -235,7 +236,13 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                     >
                       <FaRegSave />
                     </button>
-                    <button type="button" title="Save to cloud" className="relative scale-110 cursor-pointer" onClick={() => handleAcceptBeautify({ save: true, sync: true })}>
+                    <button
+                      type="button"
+                      title="Save to cloud"
+                      className="relative scale-110 cursor-pointer disabled:opacity-60"
+                      disabled={isBeautifying}
+                      onClick={() => handleAcceptBeautify({ save: true, sync: true })}
+                    >
                       <FaRegSave />
                       <MdSync className="absolute -bottom-1 -right-1 rounded-full bg-black text-[0.7rem] text-white" />
                     </button>
@@ -289,22 +296,14 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                         </Activity>
                       </>
                     )}
-                    <button
-                      ref={moreRef}
-                      type="button"
-                      title="More actions"
-                      className="scale-110 disabled:opacity-60"
-                      disabled={progress}
-                      onClick={() => setShowMore((prev) => !prev)}
-                    >
+                    <button ref={moreRef} type="button" title="More actions" className="scale-110" onClick={() => setShowMore((prev) => !prev)}>
                       <TbDots />
                     </button>
                     <Activity mode={showMore ? "visible" : "hidden"}>
-                      <div className="absolute right-0 z-20 mt-1 w-max space-y-2 rounded border bg-white p-2 text-sm text-gray-700 shadow-md">
+                      <div className="absolute right-0 z-20 mt-1 w-max space-y-2.5 rounded border bg-white p-2 text-sm text-gray-700 shadow-md">
                         <button
                           type="button"
-                          className="flex items-center space-x-2 disabled:opacity-60"
-                          disabled={progress}
+                          className="flex items-center space-x-2"
                           onClick={() => {
                             setScreenShot(true);
                             const pdf = document.getElementById(`pdf-${_id}`);
@@ -336,8 +335,7 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                             {storedNote ? (
                               <button
                                 type="button"
-                                className="flex items-center space-x-2 disabled:opacity-60"
-                                disabled={progress}
+                                className="flex items-center space-x-2"
                                 onClick={() => {
                                   toast.success("Local changes discarded");
                                   removeStorage(editKey);
