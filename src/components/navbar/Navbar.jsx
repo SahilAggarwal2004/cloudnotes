@@ -46,7 +46,7 @@ export default function Navbar({ name, router }) {
             </Link>
             <FaChevronDown className={`scale-125 transition-transform duration-200 sm:invisible ${hide ? "" : "rotate-180"}`} onClick={extendNav} />
           </div>
-          <Expandable expand={!hide} className="sm:inline-block">
+          <Expandable expand={!hide} className="min-w-max px-2 sm:inline-block">
             <div className="mt-3 space-y-0.5 sm:m-0 sm:flex sm:space-x-4 sm:space-y-0">
               {name ? (
                 <NavLink href="/" text="Dashboard" onClick={extendNav} />

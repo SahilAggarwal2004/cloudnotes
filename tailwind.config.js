@@ -11,11 +11,11 @@ module.exports = {
       "2xl": "1536px",
     },
     extend: {
-      fontSize: {
-        "2xs": ["0.7rem", { lineHeight: "1rem" }],
-      },
       animation: {
         "spin-fast": "spin 0.55s ease infinite",
+      },
+      fontSize: {
+        "2xs": ["0.7rem", { lineHeight: "1rem" }],
       },
     },
   },

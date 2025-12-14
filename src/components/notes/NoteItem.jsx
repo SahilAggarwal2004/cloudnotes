@@ -147,7 +147,7 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
               />
               <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
             </div>
-            <div className={`flex-group my-2 text-gray-800 ${expanded ? "mt-3" : "scale-95"}`}>
+            <div className={`flex-group my-2 h-[1.125rem] text-gray-800 ${expanded ? "mt-3" : "scale-95"}`}>
               {conflict ? (
                 <>
                   <button
@@ -223,7 +223,7 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                 </h3>
                 <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
               </div>
-              <div className={`my-2 flex items-center justify-center space-x-2 text-gray-800 ${expanded ? "mt-3 scale-95 xs:scale-100" : "scale-90 xs:scale-95"}`}>
+              <div className={`my-2 h-[1.125rem] text-gray-800 ${expanded ? "mt-3 scale-95 xs:scale-100" : "scale-90 xs:scale-95"}`}>
                 {beautifyActive ? (
                   <div className="flex-group">
                     <button
@@ -247,139 +247,137 @@ export default function NoteItem({ propNote, children, mode = "normal" }) {
                     </button>
                   </div>
                 ) : (
-                  <>
-                    <div className="flex-group relative inline-block">
-                      {shared ? (
-                        <button type="button" className="scale-[1.4]" onClick={() => setShowMarkdown((prev) => !prev)}>
-                          {showMarkdown ? <TbMarkdownOff title="Disable markdown" /> : <TbMarkdown title="Enable markdown" />}
-                        </button>
-                      ) : (
-                        <>
-                          {expanded ? (
-                            <button type="button" title="Minimize note" className="scale-110" onClick={() => router.push("/")}>
-                              <FaCompress />
-                            </button>
-                          ) : (
-                            <button type="button" title="Maximize note" className="scale-110" onClick={() => router.push(`/note/${_id}`)}>
-                              <FaExpand />
-                            </button>
-                          )}
-                        </>
-                      )}
-                      <button type="button" title="Copy note" className="scale-110" onClick={() => copy(description)}>
-                        <FaRegCopy />
+                  <div className="flex-group relative inline-block">
+                    {shared ? (
+                      <button type="button" className="scale-[1.4]" onClick={() => setShowMarkdown((prev) => !prev)}>
+                        {showMarkdown ? <TbMarkdownOff title="Disable markdown" /> : <TbMarkdown title="Enable markdown" />}
                       </button>
-                      <button type="button" className="scale-110 disabled:opacity-60" disabled={progress}>
-                        {isInQueue ? <GrVolumeMute title="Stop reading" onClick={stop} /> : <GrVolume title="Start reading" onClick={start} />}
-                      </button>
-                      {!shared && (
-                        <>
-                          <button type="button" title="Edit note" className="scale-125 disabled:opacity-60" disabled={progress} onClick={upsertNote}>
-                            <FaRegEdit />
+                    ) : (
+                      <>
+                        {expanded ? (
+                          <button type="button" title="Minimize note" className="scale-110" onClick={() => router.push("/")}>
+                            <FaCompress />
                           </button>
-                          <Activity mode={storedNote ? "visible" : "hidden"}>
-                            <button
-                              type="button"
-                              title="Sync note"
-                              className="scale-125 disabled:opacity-60"
-                              disabled={progress}
-                              onClick={() => handleUpsert({ save: false, sync: true })}
-                            >
-                              <MdSync />
-                            </button>
-                          </Activity>
-                        </>
-                      )}
-                      <button
-                        ref={moreRef}
-                        type="button"
-                        title="More actions"
-                        className="scale-110 disabled:opacity-60"
-                        disabled={progress}
-                        onClick={() => setShowMore((prev) => !prev)}
-                      >
-                        <TbDots />
-                      </button>
-                      <Activity mode={showMore ? "visible" : "hidden"}>
-                        <div className="absolute right-0 z-20 mt-1 w-max space-y-2 rounded border bg-white p-2 text-sm text-gray-700 shadow-md">
+                        ) : (
+                          <button type="button" title="Maximize note" className="scale-110" onClick={() => router.push(`/note/${_id}`)}>
+                            <FaExpand />
+                          </button>
+                        )}
+                      </>
+                    )}
+                    <button type="button" title="Copy note" className="scale-110" onClick={() => copy(description)}>
+                      <FaRegCopy />
+                    </button>
+                    <button type="button" className="scale-110 disabled:opacity-60" disabled={progress}>
+                      {isInQueue ? <GrVolumeMute title="Stop reading" onClick={stop} /> : <GrVolume title="Start reading" onClick={start} />}
+                    </button>
+                    {!shared && (
+                      <>
+                        <button type="button" title="Edit note" className="scale-125 disabled:opacity-60" disabled={progress} onClick={upsertNote}>
+                          <FaRegEdit />
+                        </button>
+                        <Activity mode={storedNote ? "visible" : "hidden"}>
                           <button
                             type="button"
-                            className="flex items-center space-x-2 disabled:opacity-60"
+                            title="Sync note"
+                            className="scale-125 disabled:opacity-60"
                             disabled={progress}
-                            onClick={() => {
-                              setScreenShot(true);
-                              const pdf = document.getElementById(`pdf-${_id}`);
-                              pdf.classList.remove("hidden");
-                              generatePDF(() => pdf, { filename: `${title}.pdf`, page: { margin: Margin.SMALL } })
-                                .then(() => toast.success("PDF downloaded successfully!"))
-                                .catch(() => toast.error("Failed to generate PDF!"))
-                                .finally(() => setTimeout(() => setScreenShot(false), 100));
-                            }}
+                            onClick={() => handleUpsert({ save: false, sync: true })}
                           >
-                            <FaRegFilePdf className="scale-110" />
-                            <span>Download PDF</span>
+                            <MdSync />
                           </button>
-                          {!shared && (
-                            <>
+                        </Activity>
+                      </>
+                    )}
+                    <button
+                      ref={moreRef}
+                      type="button"
+                      title="More actions"
+                      className="scale-110 disabled:opacity-60"
+                      disabled={progress}
+                      onClick={() => setShowMore((prev) => !prev)}
+                    >
+                      <TbDots />
+                    </button>
+                    <Activity mode={showMore ? "visible" : "hidden"}>
+                      <div className="absolute right-0 z-20 mt-1 w-max space-y-2 rounded border bg-white p-2 text-sm text-gray-700 shadow-md">
+                        <button
+                          type="button"
+                          className="flex items-center space-x-2 disabled:opacity-60"
+                          disabled={progress}
+                          onClick={() => {
+                            setScreenShot(true);
+                            const pdf = document.getElementById(`pdf-${_id}`);
+                            pdf.classList.remove("hidden");
+                            generatePDF(() => pdf, { filename: `${title}.pdf`, page: { margin: Margin.SMALL } })
+                              .then(() => toast.success("PDF downloaded successfully!"))
+                              .catch(() => toast.error("Failed to generate PDF!"))
+                              .finally(() => setTimeout(() => setScreenShot(false), 100));
+                          }}
+                        >
+                          <FaRegFilePdf className="scale-110" />
+                          <span>Download PDF</span>
+                        </button>
+                        {!shared && (
+                          <>
+                            <button
+                              type="button"
+                              className="flex items-center space-x-2 disabled:opacity-60"
+                              disabled={progress}
+                              onClick={() => setModal({ active: true, type: "shareNote", note: _id })}
+                            >
+                              <GrShareOption className="scale-110" />
+                              <span>Share Note</span>
+                            </button>
+                            <button type="button" className="flex items-center space-x-2 disabled:opacity-60" disabled={progress} onClick={() => startBeautify()}>
+                              <TbSparkles className="scale-110" />
+                              <span>Beautify Note</span>
+                            </button>
+                            {storedNote ? (
                               <button
                                 type="button"
                                 className="flex items-center space-x-2 disabled:opacity-60"
                                 disabled={progress}
-                                onClick={() => setModal({ active: true, type: "shareNote", note: _id })}
+                                onClick={() => {
+                                  toast.success("Local changes discarded");
+                                  removeStorage(editKey);
+                                }}
                               >
-                                <GrShareOption className="scale-110" />
-                                <span>Share Note</span>
+                                <GrUndo className="scale-110" />
+                                <span>Discard Changes</span>
                               </button>
-                              <button type="button" className="flex items-center space-x-2 disabled:opacity-60" disabled={progress} onClick={() => startBeautify()}>
-                                <TbSparkles className="scale-110" />
-                                <span>Beautify Note</span>
-                              </button>
-                              {storedNote ? (
-                                <button
-                                  type="button"
-                                  className="flex items-center space-x-2 disabled:opacity-60"
-                                  disabled={progress}
-                                  onClick={() => {
-                                    toast.success("Local changes discarded");
-                                    removeStorage(editKey);
-                                  }}
-                                >
-                                  <GrUndo className="scale-110" />
-                                  <span>Discard Changes</span>
-                                </button>
-                              ) : (
-                                <button
-                                  type="button"
-                                  className="flex items-center space-x-2 disabled:opacity-60"
-                                  disabled={progress}
-                                  onClick={() => setModal({ active: true, type: "undoNote", note: _id, localUpdatedAt })}
-                                >
-                                  <GrUndo className="scale-110" />
-                                  <span>Undo Note</span>
-                                </button>
-                              )}
+                            ) : (
                               <button
                                 type="button"
                                 className="flex items-center space-x-2 disabled:opacity-60"
                                 disabled={progress}
-                                onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}
+                                onClick={() => setModal({ active: true, type: "undoNote", note: _id, localUpdatedAt })}
                               >
-                                <FaRegTrashAlt className="scale-110" />
-                                <span>Delete Note</span>
+                                <GrUndo className="scale-110" />
+                                <span>Undo Note</span>
                               </button>
-                            </>
-                          )}
-                        </div>
-                      </Activity>
-                    </div>
-                  </>
+                            )}
+                            <button
+                              type="button"
+                              className="flex items-center space-x-2 disabled:opacity-60"
+                              disabled={progress}
+                              onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}
+                            >
+                              <FaRegTrashAlt className="scale-110" />
+                              <span>Delete Note</span>
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </Activity>
+                  </div>
                 )}
               </div>
               <hr className={`my-2 w-full ${expanded ? "invisible" : ""}`} />
               <Activity mode={isBeautifying ? "visible" : "hidden"}>
                 <div className="mb-2 px-2 text-sm text-gray-500">✨ Beautifying your note...</div>
               </Activity>
-              <Text className={`markdown px-2 text-gray-600 ${expanded ? "" : "max-h-[calc(100dvh-14rem)] min-w-full text-left text-sm"}`} />
+              <Text className={`markdown max-h-[calc(100dvh-14rem)] px-2 text-gray-600 ${expanded ? "" : "min-w-full text-left text-sm"}`} />
             </div>
             <p className={`w-full text-center text-gray-600 ${expanded ? "mt-auto scale-95 text-sm" : "absolute bottom-1.5 text-2xs"}`}>
               Last Updated: {new Date(updatedAt).toLocaleString()}

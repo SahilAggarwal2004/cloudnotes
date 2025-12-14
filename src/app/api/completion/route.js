@@ -1,4 +1,5 @@
 import { streamText } from "ai";
+import dedent from "dedent";
 import { charLimit } from "../../../constants";
 
 const {
@@ -13,7 +14,7 @@ export async function POST(request) {
   const result = streamText({
     model: "openai/gpt-oss-20b",
     providerOptions: { gateway: { order: ["groq"] } },
-    system: `
+    system: dedent(`
       You are an AI text refinement model. Your purpose is to beautify and refine a given note's text while staying within a strict character limit.
 
       Follow these rules **in order of priority**:
@@ -36,7 +37,7 @@ export async function POST(request) {
       9. Output only the final refined text — no explanations or meta comments.
 
       Your goal is to produce text that feels refined, elegant, and faithful to the original meaning, always within the character limit.
-    `,
+    `),
     prompt,
   });
 
