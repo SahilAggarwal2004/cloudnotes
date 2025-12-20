@@ -18,14 +18,23 @@ export default function Forgot({ router }) {
 
   async function submit(event) {
     event.preventDefault();
-    if (!stage) {
-      const { success, error } = await fetchApp({ url: "api/auth/otp", method: "POST", body: { email: email.current.value } });
-      if (success) setStage(1);
-      else if (error === "OTP already sent!") setStage(stage + 1);
-    } else {
-      const { success } = await fetchApp({ url: "api/auth/forgot", method: "PUT", body: { email: email.current.value, otp: otp.current.value, password: password.current.value } });
-      if (success) router.replace("/account/login");
-    }
+    if (!stage)
+      fetchApp({
+        url: "api/auth/otp",
+        method: "POST",
+        body: { email: email.current.value },
+        onSuccess: () => setStage(1),
+        onError: (error) => {
+          if (error === "OTP already sent!") setStage((prev) => prev + 1);
+        },
+      });
+    else
+      fetchApp({
+        url: "api/auth/forgot",
+        method: "PUT",
+        body: { email: email.current.value, otp: otp.current.value, password: password.current.value },
+        onSuccess: () => router.replace("/account/login"),
+      });
   }
 
   return (

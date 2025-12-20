@@ -6,12 +6,12 @@ import { useNoteContext } from "../../contexts/NoteProvider";
 
 export default function Id({ router }) {
   const { noteId } = router.query;
-  const { fetchApp } = useNoteContext();
+  const { fetchApp, progress } = useNoteContext();
 
-  const { data, isFetching } = useQuery({
+  const { data } = useQuery({
     queryKey: queryKey.concat(noteId),
     queryFn: async () => {
-      const { note = null } = await fetchApp({ url: `api/notes/fetch/${noteId}`, showToast: false });
+      const { note = null } = await fetchApp({ url: `api/notes/fetch/${noteId}`, showToast: { success: false, error: true } });
       return note;
     },
   });
@@ -20,7 +20,7 @@ export default function Id({ router }) {
     <div className="flex w-full justify-center">
       {data ? (
         <NoteItem propNote={data} mode="shared" />
-      ) : isFetching ? (
+      ) : progress ? (
         <Loading />
       ) : (
         <div className="fixed top-0 flex h-full items-center text-lg font-semibold">Note note found!</div>

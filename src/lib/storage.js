@@ -10,6 +10,7 @@ function publish(key, local, value) {
 const getStorageInstance = (local = true) => (local ? localStorage : sessionStorage);
 
 export const setStorage = (key, value, local = true) => {
+  if (typeof value === "function") value = value(getStorage(key, undefined, local));
   getStorageInstance(local).setItem(key, JSON.stringify(value));
   publish(key, local, value);
 };

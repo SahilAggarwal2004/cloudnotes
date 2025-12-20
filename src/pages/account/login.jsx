@@ -2,10 +2,10 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRef } from "react";
-import { setStorage } from "../../modules/storage";
 import Logo from "../../components/icons/Logo";
 import Password from "../../components/Password";
 import { useNoteContext } from "../../contexts/NoteProvider";
+import { setStorage } from "../../lib/storage";
 
 export default function Login({ router }) {
   const { fetchApp, setAuthToken } = useNoteContext();
@@ -14,11 +14,16 @@ export default function Login({ router }) {
 
   async function submit(event) {
     event.preventDefault();
-    const { success, name, token } = await fetchApp({ url: "api/auth/login", method: "POST", body: { email: email.current.value, password: password.current.value } });
-    if (!success) return;
-    setStorage("name", name);
-    setAuthToken(token);
-    router.replace("/");
+    fetchApp({
+      url: "api/auth/login",
+      method: "POST",
+      body: { email: email.current.value, password: password.current.value },
+      onSuccess: ({ name, token }) => {
+        setStorage("name", name);
+        setAuthToken(token);
+        router.replace("/");
+      },
+    });
   }
 
   return (

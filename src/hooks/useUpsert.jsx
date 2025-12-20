@@ -2,34 +2,31 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import useStorage from "./useStorage";
 import { useNoteContext } from "../contexts/NoteProvider";
-import { defaultColor, queryKey } from "../constants";
-import { getStorage, removeStorage, setStorage } from "../modules/storage";
+import { defaults, queryKey } from "../constants";
+import { deleteLocalNote, isNewNote } from "../lib/notes";
+import { getStorage, setStorage } from "../lib/storage";
+
+const { color: defaultColor, description: defaultDescription, tag: defaultTag } = defaults;
 
 export default function useUpsert({ _id, title, description, tag }) {
   const client = useQueryClient();
   const router = useRouter();
-  const { fetchApp, getTagColor, lastSyncedAt, setNewNote, setProgress, setTagColor } = useNoteContext();
-  const newNote = _id === "new";
-  const [upsertState, setUpsertState, clearUpsertState] = useStorage(`upsert${_id}`, { flag: newNote, description: "", tagColor: defaultColor }, false);
+  const { fetchApp, getTagColor, lastSyncedAt, setProgress, setTagColor } = useNoteContext();
+  const [upsertState, setUpsertState, clearUpsertState] = useStorage(`upsert-${_id}`, { flag: false, description: defaultDescription, tagColor: defaultColor }, false);
 
   const updateUpsertState = (obj) =>
     setUpsertState((prev) => {
       if (obj.tag) obj.tagColor = getTagColor(obj.tag);
       return { ...prev, ...obj };
     });
-  const cancelUpsert = (ignoreNewNote = false) => {
-    if (newNote) {
-      if (ignoreNewNote) return;
-      setNewNote(false);
-    }
-    clearUpsertState();
-  };
+  const cancelUpsert = () => clearUpsertState();
 
   async function handleUpsert({ save, sync, force }) {
-    const upsertTag = upsertState.tag || "General";
-    const editKey = `edit${_id}`;
+    const upsertTag = upsertState.tag || defaultTag;
+    const localKey = `local-${_id}`;
     if (save) {
-      setStorage(editKey, {
+      setStorage(localKey, {
+        _id,
         title: upsertState.title,
         description: upsertState.description,
         tag: upsertTag,
@@ -39,13 +36,17 @@ export default function useUpsert({ _id, title, description, tag }) {
       setTagColor(upsertTag, upsertState.tagColor);
     }
     if (sync) {
-      const editState = getStorage(editKey);
-      if (title === editState.title && description === editState.description && tag === editState.tag) setProgress(100);
-      else {
+      const newNote = isNewNote(_id);
+      const localState = getStorage(localKey);
+      if (title === localState.title && description === localState.description && tag === localState.tag) {
+        deleteLocalNote(_id);
+        setProgress(100);
+      } else {
         const { success, status, updatedAt } = await fetchApp({
-          url: newNote ? "api/notes/add" : `api/notes/update/${_id}${force ? "?force=true" : ""}`,
+          url: newNote ? "api/notes/add/bulk" : `api/notes/update/${_id}${force ? "?force=true" : ""}`,
           method: newNote ? "POST" : "PUT",
-          body: editState,
+          body: newNote ? { notes: [localState] } : localState,
+          onSuccess: () => deleteLocalNote(_id),
         });
         if (!success) {
           if (status === 409) {
@@ -55,7 +56,6 @@ export default function useUpsert({ _id, title, description, tag }) {
           return;
         }
       }
-      removeStorage(editKey);
     }
     cancelUpsert();
   }

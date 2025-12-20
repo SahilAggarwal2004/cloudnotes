@@ -1,36 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from "next/head";
-import { Activity, useEffect, useMemo, useState } from "react";
+import { Activity, useState } from "react";
 import ReorderList, { ReorderIcon } from "react-reorder-list";
 import { FaPlus as FaPlusBold } from "react-icons/fa";
 import NoteItem from "./NoteItem";
+import { defaults, maxNotes, newNotePrefix, newNotesKey } from "../../constants";
 import { useNoteContext } from "../../contexts/NoteProvider";
 import useURLState from "../../hooks/useURLState";
 import Loading from "../Loading";
+import { setStorage } from "../../lib/storage";
+import { toast } from "react-toastify";
+
+const { color: defaultColor, title: defaultTitle, description: defaultDescription, tag: defaultTag } = defaults;
 
 export default function Dashboard() {
-  const { fetchApp, isFetching, newNote, notes, progress, setNewNote, tags } = useNoteContext();
+  const { fetchApp, newNotes, notes, progress, tags } = useNoteContext();
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
+  const allNotesLength = notes.length + newNotes.length;
+  const disableReordering = progress || Boolean(selTag || search);
 
-  const show = useMemo(() => {
-    let filteredNotes = notes;
-    if (selTag) filteredNotes = filteredNotes.filter(({ tag }) => tag === selTag);
-    if (search) filteredNotes = filteredNotes.filter(({ title, description, tag }) => [tag, title, description].some((str) => str.toLowerCase().includes(search)));
-    return filteredNotes;
-  }, [notes, search, selTag]);
-
-  const hasFilter = Boolean(selTag || search);
-  const disableReordering = isFetching || hasFilter;
-
-  useEffect(() => {
-    if (newNote) window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-  }, [newNote]);
-
-  async function handlePositionChange({ oldItems, newItems, revert }) {
+  async function handlePositionChange({ newItems, revert }) {
     const order = newItems.slice(0, -1).map(({ key }) => key);
-    const { success } = await fetchApp({ url: "api/notes/order", method: "PUT", body: { order } });
-    if (!success) revert();
+    fetchApp({ url: "api/notes/order", method: "PUT", body: { order }, onError: revert });
   }
 
   return (
@@ -62,30 +54,31 @@ export default function Dashboard() {
             <span className="hidden sm:col-span-2 sm:inline" />
             <h2 className="col-span-5 text-left text-xl font-bold sm:col-span-6 sm:text-center">Your Notes</h2>
             <div className="col-span-5 text-right sm:col-span-2">
-              Notes: <strong>{notes.length}</strong>/25
+              Notes: <strong>{allNotesLength}</strong>/{maxNotes}
             </div>
           </div>
-          {show.length || newNote ? (
+          {allNotesLength ? (
             <ReorderList
               useOnlyIconToDrag
               watchChildrenUpdates
-              preserveOrder={!isFetching}
-              disabled={disableReordering}
+              preserveOrder={!progress}
               props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 px-2 py-5 xs:px-5 sm:grid-cols-2 lg:grid-cols-3" }}
               onPositionChange={handlePositionChange}
             >
-              {show.map((note) => (
-                <NoteItem key={note._id} propNote={note}>
-                  <Activity mode={disableReordering || progress ? "hidden" : "visible"}>
-                    <ReorderIcon />
-                  </Activity>
-                </NoteItem>
+              {notes.map((note) => {
+                return (
+                  <NoteItem key={note._id} propNote={note} filter={{ search, selTag }}>
+                    <Activity mode={disableReordering || progress ? "hidden" : "visible"}>
+                      <ReorderIcon />
+                    </Activity>
+                  </NoteItem>
+                );
+              })}
+              {newNotes.map((_id) => (
+                <NoteItem key={_id} propNote={{ _id }} filter={{ search, selTag }} />
               ))}
-              <Activity mode={newNote ? "visible" : "hidden"}>
-                <NoteItem propNote={{ _id: "new" }} data-disable-reorder />
-              </Activity>
             </ReorderList>
-          ) : isFetching ? (
+          ) : progress ? (
             <Loading />
           ) : (
             <h4 className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">No Notes To Display!</h4>
@@ -94,7 +87,17 @@ export default function Dashboard() {
         <button
           className="fixed bottom-[2.625rem] right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]"
           disabled={progress}
-          onClick={() => setNewNote(true)}
+          onClick={() => {
+            if (allNotesLength >= maxNotes) return toast.error("You have reached the maximum number of notes!");
+            const newNoteId = `${newNotePrefix}${Date.now()}`;
+            setStorage(
+              `upsert-${newNoteId}`,
+              { flag: true, title: defaultTitle, description: defaultDescription, tag: defaultTag, tagColor: defaultColor, updatedAt: new Date().toISOString() },
+              false,
+            );
+            setStorage(newNotesKey, newNotes.concat(newNoteId));
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          }}
         >
           <FaPlusBold className="scale-110" />
         </button>

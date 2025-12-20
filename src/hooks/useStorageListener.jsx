@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getStorage, subscribeToStorage } from "../modules/storage";
+import { getStorage, subscribeToStorage } from "../lib/storage";
 
 export function useStorageListener(key, initialValue, local = true) {
   const [value, setValue] = useState(() => {

@@ -5,7 +5,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { charLimit, queryKey } from "../constants";
 import { useNoteContext } from "../contexts/NoteProvider";
-import { getStorage, removeStorage, setStorage } from "../modules/storage";
+import { getStorage, setStorage } from "../lib/storage";
+import { deleteLocalNote, isNewNote } from "../lib/notes";
 
 const {
   note: {
@@ -13,7 +14,7 @@ const {
   },
 } = charLimit;
 
-export default function useBeautify({ _id, title, description, tag, updatedAt }) {
+export default function useBeautify({ _id, title, description, tag }) {
   const client = useQueryClient();
   const router = useRouter();
   const { fetchApp } = useNoteContext();
@@ -42,15 +43,17 @@ export default function useBeautify({ _id, title, description, tag, updatedAt })
   };
 
   async function handleAcceptBeautify({ save, sync }) {
+    const newNote = isNewNote(_id);
+    const localKey = `local-${_id}`;
+    const localState = getStorage(localKey);
     const beautifiedText = completion.slice(0, maxDescription);
-    const editKey = `edit${_id}`;
-    if (save) setStorage(editKey, { title, description: beautifiedText, tag, updatedAt });
+    if (save) setStorage(localKey, { _id, title, description: beautifiedText, tag, updatedAt });
     if (sync) {
       const { success, status, updatedAt } = await fetchApp({
-        url: `api/notes/update/${_id}`,
-        method: "PUT",
-        body: getStorage(editKey),
-        showToast: false,
+        url: newNote ? "api/notes/add/bulk" : `api/notes/update/${_id}`,
+        method: newNote ? "POST" : "PUT",
+        body: newNote ? { notes: [localState] } : localState,
+        onSuccess: () => deleteLocalNote(_id),
       });
       if (!success) {
         if (status === 409) {
@@ -59,8 +62,6 @@ export default function useBeautify({ _id, title, description, tag, updatedAt })
         }
         return;
       }
-      toast.success("Note beautified successfully!");
-      removeStorage(editKey);
     }
     cancelBeautify();
   }

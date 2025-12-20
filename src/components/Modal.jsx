@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNoteContext } from "../contexts/NoteProvider";
 import { infinity, unitDurations } from "../constants";
-import { removeStorage } from "../modules/storage";
+import { deleteLocalNote, isNewNote } from "../lib/notes";
 
 export default function Modal({ router }) {
   const {
@@ -18,22 +18,30 @@ export default function Modal({ router }) {
 
   const closeModal = () => setModal({ active: false });
 
-  async function deleteUser() {
+  function deleteUser() {
     closeModal();
-    await fetchApp({ url: "api/auth/delete", method: "DELETE" });
-    resetStorage();
-    router.replace("/account/signup");
+    fetchApp({
+      url: "api/auth/delete",
+      method: "DELETE",
+      onSuccess: () => {
+        resetStorage();
+        router.replace("/account/signup");
+      },
+    });
   }
 
   async function deleteNote() {
     closeModal();
-    const { success } = await fetchApp({ url: `api/notes/delete/${props.note}`, method: "DELETE" });
-    if (success) removeStorage(`edit${props.note}`);
+    if (!isNewNote(props.note)) {
+      const { success } = await fetchApp({ url: `api/notes/delete/${props.note}`, method: "DELETE" });
+      if (!success) return;
+    }
+    deleteLocalNote(props.note);
   }
 
-  async function undoNote() {
+  function undoNote() {
     closeModal();
-    await fetchApp({ url: `api/notes/undo/${props.note}`, method: "PUT", body: { localUpdatedAt: props.localUpdatedAt } });
+    fetchApp({ url: `api/notes/undo/${props.note}`, method: "PUT", body: { localUpdatedAt: props.localUpdatedAt } });
   }
 
   async function shareNote(event) {
@@ -45,14 +53,14 @@ export default function Modal({ router }) {
             url: `api/notes/share/${props.note}`,
             method: "POST",
             body: { share: Date.now() + shareDuration * unitDurations[durationType] },
-            showToast: false,
+            showToast: { success: false, error: false },
           });
           if (!success) throw new Error();
           const data = { url: `${window.location.origin}/share/${props.note}` };
           navigator.clipboard.writeText(data.url);
           if (navigator.canShare?.(data) && navigator.userAgentData?.mobile) navigator.share(data);
         },
-        { pending: "Generating URL...", success: "URL copied to clipboard", error: "Something went wrong" },
+        { pending: "Generating URL...", success: "URL copied to clipboard", error: "Uh Oh, Something went wrong!" },
       )
       .catch(() => {})
       .finally(closeModal);

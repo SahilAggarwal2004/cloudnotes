@@ -3,10 +3,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-import { defaultColor, queryKey, tagColorsLabel } from "../constants";
+import { defaults, newNotesKey, queryKey, tagColorsKey, timeouts } from "../constants";
 import useStorage from "../hooks/useStorage";
 import { useStorageListener } from "../hooks/useStorageListener";
-import { clearStorage, removeStorage, setStorage } from "../modules/storage";
+import { deleteLocalNote, hasActiveDraft } from "../lib/notes";
+import { clearStorage, getStorage, removeStorage, setStorage } from "../lib/storage";
 
 // Below is the boiler plate(basic structure) for the function to be created inside which we will pass some value (can be state or a function to update the state or anything else):
 // const Function = (props) => {
@@ -17,6 +18,8 @@ import { clearStorage, removeStorage, setStorage } from "../modules/storage";
 //         </Context.Provider>
 //     )
 // }
+
+const { get: getTimeout, mutation: mutationTimeout } = timeouts;
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_HOST;
 
@@ -32,65 +35,88 @@ export default function NoteProvider({ children, router }) {
 
   // Defining things to be stored in value below:
   const [authToken, setAuthToken, clearAuthToken] = useStorage("token");
-  const [storedNotes, setStoredNotes, clearStoredNotes] = useStorage(queryKey, []);
+  const [cachedNotes, setCachedNotes, clearCachedNotes] = useStorage(queryKey, []);
   const [lastSyncedAt, setLastSyncedAt, clearLastSyncedAt] = useStorage("lastSyncedAt");
-  const [newNote, setNewNote] = useStorage("newNote", false, false);
+  const newNotes = useStorageListener(newNotesKey, []);
   const [modal, setModal] = useState({ active: false });
   const [progress, setProgress] = useState(0);
   const [sidebar, setSidebar] = useState(false);
 
-  const { data, isFetching } = useQuery({
+  const { data } = useQuery({
     queryKey,
     enabled: Boolean(authToken),
     queryFn: async () => {
-      const { notes = null } = await fetchApp({ url: `api/notes/fetch?lastSyncedAt=${lastSyncedAt}`, showToast: false });
+      const notesToAdd = newNotes
+        .filter((_id) => !hasActiveDraft(_id))
+        .flatMap((_id) => {
+          const localNote = getStorage(`local-${_id}`);
+          return localNote ? [{ _id, ...localNote }] : [];
+        });
+
+      if (notesToAdd.length) {
+        const { notes = null } = await fetchApp({
+          url: "api/notes/add/bulk",
+          method: "POST",
+          body: { notes: notesToAdd },
+          showToast: { success: false, error: true },
+          onSuccess: ({ added = [] }) => {
+            added.forEach(deleteLocalNote);
+            toast.success(`${added.length} note(s) synced successfully!`);
+          },
+        });
+        return notes;
+      }
+
+      const { notes = null } = await fetchApp({ url: `api/notes/fetch?lastSyncedAt=${lastSyncedAt}`, showToast: { success: false, error: true } });
       return notes;
     },
   });
 
-  const notes = data || storedNotes;
+  const notes = data || cachedNotes;
   const tags = useMemo(() => notes.reduce((arr, { tag }) => (arr.includes(tag) ? arr : arr.concat(tag)), []), [notes]);
-  const tagColors = useStorageListener(tagColorsLabel, {});
+  const tagColors = useStorageListener(tagColorsKey, {});
 
-  const getTagColor = (tag) => tagColors[tag] || defaultColor;
-  const setTagColor = (tag, color) => setStorage("tag-colors", { ...tagColors, [tag]: color });
+  const getTagColor = (tag) => tagColors[tag] || defaults.color;
+  const setTagColor = (tag, color) => setStorage(tagColorsKey, { ...tagColors, [tag]: color });
 
   useEffect(() => {
-    if (data) setStoredNotes(data);
+    if (data) setCachedNotes(data);
   }, [data]);
 
   function resetStorage() {
     client.clear();
     clearAuthToken();
-    clearStoredNotes();
+    clearCachedNotes();
     clearLastSyncedAt();
     removeStorage("name");
-    clearStorage("edit", true);
+    clearStorage("local", true);
     clearStorage("", false);
   }
 
-  async function fetchApp({ url, method = "GET", body, token = authToken, showToast = true }) {
+  async function fetchApp({ url, method = "GET", body, token = authToken, showToast = { success: true, error: true }, onSuccess, onError }) {
     // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
     setProgress(33);
     try {
-      var { status, data } = await axios({ url, method, data: body, headers: { token, dimensions } });
-      if (showToast) toast.success(data.msg);
+      var { status, data } = await axios({ url, method, data: body, headers: { token, dimensions }, timeout: method === "GET" ? getTimeout : mutationTimeout });
+      await onSuccess?.(data);
+      if (showToast.success) toast.success(data.msg);
       if (data.notes) {
         client.setQueryData(queryKey, data.notes);
-        setStoredNotes(data.notes);
+        setCachedNotes(data.notes);
       }
       if (data.syncedAt) setLastSyncedAt(data.syncedAt);
     } catch (error) {
       status = error.response?.status || 500;
       data = error.response?.data;
-      if (!data) data = { success: false, error: "Please check your internet connectivity" };
+      if (!data) data = { success: false, error: "Uh Oh, Something went wrong!" };
       else if (typeof data === "string") data = { success: false, error: data };
+      await onError?.(data.error);
       const authenticationError = data.error.toLowerCase().includes("session expired");
       if (authenticationError) {
         resetStorage();
         router.replace("/account/login");
       }
-      if (showToast || authenticationError) toast.error(data.error);
+      if (showToast.error || authenticationError) toast.error(data.error);
     }
     setProgress(100);
     return { status, ...data };
@@ -107,16 +133,14 @@ export default function NoteProvider({ children, router }) {
       value={{
         fetchApp,
         getTagColor,
-        isFetching,
         lastSyncedAt,
         modal,
-        newNote,
+        newNotes,
         notes,
         progress,
         resetStorage,
         setAuthToken,
         setModal,
-        setNewNote,
         setProgress,
         setSidebar,
         setTagColor,

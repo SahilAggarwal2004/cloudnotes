@@ -28,16 +28,24 @@ export const colors = [
   "#ff80ff",
 ];
 
-export const defaultColor = colors[0];
+export const defaults = { color: colors[0], title: "", description: "", tag: "General" };
 
 export const hideNavbar = ["/", "/_error"];
 
 export const infinity = Number.MAX_SAFE_INTEGER;
 
+export const maxNotes = 25;
+
+export const newNotesKey = "newNotes";
+
+export const newNotePrefix = "new-";
+
 export const onlyGuest = ["/account/signup", "/account/login", "/account/forgot"];
 
 export const queryKey = ["notes"];
 
-export const tagColorsLabel = "tag-colors";
+export const tagColorsKey = "tagColors";
 
-export const unitDurations = { minute: 60 * 1000, hour: 60 * 60 * 1000, day: 24 * 60 * 60 * 1000 };
+export const unitDurations = { second: 1000, minute: 60 * 1000, hour: 60 * 60 * 1000, day: 24 * 60 * 60 * 1000 };
+
+export const timeouts = { get: 5 * unitDurations.second, mutation: 8 * unitDurations.second };

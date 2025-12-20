@@ -21,8 +21,8 @@ export default function Navbar({ name, router }) {
     setProgress(100);
     setModal({ active: false });
     resetStorage();
-    toast.success("Logged out successfully!");
     router.replace("/account/login");
+    toast.success("Logged out successfully!");
   }
 
   return (

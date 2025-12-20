@@ -20,15 +20,16 @@ export default function Signup({ router }) {
 
   async function submit(event) {
     event.preventDefault();
-    const { success, error } = await fetchApp({
+    fetchApp({
       url: "api/auth/signup",
       method: "POST",
       body: { name: name.current.value, email: email.current.value, password: password.current.value },
-      showToast: false,
+      showToast: { success: false, error: true },
+      onSuccess: () => {
+        router.replace("/account/login");
+        toast.success("Account created successfully! Please confirm your account via email to proceed!", { autoClose: 5000, pauseOnFocusLoss: true });
+      },
     });
-    if (!success) return toast.error(error);
-    toast.success("Account created successfully! Please confirm your account via email to proceed!", { autoClose: 5000, pauseOnFocusLoss: true });
-    router.replace("/account/login");
   }
 
   return (
