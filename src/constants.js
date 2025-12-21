@@ -28,7 +28,7 @@ export const colors = [
   "#ff80ff",
 ];
 
-export const defaults = { color: colors[0], title: "", description: "", tag: "General" };
+export const defaults = { title: "", description: "", tag: "General", color: colors[0] };
 
 export const hideNavbar = ["/", "/_error"];
 

@@ -66,7 +66,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
   });
   const { Text, isInQueue, start, stop } = useSpeech({ text: showPlainText ? description : reactContent, stableText: true, highlightText: true });
 
-  const upsertNote = () => updateUpsertState({ flag: true, title, description, tag, updatedAt });
+  const activateUpsert = () => updateUpsertState({ flag: true, title, description, tag, updatedAt });
 
   function resetQueryParam(parameter) {
     const { [parameter]: removed, ...rest } = router.query;
@@ -82,7 +82,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
   }, []);
 
   useEffect(() => {
-    if (conflict) upsertNote();
+    if (conflict) activateUpsert();
   }, [conflict]);
 
   return (
@@ -171,7 +171,8 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     <button
                       type="button"
                       title="Discard local changes"
-                      className="scale-110 cursor-pointer"
+                      className="scale-110 cursor-pointer disabled:opacity-60"
+                      disabled={progress}
                       onClick={() => {
                         toast.success("Accepted cloud version");
                         deleteLocalNote(_id);
@@ -187,7 +188,8 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     <button
                       type="button"
                       title="Save locally"
-                      className="scale-110 cursor-pointer"
+                      className="scale-110 cursor-pointer disabled:opacity-60"
+                      disabled={progress}
                       onClick={(event) => {
                         if (!validateClosestForm(event)) return;
                         handleUpsert({ save: true, sync: false });
@@ -198,7 +200,8 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     <button
                       type="button"
                       title="Save to cloud"
-                      className="relative scale-110 cursor-pointer"
+                      className="relative scale-110 cursor-pointer disabled:opacity-60"
+                      disabled={progress}
                       onClick={(event) => {
                         if (!validateClosestForm(event)) return;
                         handleUpsert({ save: true, sync: true });
@@ -209,14 +212,18 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     </button>
                   </>
                 )}
-                <FaXmark
-                  className="scale-x-[1.2] scale-y-125 cursor-pointer"
+                <button
+                  type="button"
+                  className="scale-x-[1.2] scale-y-125 cursor-pointer disabled:opacity-60"
+                  disabled={progress}
                   onClick={() => {
                     if (newNote && !localNote) deleteLocalNote(_id);
                     cancelUpsert();
                     resetQueryParam("conflict");
                   }}
-                />
+                >
+                  <FaXmark />
+                </button>
               </div>
               <hr className={`my-2 w-full ${expanded ? "invisible" : ""}`} />
               <Textarea
@@ -252,7 +259,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                         type="button"
                         title="Save locally"
                         className="scale-110 disabled:opacity-60"
-                        disabled={isBeautifying}
+                        disabled={progress || isBeautifying}
                         onClick={() => handleAcceptBeautify({ save: true, sync: false })}
                       >
                         <FaRegSave />
@@ -260,17 +267,23 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                       <button
                         type="button"
                         title="Save to cloud"
-                        className="relative scale-110 cursor-pointer disabled:opacity-60"
-                        disabled={isBeautifying}
+                        className="relative scale-110 disabled:opacity-60"
+                        disabled={progress || isBeautifying}
                         onClick={() => handleAcceptBeautify({ save: true, sync: true })}
                       >
                         <FaRegSave />
                         <MdSync className="absolute -bottom-1 -right-1 rounded-full bg-black text-[0.7rem] text-white" />
                       </button>
-                      <button type="button" title="Retry beautify" className="scale-125 disabled:opacity-60" disabled={isBeautifying} onClick={() => startBeautify(true)}>
+                      <button
+                        type="button"
+                        title="Retry beautify"
+                        className="scale-125 disabled:opacity-60"
+                        disabled={progress || isBeautifying}
+                        onClick={() => startBeautify(true)}
+                      >
                         <MdRefresh />
                       </button>
-                      <button type="button" title="Cancel beautify" className="scale-125" onClick={cancelBeautify}>
+                      <button type="button" title="Cancel beautify" className="scale-125 disabled:opacity-60" disabled={progress || isBeautifying} onClick={cancelBeautify}>
                         <FaXmark />
                       </button>
                     </div>
@@ -301,7 +314,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                       </button>
                       {!shared && (
                         <>
-                          <button type="button" title="Edit note" className="scale-125 disabled:opacity-60" disabled={progress} onClick={upsertNote}>
+                          <button type="button" title="Edit note" className="scale-125 disabled:opacity-60" disabled={progress} onClick={activateUpsert}>
                             <FaRegEdit />
                           </button>
                           <Activity mode={localNote ? "visible" : "hidden"}>
@@ -369,7 +382,8 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                                 !newNote && (
                                   <button
                                     type="button"
-                                    className="flex items-center space-x-2"
+                                    className="flex items-center space-x-2 disabled:opacity-60"
+                                    disabled={progress}
                                     onClick={() => {
                                       toast.success("Local changes discarded");
                                       deleteLocalNote(_id);

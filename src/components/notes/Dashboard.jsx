@@ -4,14 +4,12 @@ import { Activity, useState } from "react";
 import ReorderList, { ReorderIcon } from "react-reorder-list";
 import { FaPlus as FaPlusBold } from "react-icons/fa";
 import NoteItem from "./NoteItem";
-import { defaults, maxNotes, newNotePrefix, newNotesKey } from "../../constants";
+import { maxNotes, newNotePrefix, newNotesKey } from "../../constants";
 import { useNoteContext } from "../../contexts/NoteProvider";
 import useURLState from "../../hooks/useURLState";
 import Loading from "../Loading";
 import { setStorage } from "../../lib/storage";
 import { toast } from "react-toastify";
-
-const { color: defaultColor, title: defaultTitle, description: defaultDescription, tag: defaultTag } = defaults;
 
 export default function Dashboard() {
   const { fetchApp, newNotes, notes, progress, tags } = useNoteContext();
@@ -90,11 +88,7 @@ export default function Dashboard() {
           onClick={() => {
             if (allNotesLength >= maxNotes) return toast.error("You have reached the maximum number of notes!");
             const newNoteId = `${newNotePrefix}${Date.now()}`;
-            setStorage(
-              `upsert-${newNoteId}`,
-              { flag: true, title: defaultTitle, description: defaultDescription, tag: defaultTag, tagColor: defaultColor, updatedAt: new Date().toISOString() },
-              false,
-            );
+            setStorage(`upsert-${newNoteId}`, { flag: true, updatedAt: new Date().toISOString() }, false);
             setStorage(newNotesKey, newNotes.concat(newNoteId));
             window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
           }}

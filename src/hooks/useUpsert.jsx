@@ -6,13 +6,14 @@ import { defaults, queryKey } from "../constants";
 import { deleteLocalNote, isNewNote } from "../lib/notes";
 import { getStorage, setStorage } from "../lib/storage";
 
-const { color: defaultColor, description: defaultDescription, tag: defaultTag } = defaults;
+const { description: defaultDescription, tag: defaultTag, title: defaultTitle, color: defaultColor } = defaults;
 
 export default function useUpsert({ _id, title, description, tag }) {
   const client = useQueryClient();
   const router = useRouter();
   const { fetchApp, getTagColor, lastSyncedAt, setProgress, setTagColor } = useNoteContext();
-  const [upsertState, setUpsertState, clearUpsertState] = useStorage(`upsert-${_id}`, { flag: false, description: defaultDescription, tagColor: defaultColor }, false);
+  const [rawUpsertState, setUpsertState, clearUpsertState] = useStorage(`upsert-${_id}`, { flag: false }, false);
+  const upsertState = { title: defaultTitle, description: defaultDescription, tag: defaultTag, tagColor: defaultColor, ...rawUpsertState };
 
   const updateUpsertState = (obj) =>
     setUpsertState((prev) => {

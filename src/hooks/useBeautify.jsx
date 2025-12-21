@@ -1,7 +1,7 @@
 import { useCompletion } from "@ai-sdk/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { charLimit, queryKey } from "../constants";
 import { useNoteContext } from "../contexts/NoteProvider";
@@ -14,39 +14,40 @@ const {
   },
 } = charLimit;
 
-export default function useBeautify({ _id, title, description, tag }) {
+export default function useBeautify({ _id, title, description, tag, updatedAt }) {
   const client = useQueryClient();
   const router = useRouter();
   const { fetchApp } = useNoteContext();
   const [beautifyActive, setBeautifyActive] = useState(false);
+  const beautifyContextRef = useRef({ retry: false });
 
-  const handleError = () => toast.error("Failed to beautify note. Please try again later.");
+  const handleError = () => {
+    toast.error("Failed to beautify note. Please try again later.");
+    if (!beautifyContextRef.current.retry) cancelBeautify();
+  };
 
   const { completion, complete, isLoading, stop, error } = useCompletion({
     api: "/api/completion",
     onError: handleError,
   });
+  const beautifiedText = completion.slice(0, maxDescription);
 
-  const cancelBeautify = () => {
+  function cancelBeautify() {
+    beautifyContextRef.current.retry = false;
     stop();
     setBeautifyActive(false);
-  };
+  }
 
-  const startBeautify = async (retry = false) => {
+  async function startBeautify(retry = false) {
+    beautifyContextRef.current.retry = retry;
     if (!retry) setBeautifyActive(true);
-    try {
-      await complete(description);
-    } catch (err) {
-      handleError();
-      if (!retry) cancelBeautify();
-    }
-  };
+    void complete(description);
+  }
 
   async function handleAcceptBeautify({ save, sync }) {
     const newNote = isNewNote(_id);
     const localKey = `local-${_id}`;
     const localState = getStorage(localKey);
-    const beautifiedText = completion.slice(0, maxDescription);
     if (save) setStorage(localKey, { _id, title, description: beautifiedText, tag, updatedAt });
     if (sync) {
       const { success, status, updatedAt } = await fetchApp({
@@ -68,7 +69,7 @@ export default function useBeautify({ _id, title, description, tag }) {
 
   return {
     beautifyActive,
-    beautifiedText: completion.slice(0, maxDescription),
+    beautifiedText,
     isBeautifying: isLoading,
     hasError: Boolean(error),
     startBeautify,
