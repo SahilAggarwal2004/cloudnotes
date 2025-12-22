@@ -16,67 +16,65 @@ export default function About() {
       <Head>
         <title>About | CloudNotes</title>
       </Head>
+
       <div className="absolute top-0 flex w-full flex-col items-center text-center">
         <div className="flex h-screen w-11/12 flex-col items-center justify-center sm:w-2/3" data-aos="fade-up">
           <Logo />
           <h2 className="text-2xl font-semibold">CloudNotes - Notes on Cloud</h2>
           <p className="pt-4">
-            CloudNotes is an online platform to save all your notes at one place on the cloud and access them anywhere anytime. It is a platform where your notes are totally
-            encrypted and secured so that no one except you can access your notes.
+            CloudNotes is a simple and reliable platform for taking notes and accessing them across devices. It is designed with an offline first approach, allowing you to create,
+            edit, and view notes even without an internet connection. Your notes are automatically synced when you come back online.
           </p>
         </div>
+
         <hr className="w-11/12 border-black" />
+
         <div className="flex min-h-screen w-11/12 flex-col items-center justify-center py-5 sm:w-2/3">
           <h2 className="text-2xl font-semibold" data-aos="fade-up">
             Why CloudNotes?
           </h2>
+
           <ul className="mt-6 flex flex-col space-y-2 rounded-sm border border-black p-3 text-left sm:p-5" data-aos="fade-up">
             <li data-aos="fade-up" className="flex items-center">
+              <FaUniversalAccess className="mr-2 w-5 scale-110 text-red-500" />
               <span>
-                <FaUniversalAccess className="mr-2 w-5 scale-110 text-red-500" />
-              </span>
-              <span>
-                <span className="mr-1 font-semibold">Access notes from anywhere anytime - </span>CloudNotes is available 24/7 all over the World!
-              </span>
-            </li>
-            <li data-aos="fade-up" className="flex items-center">
-              <span>
-                <FaKey className="mr-2 w-5 scale-110 text-green-600" />
-              </span>
-              <span>
-                <span className="mr-1 font-semibold">100% security - </span>Your notes are end-to-end encrypted!
+                <span className="mr-1 font-semibold">Access anywhere anytime -</span>
+                Your notes are available across devices.
               </span>
             </li>
             <li data-aos="fade-up" className="flex items-center">
+              <FaKey className="mr-2 w-5 scale-110 text-green-600" />
               <span>
-                <FaShippingFast className="mr-2 w-5 scale-110 text-red-500" />
-              </span>
-              <span>
-                <span className="mr-1 font-semibold">Blazingly fast website - </span>CloudNotes has over 95 score on PageSpeed Insights!
-              </span>
-            </li>
-            <li data-aos="fade-up" className="flex items-center">
-              <span>
-                <FaStar className="mr-2 w-5 scale-110 text-green-600" />
-              </span>
-              <span>
-                <span className="mr-1 font-semibold">Platform friendly - </span>CloudNotes is independent of the OS of device!
+                <span className="mr-1 font-semibold">Privacy focused -</span>
+                Built with modern security best practices.
               </span>
             </li>
             <li data-aos="fade-up" className="flex items-center">
+              <FaShippingFast className="mr-2 w-5 scale-110 text-red-500" />
               <span>
-                <IoIosApps className="mr-2 w-5 scale-125 text-red-500" />
-              </span>
-              <span>
-                <span className="mr-1 font-semibold">Progressive Web App - </span>Works even when you are offline!
+                <span className="mr-1 font-semibold">Fast and responsive -</span>
+                Quick and smooth experience.
               </span>
             </li>
-            <li data-aos="fade-up" data-aos-offset={100} className="flex items-center">
+            <li data-aos="fade-up" className="flex items-center">
+              <FaStar className="mr-2 w-5 scale-110 text-green-600" />
               <span>
-                <GiTwoCoins className="mr-2 w-5 scale-125 text-green-600" />
+                <span className="mr-1 font-semibold">Platform independent -</span>
+                Works across devices and OS.
               </span>
+            </li>
+            <li data-aos="fade-up" className="flex items-center">
+              <IoIosApps className="mr-2 w-5 scale-125 text-red-500" />
               <span>
-                <span className="mr-1 font-semibold">All time free - </span>We focus on user satisfaction instead of money!
+                <span className="mr-1 font-semibold">Progressive Web App -</span>
+                Use it even when offline.
+              </span>
+            </li>
+            <li data-aos="fade-up" className="flex items-center">
+              <GiTwoCoins className="mr-2 w-5 scale-125 text-green-600" />
+              <span>
+                <span className="mr-1 font-semibold">Lifetime free tier -</span>
+                Core features are always free.
               </span>
             </li>
           </ul>

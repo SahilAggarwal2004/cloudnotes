@@ -417,7 +417,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                 <Text className={`markdown max-h-[calc(100dvh-14rem)] px-2 text-gray-600 ${expanded ? "" : "min-w-full text-left text-sm"}`} />
               </div>
               <p className={`w-full text-center text-gray-600 ${expanded ? "mt-auto scale-95 text-sm" : "absolute bottom-1.5 text-2xs"}`}>
-                Last Updated: {new Date(updatedAt).toLocaleString()}
+                Last Updated: {new Date(localUpdatedAt).toLocaleString()}
               </p>
             </>
           )}
@@ -428,7 +428,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
             {title}
           </h3>
           <div className="markdown px-2 pb-1 text-gray-600">{reactContent}</div>
-          <p className="w-full scale-95 pb-3 text-center text-sm text-gray-600">Last Updated: {new Date(updatedAt).toLocaleString()}</p>
+          <p className="w-full scale-95 pb-3 text-center text-sm text-gray-600">Last Updated: {new Date(localUpdatedAt).toLocaleString()}</p>
         </div>
       </div>
     </Activity>

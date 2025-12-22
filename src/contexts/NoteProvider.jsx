@@ -94,22 +94,27 @@ export default function NoteProvider({ children, router }) {
   }
 
   async function fetchApp({ url, method = "GET", body, token = authToken, showToast = { success: true, error: true }, onSuccess, onError }) {
-    // Previously we saw that how we can fetch some data using fetch(url) but fetch method has a second optional parameter which is an object which takes some other values for fetching the data.
     setProgress(33);
+    let status, data;
+
     try {
-      var { status, data } = await axios({ url, method, data: body, headers: { token, dimensions }, timeout: method === "GET" ? getTimeout : mutationTimeout });
+      const response = await axios({ url, method, data: body, headers: { token, dimensions }, timeout: method === "GET" ? getTimeout : mutationTimeout });
+      status = response.status;
+      data = response.data;
       await onSuccess?.(data);
-      if (showToast.success) toast.success(data.msg);
+      if (showToast.success && data.msg) toast.success(data.msg);
       if (data.notes) {
         client.setQueryData(queryKey, data.notes);
         setCachedNotes(data.notes);
       }
       if (data.syncedAt) setLastSyncedAt(data.syncedAt);
     } catch (error) {
-      status = error.response?.status || 500;
-      data = error.response?.data;
-      if (!data) data = { success: false, error: "Uh Oh, Something went wrong!" };
-      else if (typeof data === "string") data = { success: false, error: data };
+      const isNetworkError = !error.response;
+      status = error.response?.status ?? 500;
+      data = error.response?.data || {
+        success: false,
+        error: isNetworkError ? "Network error. Please check your internet connection." : "Something went wrong. Please try again.",
+      };
       await onError?.(data.error);
       const authenticationError = data.error.toLowerCase().includes("session expired");
       if (authenticationError) {
@@ -117,8 +122,10 @@ export default function NoteProvider({ children, router }) {
         router.replace("/account/login");
       }
       if (showToast.error || authenticationError) toast.error(data.error);
+    } finally {
+      setProgress(100);
     }
-    setProgress(100);
+
     return { status, ...data };
   }
 
