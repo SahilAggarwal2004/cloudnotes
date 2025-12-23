@@ -79,20 +79,6 @@ export default function NoteProvider({ children, router }) {
   const getTagColor = (tag) => tagColors[tag] || defaults.color;
   const setTagColor = (tag, color) => setStorage(tagColorsKey, { ...tagColors, [tag]: color });
 
-  useEffect(() => {
-    if (data) setCachedNotes(data);
-  }, [data]);
-
-  function resetStorage() {
-    client.clear();
-    clearAuthToken();
-    clearCachedNotes();
-    clearLastSyncedAt();
-    removeStorage("name");
-    clearStorage("local", true);
-    clearStorage("", false);
-  }
-
   async function fetchApp({ url, method = "GET", body, token = authToken, showToast = { success: true, error: true }, onSuccess, onError }) {
     setProgress(33);
     let status, data;
@@ -129,6 +115,25 @@ export default function NoteProvider({ children, router }) {
     return { status, ...data };
   }
 
+  function resetQueryParam(parameter) {
+    const { [parameter]: removed, ...rest } = router.query;
+    router.replace({ pathname: router.pathname, query: rest }, undefined, { shallow: true });
+  }
+
+  function resetStorage() {
+    client.clear();
+    clearAuthToken();
+    clearCachedNotes();
+    clearLastSyncedAt();
+    removeStorage("name");
+    clearStorage("local", true);
+    clearStorage("", false);
+  }
+
+  useEffect(() => {
+    if (data) setCachedNotes(data);
+  }, [data]);
+
   useEffect(() => {
     if (router.pathname !== "/note/[noteId]") setSidebar(false);
   }, [router.pathname]);
@@ -145,6 +150,7 @@ export default function NoteProvider({ children, router }) {
         newNotes,
         notes,
         progress,
+        resetQueryParam,
         resetStorage,
         setAuthToken,
         setModal,

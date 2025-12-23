@@ -5,6 +5,7 @@ const matcher = ({ request }) => request.destination === "document";
 const serwist = new Serwist({
   skipWaiting: true,
   clientsClaim: true,
+  importScripts: ["/share-sw.js"],
   precacheEntries: self.__SW_MANIFEST,
   precacheOptions: { cleanupOutdatedCaches: true, ignoreURLParametersMatching: [/.*/] },
   fallbacks: { entries: [{ url: "/_offline", matcher }] },

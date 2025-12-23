@@ -41,7 +41,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
   const { _id, title, description, tag, updatedAt, localUpdatedAt } = note;
   const { search, selTag } = filter;
   const router = useRouter();
-  const { getTagColor, setModal, progress } = useNoteContext();
+  const { getTagColor, setModal, progress, resetQueryParam } = useNoteContext();
   const tagColor = getTagColor(tag);
   const { upsertState, updateUpsertState, cancelUpsert, handleUpsert } = useUpsert(propNote);
   const { beautifyActive, beautifiedText, isBeautifying, startBeautify, cancelBeautify, handleAcceptBeautify } = useBeautify(note);
@@ -67,11 +67,6 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
   const { Text, isInQueue, start, stop } = useSpeech({ text: showPlainText ? description : reactContent, stableText: true, highlightText: true });
 
   const activateUpsert = () => updateUpsertState({ flag: true, title, description, tag, updatedAt });
-
-  function resetQueryParam(parameter) {
-    const { [parameter]: removed, ...rest } = router.query;
-    router.replace({ pathname: router.pathname, query: rest }, undefined, { shallow: true });
-  }
 
   useEffect(() => {
     function handleClick(e) {

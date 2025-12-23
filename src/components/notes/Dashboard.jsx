@@ -1,27 +1,70 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from "next/head";
-import { Activity, useState } from "react";
+import { useRouter } from "next/router";
+import { Activity, useEffect, useState } from "react";
 import ReorderList, { ReorderIcon } from "react-reorder-list";
+import { toast } from "react-toastify";
 import { FaPlus as FaPlusBold } from "react-icons/fa";
 import NoteItem from "./NoteItem";
-import { maxNotes, newNotePrefix, newNotesKey } from "../../constants";
+import { charLimit, maxNotes, newNotePrefix, newNotesKey } from "../../constants";
 import { useNoteContext } from "../../contexts/NoteProvider";
 import useURLState from "../../hooks/useURLState";
 import Loading from "../Loading";
 import { setStorage } from "../../lib/storage";
-import { toast } from "react-toastify";
+
+const {
+  note: {
+    title: { max: maxTitle },
+    description: { max: maxDescription },
+  },
+} = charLimit;
 
 export default function Dashboard() {
-  const { fetchApp, newNotes, notes, progress, tags } = useNoteContext();
+  const router = useRouter();
+  const { share } = router.query;
+  const { fetchApp, newNotes, notes, progress, resetQueryParam, tags } = useNoteContext();
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
   const allNotesLength = notes.length + newNotes.length;
   const disableReordering = progress || Boolean(selTag || search);
 
+  function createNewNote(newNote) {
+    if (allNotesLength >= maxNotes) return toast.error("You have reached the maximum number of notes!");
+    const newNoteId = `${newNotePrefix}${Date.now()}`;
+    setStorage(`upsert-${newNoteId}`, { flag: true, updatedAt: new Date().toISOString(), ...newNote }, false);
+    setStorage(newNotesKey, newNotes.concat(newNoteId));
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  }
+
   async function handlePositionChange({ newItems, revert }) {
     const order = newItems.slice(0, -1).map(({ key }) => key);
     fetchApp({ url: "api/notes/order", method: "PUT", body: { order }, onError: revert });
   }
+
+  useEffect(() => {
+    if (!share) return;
+
+    const handleMessage = ({ data: { title, text, url } }) => {
+      let description = "";
+      if (title) description += `# ${title}\n\n`;
+      if (text) description += `${text}\n\n`;
+      if (url) description += `${url}`;
+      createNewNote({ title: title.slice(0, maxTitle), description: description.slice(0, maxDescription) });
+      resetQueryParam("share");
+    };
+    const sendReady = () => navigator.serviceWorker.controller?.postMessage("ready");
+
+    navigator.serviceWorker.addEventListener("message", handleMessage);
+    if (navigator.serviceWorker.controller) sendReady();
+    else {
+      const onControllerChange = () => {
+        sendReady();
+        navigator.serviceWorker.removeEventListener("controllerchange", onControllerChange);
+      };
+      navigator.serviceWorker.addEventListener("controllerchange", onControllerChange);
+    }
+    return () => navigator.serviceWorker.removeEventListener("message", handleMessage);
+  }, []);
 
   return (
     <>
@@ -85,13 +128,7 @@ export default function Dashboard() {
         <button
           className="fixed bottom-[2.625rem] right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]"
           disabled={progress}
-          onClick={() => {
-            if (allNotesLength >= maxNotes) return toast.error("You have reached the maximum number of notes!");
-            const newNoteId = `${newNotePrefix}${Date.now()}`;
-            setStorage(`upsert-${newNoteId}`, { flag: true, updatedAt: new Date().toISOString() }, false);
-            setStorage(newNotesKey, newNotes.concat(newNoteId));
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-          }}
+          onClick={() => createNewNote()}
         >
           <FaPlusBold className="scale-110" />
         </button>
