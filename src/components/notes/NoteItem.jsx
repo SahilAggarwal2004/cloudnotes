@@ -120,7 +120,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     type="text"
                     list="tagList"
                     value={upsertState.tag}
-                    className="bg-gray-200 py-px text-center text-xs text-black placeholder:text-gray-600 focus:outline-0"
+                    className="bg-gray-200 py-px text-center text-xs text-black placeholder:text-gray-600 focus:outline-none"
                     placeholder="Add tag"
                     maxLength={maxTag}
                     autoComplete="off"
@@ -130,7 +130,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     type="color"
                     value={upsertState.tagColor}
                     list={tagColorsKey}
-                    className="bg-gray-200 focus:outline-0"
+                    className="bg-gray-200 focus:outline-none"
                     onChange={(e) => updateUpsertState({ tagColor: e.target.value })}
                   />
                 </div>
@@ -139,7 +139,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                 <input
                   type="text"
                   value={upsertState.title}
-                  className={`w-full px-5 text-center placeholder:text-gray-600 focus:outline-0 ${expanded ? "text-2xl" : "text-xl"}`}
+                  className={`w-full px-5 text-center placeholder:text-gray-600 focus:outline-none ${expanded ? "text-2xl" : "text-xl"}`}
                   placeholder="Add title"
                   required
                   maxLength={maxTitle}
@@ -225,7 +225,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                 placeholder="Add description"
                 minRows={5}
                 maxLength={maxDescription}
-                className={`mx-2 mb-1 max-h-[calc(100dvh-14rem)] w-full px-2 text-gray-600 focus:outline-0 ${expanded ? "" : "text-sm"}`}
+                className={`mx-2 mb-1 max-h-[calc(100dvh-14rem)] w-full px-2 text-gray-600 focus:outline-none ${expanded ? "" : "text-sm"}`}
                 value={upsertState.description}
                 onChange={(e) => updateUpsertState({ description: e.target.value })}
               />
