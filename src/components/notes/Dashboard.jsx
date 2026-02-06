@@ -26,7 +26,7 @@ export default function Dashboard() {
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
   const allNotesLength = notes.length + newNotes.length;
-  const disableReordering = progress || Boolean(selTag || search);
+  const isInteractionDisabled = progress || Boolean(selTag || search);
 
   function createNewNote(newNote) {
     if (allNotesLength >= maxNotes) return toast.error("You have reached the maximum number of notes!");
@@ -37,7 +37,7 @@ export default function Dashboard() {
   }
 
   async function handlePositionChange({ newItems, revert }) {
-    const order = newItems.slice(0, -1).map(({ key }) => key);
+    const order = newItems.slice(0, notes.length).map(({ key }) => key);
     fetchApp({ url: "api/notes/order", method: "PUT", body: { order }, onError: revert });
   }
 
@@ -101,7 +101,7 @@ export default function Dashboard() {
           {allNotesLength ? (
             <ReorderList
               useOnlyIconToDrag
-              watchChildrenUpdates
+              watchChildrenUpdates={!progress}
               preserveOrder={!progress}
               props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 px-2 py-5 xs:px-5 sm:grid-cols-2 lg:grid-cols-3" }}
               onPositionChange={handlePositionChange}
@@ -109,7 +109,7 @@ export default function Dashboard() {
               {notes.map((note) => {
                 return (
                   <NoteItem key={note._id} propNote={note} filter={{ search, selTag }}>
-                    <Activity mode={disableReordering || progress ? "hidden" : "visible"}>
+                    <Activity mode={isInteractionDisabled ? "hidden" : "visible"}>
                       <ReorderIcon />
                     </Activity>
                   </NoteItem>
@@ -127,7 +127,7 @@ export default function Dashboard() {
         </div>
         <button
           className="fixed bottom-[2.625rem] right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]"
-          disabled={progress}
+          disabled={isInteractionDisabled}
           onClick={() => createNewNote()}
         >
           <FaPlusBold className="scale-110" />
