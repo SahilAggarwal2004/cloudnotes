@@ -26,7 +26,9 @@ export default function Dashboard() {
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
   const allNotesLength = notes.length + newNotes.length;
-  const isInteractionDisabled = progress || Boolean(selTag || search);
+  const isFilterActive = Boolean(selTag || search);
+  const isInteractionDisabled = progress || isFilterActive;
+  const isSyncing = progress && progress !== 100;
 
   function createNewNote(newNote) {
     if (allNotesLength >= maxNotes) return toast.error("You have reached the maximum number of notes!");
@@ -100,8 +102,9 @@ export default function Dashboard() {
           </div>
           {allNotesLength ? (
             <ReorderList
+              disabled={isFilterActive}
               useOnlyIconToDrag
-              watchChildrenUpdates={!progress}
+              watchChildrenUpdates={!isSyncing}
               preserveOrder={!progress}
               props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 px-2 py-5 xs:px-5 sm:grid-cols-2 lg:grid-cols-3" }}
               onPositionChange={handlePositionChange}
