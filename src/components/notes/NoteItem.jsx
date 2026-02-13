@@ -93,7 +93,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1">
                       <h3 className="mb-1 text-sm font-semibold text-yellow-800">⚠️ Conflict Detected</h3>
-                      <p className="text-xs text-yellow-700">This note was modified both locally and in the cloud. You're editing the local version.</p>
+                      <p className="text-xs text-yellow-700">This note was modified both locally and in the cloud. You&apos;re editing the local version.</p>
                     </div>
                     <button type="button" className="whitespace-nowrap text-xs text-yellow-700 underline" onClick={() => setShowCloudVersion(!showCloudVersion)}>
                       {showCloudVersion ? "Hide" : "View"} Cloud Version

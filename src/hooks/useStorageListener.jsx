@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { getStorage, subscribeToStorage } from "../lib/storage";
 
-export function useStorageListener(key, initialValue, local = true) {
+export function useStorageListener(key, initialState, local = true) {
   const [value, setValue] = useState(() => {
-    if (typeof initialValue === "function") initialValue = initialValue();
+    const initialValue = typeof initialState === "function" ? initialState() : initialState;
     if (typeof window === "undefined") return initialValue;
     return getStorage(key, initialValue, local);
   });

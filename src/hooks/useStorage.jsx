@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { getStorage, setStorage } from "../lib/storage";
 
-export default function useStorage(key, initialValue, local = true) {
+export default function useStorage(key, initialState, local = true) {
   const [storedValue, setStoredValue] = useState(() => {
-    if (typeof initialValue === "function") initialValue = initialValue();
+    const initialValue = typeof initialState === "function" ? initialState() : initialState;
     if (typeof window === "undefined") return initialValue;
     return getStorage(key, initialValue, local);
   });

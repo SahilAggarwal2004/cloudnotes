@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNoteContext } from "../contexts/NoteProvider";
