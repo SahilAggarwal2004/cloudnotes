@@ -28,7 +28,6 @@ export default function Dashboard() {
   const allNotesLength = notes.length + newNotes.length;
   const isFilterActive = Boolean(selTag || search);
   const isInteractionDisabled = progress || isFilterActive;
-  const isSyncing = progress && progress !== 100;
 
   function createNewNote(newNote) {
     if (allNotesLength >= maxNotes) return toast.error("You have reached the maximum number of notes!");
@@ -36,11 +35,6 @@ export default function Dashboard() {
     setStorage(`upsert-${newNoteId}`, { flag: true, updatedAt: new Date().toISOString(), ...newNote }, false);
     setStorage(newNotesKey, newNotes.concat(newNoteId));
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-  }
-
-  async function handlePositionChange({ newItems, revert }) {
-    const order = newItems.slice(0, notes.length).map(({ key }) => key);
-    fetchApp({ url: "api/notes/order", method: "PUT", body: { order }, onError: revert });
   }
 
   useEffect(() => {
@@ -104,10 +98,8 @@ export default function Dashboard() {
             <ReorderList
               disabled={isFilterActive}
               useOnlyIconToDrag
-              watchChildrenUpdates={!isSyncing}
-              preserveOrder={!progress}
               props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 px-2 py-5 xs:px-5 sm:grid-cols-2 lg:grid-cols-3" }}
-              onPositionChange={handlePositionChange}
+              onPositionChange={({ newOrder, revert }) => fetchApp({ url: "api/notes/order", method: "PUT", body: { order: newOrder }, onError: revert })}
             >
               {notes.map((note) => {
                 return (

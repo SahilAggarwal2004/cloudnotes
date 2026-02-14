@@ -7,7 +7,7 @@ export default function useStorage(key, initialState, local = true) {
     if (typeof window === "undefined") return initialValue;
     return getStorage(key, initialValue, local);
   });
-  const clearValue = () => setValue(initialValue);
+  const clearValue = () => setValue(initialState);
 
   function setValue(value) {
     setStoredValue((old) => {
