@@ -8,11 +8,11 @@
     "start": "next start",
     "lint": "eslint ."
   },
-  "packageManager": "pnpm@10.30.1",
+  "packageManager": "pnpm@10.30.3",
   "dependencies": {
-    "@ai-sdk/react": "^3.0.99",
+    "@ai-sdk/react": "^3.0.103",
     "@tanstack/react-query": "^5.90.21",
-    "ai": "^6.0.97",
+    "ai": "^6.0.101",
     "aos": "^2.3.4",
     "axios": "^1.13.5",
     "dedent": "^1.7.1",
@@ -36,7 +36,7 @@
     "@serwist/next": "^9.5.6",
     "@tailwindcss/typography": "^0.5.19",
     "@types/react": "^19.2.14",
-    "autoprefixer": "^10.4.24",
+    "autoprefixer": "^10.4.27",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.6",
