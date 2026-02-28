@@ -6,12 +6,12 @@ import { useNoteContext } from "../../contexts/NoteProvider";
 
 export default function Id({ router }) {
   const { noteId } = router.query;
-  const { fetchApp, progress } = useNoteContext();
+  const { fetchApi, progress } = useNoteContext();
 
   const { data } = useQuery({
     queryKey: queryKey.concat(noteId),
     queryFn: async () => {
-      const { note = null } = await fetchApp({ url: `api/notes/fetch/${noteId}`, showToast: { success: false, error: true } });
+      const { note = null } = await fetchApi({ url: `api/notes/fetch/${noteId}`, showToast: { success: false, error: true } });
       return note;
     },
   });

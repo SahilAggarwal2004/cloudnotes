@@ -1,3 +1,5 @@
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export const charLimit = {
   name: { min: 3, max: 20 },
   note: { title: { max: 20 }, description: { max: 5000, maxAI: 4000 }, tag: { max: 12 } },
@@ -48,4 +50,4 @@ export const tagColorsKey = "tagColors";
 
 export const unitDurations = { second: 1000, minute: 60 * 1000, hour: 60 * 60 * 1000, day: 24 * 60 * 60 * 1000 };
 
-export const timeouts = { get: 5 * unitDurations.second, mutation: 8 * unitDurations.second };
+export const timeouts = { get: 5 * unitDurations.second, mutation: 10 * unitDurations.second };

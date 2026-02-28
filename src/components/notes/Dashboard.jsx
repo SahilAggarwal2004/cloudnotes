@@ -22,7 +22,7 @@ const {
 export default function Dashboard() {
   const router = useRouter();
   const { share } = router.query;
-  const { fetchApp, newNotes, notes, progress, resetQueryParam, tags } = useNoteContext();
+  const { fetchApi, newNotes, notes, progress, resetQueryParam, tags } = useNoteContext();
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
   const allNotesLength = notes.length + newNotes.length;
@@ -99,7 +99,7 @@ export default function Dashboard() {
               disabled={isFilterActive}
               useOnlyIconToDrag
               props={{ className: "grid grid-cols-1 gap-x-5 gap-y-7 px-2 py-5 xs:px-5 sm:grid-cols-2 lg:grid-cols-3" }}
-              onPositionChange={({ newOrder, revert }) => fetchApp({ url: "api/notes/order", method: "PUT", body: { order: newOrder }, onError: revert })}
+              onPositionChange={({ newOrder, revert }) => fetchApi({ url: "api/notes/order", method: "PUT", body: { order: newOrder }, onError: revert })}
             >
               {notes.map((note) => {
                 return (

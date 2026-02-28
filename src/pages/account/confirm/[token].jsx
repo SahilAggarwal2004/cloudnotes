@@ -3,7 +3,7 @@ import Head from "next/head";
 
 export default function Confirm({ router }) {
   const { token } = router.query;
-  const { fetchApp } = useNoteContext();
+  const { fetchApi } = useNoteContext();
 
   return (
     <>
@@ -16,7 +16,7 @@ export default function Confirm({ router }) {
           <button
             className="btn text-base disabled:opacity-60"
             disabled={!token}
-            onClick={() => fetchApp({ url: "api/auth/confirm", method: "PUT", token, onSuccess: () => router.replace("/account/login") })}
+            onClick={() => fetchApi({ url: "api/auth/confirm", method: "PUT", token, onSuccess: () => router.replace("/account/login") })}
           >
             Click Here!
           </button>

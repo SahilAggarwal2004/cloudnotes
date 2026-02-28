@@ -17,7 +17,7 @@ const {
 export default function useBeautify({ _id, title, description, tag, updatedAt }) {
   const client = useQueryClient();
   const router = useRouter();
-  const { fetchApp } = useNoteContext();
+  const { fetchApi } = useNoteContext();
   const [beautifyActive, setBeautifyActive] = useState(false);
   const beautifyContextRef = useRef({ retry: false });
 
@@ -50,7 +50,7 @@ export default function useBeautify({ _id, title, description, tag, updatedAt })
     const localState = getStorage(localKey);
     if (save) setStorage(localKey, { _id, title, description: beautifiedText, tag, updatedAt });
     if (sync) {
-      const { success, status, updatedAt } = await fetchApp({
+      const { success, status, updatedAt } = await fetchApi({
         url: newNote ? "api/notes/add/bulk" : `api/notes/update/${_id}`,
         method: newNote ? "POST" : "PUT",
         body: newNote ? { notes: [localState] } : localState,

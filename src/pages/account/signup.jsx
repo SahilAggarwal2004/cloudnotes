@@ -12,14 +12,14 @@ const {
 } = charLimit;
 
 export default function Signup({ router }) {
-  const { fetchApp } = useNoteContext();
+  const { fetchApi } = useNoteContext();
   const name = useRef();
   const email = useRef();
   const password = useRef();
 
   async function submit(event) {
     event.preventDefault();
-    fetchApp({
+    fetchApi({
       url: "api/auth/signup",
       method: "POST",
       body: { name: name.current.value, email: email.current.value, password: password.current.value },

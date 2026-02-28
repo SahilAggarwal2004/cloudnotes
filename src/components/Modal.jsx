@@ -6,7 +6,7 @@ import { deleteLocalNote, isNewNote } from "../lib/notes";
 
 export default function Modal({ router }) {
   const {
-    fetchApp,
+    fetchApi,
     modal: { active, type, ...props },
     resetStorage,
     setModal,
@@ -19,7 +19,7 @@ export default function Modal({ router }) {
 
   function deleteUser() {
     closeModal();
-    fetchApp({
+    fetchApi({
       url: "api/auth/delete",
       method: "DELETE",
       onSuccess: () => {
@@ -32,7 +32,7 @@ export default function Modal({ router }) {
   async function deleteNote() {
     closeModal();
     if (!isNewNote(props.note)) {
-      const { success } = await fetchApp({ url: `api/notes/delete/${props.note}`, method: "DELETE" });
+      const { success } = await fetchApi({ url: `api/notes/delete/${props.note}`, method: "DELETE" });
       if (!success) return;
     }
     deleteLocalNote(props.note);
@@ -40,7 +40,7 @@ export default function Modal({ router }) {
 
   function undoNote() {
     closeModal();
-    fetchApp({ url: `api/notes/undo/${props.note}`, method: "PUT", body: { localUpdatedAt: props.localUpdatedAt } });
+    fetchApi({ url: `api/notes/undo/${props.note}`, method: "PUT", body: { localUpdatedAt: props.localUpdatedAt } });
   }
 
   async function shareNote(event) {
@@ -48,7 +48,7 @@ export default function Modal({ router }) {
     toast
       .promise(
         async () => {
-          const { success } = await fetchApp({
+          const { success } = await fetchApi({
             url: `api/notes/share/${props.note}`,
             method: "POST",
             body: { share: Date.now() + shareDuration * unitDurations[durationType] },

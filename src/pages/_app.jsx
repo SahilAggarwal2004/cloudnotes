@@ -10,13 +10,12 @@ import { ToastContainer } from "react-toastify";
 
 import Modal from "../components/Modal";
 import Navbar from "../components/navbar/Navbar";
-import { hideNavbar, onlyGuest } from "../constants";
+import { apiUrl, hideNavbar, onlyGuest } from "../constants";
 import NoteProvider from "../contexts/NoteProvider";
 import { getStorage } from "../lib/storage";
 import { handleVersionUpdate } from "../lib/update";
 import "../styles/globals.css";
 
-const api = process.env.NEXT_PUBLIC_API;
 const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, retry: 1 } } });
 
 export default function App({ Component, pageProps }) {
@@ -56,7 +55,7 @@ export default function App({ Component, pageProps }) {
         />
         <link rel="manifest" href="/manifest.json" />
 
-        <link rel="preconnect" href={api} />
+        <link rel="preconnect" href={apiUrl} />
 
         <meta name="google-site-verification" content="5_rdfkDpTLo7tXDzIkEfmQb1wH_0AmpbcQOAPhLNBLQ" />
 

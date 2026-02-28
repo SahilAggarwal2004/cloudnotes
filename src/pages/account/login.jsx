@@ -7,13 +7,13 @@ import { useNoteContext } from "../../contexts/NoteProvider";
 import { setStorage } from "../../lib/storage";
 
 export default function Login({ router }) {
-  const { fetchApp, setAuthToken } = useNoteContext();
+  const { fetchApi, setAuthToken } = useNoteContext();
   const email = useRef();
   const password = useRef();
 
   async function submit(event) {
     event.preventDefault();
-    fetchApp({
+    fetchApi({
       url: "api/auth/login",
       method: "POST",
       body: { email: email.current.value, password: password.current.value },
