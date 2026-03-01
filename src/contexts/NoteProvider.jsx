@@ -96,13 +96,12 @@ export default function NoteProvider({ children, router }) {
       }
       if (data.syncedAt) setLastSyncedAt(data.syncedAt);
     } catch (error) {
-      console.log(error);
       if (error?.error) data = error;
       else if (error?.name === "AbortError") data = { success: false, error: { type: "timeout", message: "Request timed out. Please try again." } };
       else data = { success: false, error: { type: "network", message: "Network error. Please check your internet connection." } };
       await onError?.(data.error);
       const authenticationError = data.error?.type === "authentication";
-      if (authenticationError && !router.pathname.startsWith("/account")) {
+      if (authenticationError) {
         resetStorage();
         router.replace("/account/login");
       }

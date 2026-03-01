@@ -43,14 +43,14 @@ export default function useUpsert({ _id, title, description, tag }) {
         deleteLocalNote(_id);
         setProgress(100);
       } else {
-        const { success, status, updatedAt } = await fetchApi({
+        const { success, error, updatedAt } = await fetchApi({
           url: newNote ? "api/notes/add/bulk" : `api/notes/update/${_id}${force ? "?force=true" : ""}`,
           method: newNote ? "POST" : "PUT",
           body: newNote ? { notes: [localState] } : localState,
           onSuccess: () => deleteLocalNote(_id),
         });
         if (!success) {
-          if (status === 409) {
+          if (error?.type === "conflict") {
             if (Date.parse(updatedAt) > lastSyncedAt) await client.refetchQueries({ queryKey });
             router.push(`/note/${_id}?conflict=true`);
           }

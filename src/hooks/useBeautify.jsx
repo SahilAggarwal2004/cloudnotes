@@ -50,14 +50,14 @@ export default function useBeautify({ _id, title, description, tag, updatedAt })
     const localState = getStorage(localKey);
     if (save) setStorage(localKey, { _id, title, description: beautifiedText, tag, updatedAt });
     if (sync) {
-      const { success, status, updatedAt } = await fetchApi({
+      const { success, error, updatedAt } = await fetchApi({
         url: newNote ? "api/notes/add/bulk" : `api/notes/update/${_id}`,
         method: newNote ? "POST" : "PUT",
         body: newNote ? { notes: [localState] } : localState,
         onSuccess: () => deleteLocalNote(_id),
       });
       if (!success) {
-        if (status === 409) {
+        if (error?.type === "conflict") {
           if (Date.parse(updatedAt) > lastSyncedAt) await client.refetchQueries({ queryKey });
           router.push(`/note/${_id}?conflict=true`);
         }
