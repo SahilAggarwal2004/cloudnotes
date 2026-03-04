@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRouter } from "next/router";
-import { Activity, useEffect, useRef, useState } from "react";
+import { Activity, useEffect, useMemo, useRef, useState } from "react";
 import { FaCompress, FaExpand, FaRegCopy, FaRegEdit, FaRegFilePdf, FaRegSave, FaRegTrashAlt } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { MdFileDownload, MdFileUpload, MdRefresh, MdSync } from "react-icons/md";
@@ -26,6 +26,7 @@ import Loading from "../Loading";
 import Expandable from "../navbar/Expandable";
 import { deleteLocalNote, isNewNote } from "../../lib/notes";
 import { validateClosestForm } from "../../lib/dom";
+import { highlightText } from "../../lib/highlight";
 
 const {
   note: {
@@ -39,7 +40,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
   const localNote = useStorageListener(`local-${propNote._id}`);
   const note = { ...propNote, localUpdatedAt: propNote.updatedAt, ...localNote };
   const { _id, title, description, tag, updatedAt, localUpdatedAt } = note;
-  const { search, selTag } = filter;
+  const { search, searchRegex, selTag } = filter;
   const router = useRouter();
   const { getTagColor, setModal, progress, resetQueryParam } = useNoteContext();
   const tagColor = getTagColor(tag);
@@ -51,20 +52,21 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
   const [showCloudVersion, setShowCloudVersion] = useState(false);
   const moreRef = useRef();
   const newNote = isNewNote(_id);
-  const showNote = (!selTag || tag === selTag) && (!search || [tag, title, description].some((str) => str.toLowerCase().includes(search)));
+  const showNote = (!selTag || tag === selTag) && (!search || [title, description].some((str) => str.toLowerCase().includes(search)));
   const expanded = mode !== "normal";
   const conflict = mode === "conflict";
   const shared = mode === "shared";
   const showPlainText = shared && !showMarkdown;
 
+  const highlightedTitle = useMemo(() => highlightText(title, searchRegex), [title, searchRegex]);
   const reactContent = useRemark({
     markdown: beautifyActive ? beautifiedText : description,
-    stableMarkdown: true,
     rehypePlugins: [rehypeRaw, rehypeSanitize],
     remarkPlugins: [remarkGfm],
     remarkToRehypeOptions: { allowDangerousHtml: true },
   });
-  const { Text, isInQueue, start, stop } = useSpeech({ text: showPlainText ? description : reactContent, stableText: true, highlightText: true });
+  const highlightedContent = useMemo(() => highlightText(reactContent, searchRegex), [reactContent, searchRegex]);
+  const { Text, isInQueue, start, stop } = useSpeech({ text: showPlainText ? description : highlightedContent, stableText: true, highlightText: true });
 
   const activateUpsert = () => updateUpsertState({ flag: true, title, description, tag, updatedAt });
 
@@ -243,7 +245,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                 )}
                 <div className="relative flex w-full items-center justify-center">
                   <h3 className={expanded ? "text-3xl font-medium" : "px-2 text-xl"} style={{ wordBreak: "break-word" }}>
-                    {title}
+                    {highlightedTitle}
                   </h3>
                   <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
                 </div>

@@ -5,4 +5,4 @@ export function copy(text) {
   toast.success("Note copied to clipboard!");
 }
 
-
+export const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

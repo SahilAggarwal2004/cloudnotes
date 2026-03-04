@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Activity, useEffect, useState } from "react";
+import { Activity, useEffect, useMemo, useState } from "react";
 import ReorderList, { ReorderIcon } from "react-reorder-list";
 import { toast } from "react-toastify";
 import { FaPlus as FaPlusBold } from "react-icons/fa";
@@ -11,6 +11,7 @@ import { useNoteContext } from "../../contexts/NoteProvider";
 import useURLState from "../../hooks/useURLState";
 import Loading from "../Loading";
 import { setStorage } from "../../lib/storage";
+import { escapeRegex } from "../../lib/utilities";
 
 const {
   note: {
@@ -25,6 +26,8 @@ export default function Dashboard() {
   const { fetchApi, newNotes, notes, progress, resetQueryParam, tags } = useNoteContext();
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
+  const searchRegex = useMemo(() => (search ? new RegExp(`(${escapeRegex(search)})`, "gi") : null), [search]);
+  const filter = { search, searchRegex, selTag };
   const allNotesLength = notes.length + newNotes.length;
   const isFilterActive = Boolean(selTag || search);
   const isInteractionDisabled = progress || isFilterActive;
@@ -103,7 +106,7 @@ export default function Dashboard() {
             >
               {notes.map((note) => {
                 return (
-                  <NoteItem key={note._id} propNote={note} filter={{ search, selTag }}>
+                  <NoteItem key={note._id} propNote={note} filter={filter}>
                     <Activity mode={isInteractionDisabled ? "hidden" : "visible"}>
                       <ReorderIcon />
                     </Activity>
@@ -111,7 +114,7 @@ export default function Dashboard() {
                 );
               })}
               {newNotes.map((_id) => (
-                <NoteItem key={_id} propNote={{ _id }} filter={{ search, selTag }} />
+                <NoteItem key={_id} propNote={{ _id }} filter={filter} />
               ))}
             </ReorderList>
           ) : progress ? (
