@@ -3,7 +3,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { charLimit } from "../constants";
 
 const {
-  password: { min: minPassword },
+  password: { min: minPassword, max: maxPassword },
 } = charLimit;
 
 export default function Password({ password }) {
@@ -15,6 +15,7 @@ export default function Password({ password }) {
         type={show ? "text" : "password"}
         autoComplete="new-password"
         minLength={minPassword}
+        maxLength={maxPassword}
         required
         className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-purple-600 focus:outline-none focus:ring-purple-600 sm:text-sm"
         placeholder="Password"

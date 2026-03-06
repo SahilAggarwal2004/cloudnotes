@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { Activity, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Logo from "../../components/icons/Logo";
 import Password from "../../components/Password";
 import { useNoteContext } from "../../contexts/NoteProvider";

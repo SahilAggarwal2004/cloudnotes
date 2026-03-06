@@ -4,7 +4,7 @@ export const charLimit = {
   name: { min: 3, max: 20 },
   note: { title: { max: 20 }, description: { max: 5000, maxAI: 4000 }, tag: { max: 12 } },
   otp: 6,
-  password: { min: 8 },
+  password: { min: 8, max: 64 },
 };
 
 export const colors = [
