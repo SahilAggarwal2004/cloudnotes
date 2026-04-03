@@ -27,7 +27,7 @@ export default function Dashboard() {
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
   const searchRegex = useMemo(() => (search ? new RegExp(`(${escapeRegex(search)})`, "gi") : null), [search]);
-  const filter = { search, searchRegex, selTag };
+  const filter = { search: search.toLowerCase(), searchRegex, selTag };
   const allNotesLength = notes.length + newNotes.length;
   const isFilterActive = Boolean(selTag || search);
   const isInteractionDisabled = progress || isFilterActive;
@@ -73,12 +73,7 @@ export default function Dashboard() {
       <div className="mb-12">
         <div className="py-4 text-center">
           <div className="flex flex-col items-center justify-center sm:mx-5 sm:flex-row sm:justify-end sm:space-x-3">
-            <input
-              className="border-grey-600 my-1 border px-1 text-center"
-              placeholder="Search Notes"
-              defaultValue={search}
-              onChange={(e) => setSearch(e.target.value.toLowerCase())}
-            />
+            <input className="border-grey-600 my-1 border px-1 text-center" placeholder="Search Notes" value={search} onChange={(e) => setSearch(e.target.value)} />
             <select className="border-grey-600 my-1 w-min border px-1" value={selTag} onChange={(e) => setSelTag(e.target.value)}>
               <option key="All" value="">
                 All
