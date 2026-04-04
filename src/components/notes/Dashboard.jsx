@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useDebouncedValue } from "@tanstack/react-pacer";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Activity, useEffect, useMemo, useState } from "react";
@@ -26,8 +27,9 @@ export default function Dashboard() {
   const { fetchApi, newNotes, notes, progress, resetQueryParam, tags } = useNoteContext();
   const [selTag, setSelTag] = useState("");
   const [search, setSearch] = useURLState("search", "");
-  const searchRegex = useMemo(() => (search ? new RegExp(`(${escapeRegex(search)})`, "gi") : null), [search]);
-  const filter = { search: search.toLowerCase(), searchRegex, selTag };
+  const [debouncedSearch] = useDebouncedValue(search, { wait: 300 });
+  const searchRegex = useMemo(() => (debouncedSearch ? new RegExp(`(${escapeRegex(debouncedSearch)})`, "gi") : null), [debouncedSearch]);
+  const filter = { search: debouncedSearch.toLowerCase(), searchRegex, selTag };
   const allNotesLength = notes.length + newNotes.length;
   const isFilterActive = Boolean(selTag || search);
   const isInteractionDisabled = progress || isFilterActive;
