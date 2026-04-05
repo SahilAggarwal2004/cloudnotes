@@ -16,7 +16,7 @@ import { getStorage } from "../lib/storage";
 import { handleVersionUpdate } from "../lib/update";
 import "../styles/globals.css";
 
-const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, retry: 1 } } });
+const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, retry: 1, refetchOnWindowFocus: "always", refetchOnReconnect: "always" } } });
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
