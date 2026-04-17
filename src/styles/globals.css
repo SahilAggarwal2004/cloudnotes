@@ -1,61 +1,96 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss";
 
-/* Global Styles */
-* {
-  -webkit-tap-highlight-color: transparent;
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-xs: 320px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-normal: 896px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --animate-spin-fast: spin 0.55s ease infinite;
+
+  --text-2xs: 0.7rem;
+  --text-2xs--line-height: 1rem;
 }
 
-/* Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 2.5px;
-  height: 0px;
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-  margin-left: 10px;
-}
+@layer components {
+  /* Global Styles */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
 
-::-webkit-scrollbar-thumb {
-  background-color: rgb(128, 128, 128, 0.75);
-}
+  /* Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 2.5px;
+    height: 0px;
+  }
 
-/* Custom Tailwind Styles */
-.button-animation {
-  @apply border-transparent bg-purple-600 text-white transition-all duration-300 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2;
-}
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    margin-left: 10px;
+  }
 
-.btn {
-  @apply my-1 rounded-md border-2 border-white bg-purple-700 px-2 py-1 text-sm text-white transition-all duration-500 hover:border-purple-700 hover:bg-white hover:text-purple-700;
-}
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(128, 128, 128, 0.75);
+  }
 
-.center {
-  @apply fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
-}
+  /* Custom Tailwind Styles */
+  .button-animation {
+    @apply border-transparent bg-purple-600 text-white transition-all duration-300 hover:bg-purple-700 focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 focus:outline-hidden;
+  }
 
-.flex-group {
-  @apply flex items-center justify-center space-x-3 xs:space-x-4;
-}
+  .btn {
+    @apply my-1 rounded-md border-2 border-white bg-purple-700 px-2 py-1 text-sm text-white transition-all duration-500 hover:border-purple-700 hover:bg-white hover:text-purple-700;
+  }
 
-.hamburger {
-  @apply h-1 w-6 transform rounded-full bg-white transition duration-[250];
-}
+  .center {
+    @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
 
-.markdown {
-  @apply prose max-w-full overflow-y-auto break-words *:my-0 *:min-h-0 *:w-full *:min-w-0 prose-headings:my-2 prose-p:whitespace-pre-wrap prose-pre:my-2 prose-ol:whitespace-normal prose-ul:whitespace-normal prose-li:whitespace-pre-wrap prose-table:my-2 prose-table:block prose-table:overflow-x-auto prose-th:w-screen prose-th:max-w-full prose-th:border prose-th:p-2 prose-td:border prose-td:p-2 prose-hr:my-2;
-}
+  .flex-group {
+    @apply xs:space-x-4 flex items-center justify-center space-x-3;
+  }
 
-.password-icon {
-  @apply absolute right-3 top-1/2 box-content -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100;
-}
+  .hamburger {
+    @apply h-1 w-6 transform rounded-full bg-white transition duration-[250];
+  }
 
-.welcome-btn {
-  @apply relative p-1 after:absolute after:left-0 after:top-[calc(100%)] after:z-10 after:h-0 after:w-full after:scale-0 after:border after:border-black after:opacity-90 after:transition-transform after:duration-500 after:content-[''] hover:after:scale-100 normal:after:border-white;
-}
+  .markdown {
+    @apply prose prose-headings:my-2 prose-pre:my-2 prose-hr:my-2 prose-table:my-2 prose-table:block prose-table:overflow-x-auto prose-th:w-screen prose-th:max-w-full prose-th:border prose-th:p-2 prose-td:border prose-td:p-2 prose-ol:whitespace-normal prose-ul:whitespace-normal overflow-y-auto *:my-0 *:whitespace-pre-wrap;
+  }
 
-.welcome-btn-container {
-  @apply transition-transform duration-300 hover:translate-x-2;
-}
+  .password-icon {
+    @apply absolute top-1/2 right-3 box-content -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100;
+  }
 
-@tailwind utilities;
+  .welcome-btn {
+    @apply normal:after:border-white relative p-1 after:absolute after:top-[calc(100%)] after:left-0 after:z-10 after:h-0 after:w-full after:scale-0 after:border after:border-black after:opacity-90 after:transition-transform after:duration-500 after:content-[''] hover:after:scale-100;
+  }
+
+  .welcome-btn-container {
+    @apply transition-transform duration-300 hover:translate-x-2;
+  }
+}

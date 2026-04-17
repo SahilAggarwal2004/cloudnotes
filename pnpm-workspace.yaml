@@ -2,3 +2,6 @@ onlyBuiltDependencies:
   - core-js
   - sharp
   - unrs-resolver
+overrides:
+  dompurify@<=3.3.3: '>=3.4.0'
+  html2canvas: npm:html2canvas-pro@2.0.2

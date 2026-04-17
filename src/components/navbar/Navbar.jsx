@@ -76,7 +76,7 @@ export default function Navbar({ name, router }) {
             <div className="flex flex-col text-sm">
               <h3 className="text-base font-semibold">Your Notes</h3>
               {notes.map(({ _id, title }) => (
-                <Link key={_id} href={`/note/${_id}`} className={`rounded p-1 hover:bg-gray-100 ${_id === noteId ? "bg-gray-100" : ""}`}>
+                <Link key={_id} href={`/note/${_id}`} className={`rounded-sm p-1 hover:bg-gray-100 ${_id === noteId ? "bg-gray-100" : ""}`}>
                   {title}
                 </Link>
               ))}

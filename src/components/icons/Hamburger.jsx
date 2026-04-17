@@ -1,6 +1,6 @@
 export default function Hamburger({ open }) {
   return (
-    <div className="flex scale-75 flex-col items-center justify-center space-y-1 rounded">
+    <div className="flex scale-75 flex-col items-center justify-center space-y-1 rounded-sm">
       <div className={`hamburger ${open ? "translate-y-2 rotate-45" : ""}`} />
       <div className={`hamburger ${open ? "opacity-0" : ""}`} />
       <div className={`hamburger ${open ? "-translate-y-2 -rotate-45" : ""}`} />

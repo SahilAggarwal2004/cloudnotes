@@ -69,7 +69,7 @@ export default function Modal({ router }) {
     <div>
       <div className={`fixed inset-0 z-50 bg-black transition-all duration-700 ${active ? "bg-opacity-50" : "invisible bg-opacity-0"}`} onClick={closeModal} />
       <div
-        className={`fixed left-1/2 top-1/2 z-[60] -translate-x-1/2 -translate-y-1/2 bg-white text-center ${active ? "opacity-100" : "hidden"} rounded-md p-4 ${type === "edit" ? "w-4/5" : "w-max"}`}
+        className={`fixed left-1/2 top-1/2 z-60 -translate-x-1/2 -translate-y-1/2 bg-white text-center ${active ? "opacity-100" : "hidden"} rounded-md p-4 ${type === "edit" ? "w-4/5" : "w-max"}`}
       >
         {type === "deleteUser" ? (
           <div>
@@ -119,7 +119,7 @@ export default function Modal({ router }) {
                   id="checked-checkbox"
                   type="checkbox"
                   checked={!isDurationInfinite}
-                  className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-purple-600 accent-purple-600 focus:ring-2 focus:ring-purple-500"
+                  className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-purple-600 accent-purple-600 focus:ring-2 focus:ring-purple-500"
                   onChange={() => setShareDuration(isDurationInfinite ? 1 : infinity)}
                 />
                 <label htmlFor="checked-checkbox" className="ms-2 text-sm font-medium text-gray-900">

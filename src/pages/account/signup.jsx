@@ -49,7 +49,7 @@ export default function Signup({ router }) {
             </p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={submit}>
-            <div className="-space-y-px rounded-md shadow-sm">
+            <div className="-space-y-px rounded-md shadow-xs">
               <input
                 ref={name}
                 type="text"
@@ -57,7 +57,7 @@ export default function Signup({ router }) {
                 required
                 minLength={minName}
                 maxLength={maxName}
-                className="focus:border-purplr-600 relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-purple-600 sm:text-sm"
+                className="focus:border-purplr-600 relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-hidden focus:ring-purple-600 sm:text-sm"
                 placeholder="Your name"
               />
               <input
@@ -65,7 +65,7 @@ export default function Signup({ router }) {
                 type="email"
                 autoComplete="email"
                 required
-                className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-purple-600 focus:outline-none focus:ring-purple-600 sm:text-sm"
+                className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-purple-600 focus:outline-hidden focus:ring-purple-600 sm:text-sm"
                 placeholder="Email address"
               />
               <Password password={password} />

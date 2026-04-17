@@ -10,15 +10,15 @@
   },
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
-    "@ai-sdk/react": "^3.0.148",
+    "@ai-sdk/react": "^3.0.170",
     "@tanstack/react-pacer": "^0.21.1",
-    "@tanstack/react-query": "^5.96.2",
-    "ai": "^6.0.146",
+    "@tanstack/react-query": "^5.99.0",
+    "ai": "^6.0.168",
     "aos": "^2.3.4",
     "dedent": "^1.7.2",
-    "next": "^16.2.2",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "next": "^16.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "react-icons": "^5.6.0",
     "react-remarkify": "^0.8.4",
     "react-reorder-list": "^0.10.4",
@@ -33,16 +33,16 @@
   },
   "devDependencies": {
     "@serwist/next": "^9.5.7",
+    "@tailwindcss/postcss": "^4.2.2",
     "@tailwindcss/typography": "^0.5.19",
     "@types/react": "^19.2.14",
-    "autoprefixer": "^10.4.27",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.4",
-    "eslint-config-next": "^16.2.2",
-    "postcss": "^8.5.8",
-    "prettier": "^3.8.1",
+    "eslint-config-next": "^16.2.4",
+    "postcss": "^8.5.10",
+    "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "serwist": "^9.5.7",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^4.2.2"
   }
 }

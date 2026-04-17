@@ -121,7 +121,7 @@ export default function Dashboard() {
           )}
         </div>
         <button
-          className="fixed bottom-[2.625rem] right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]"
+          className="fixed bottom-10.5 right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]"
           disabled={isInteractionDisabled}
           onClick={() => createNewNote()}
         >

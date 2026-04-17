@@ -33,7 +33,7 @@ export default function About() {
             Why CloudNotes?
           </h2>
 
-          <ul className="mt-6 flex flex-col space-y-2 rounded-sm border border-black p-3 text-left sm:p-5" data-aos="fade-up">
+          <ul className="mt-6 flex flex-col space-y-2 rounded-xs border border-black p-3 text-left sm:p-5" data-aos="fade-up">
             <li data-aos="fade-up" className="flex items-center">
               <FaUniversalAccess className="mr-2 w-5 scale-110 text-red-500" />
               <span>

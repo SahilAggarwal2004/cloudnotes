@@ -18,6 +18,7 @@ const withPWA = withSerwistInit({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactCompiler: true,
+  turbopack: { resolveAlias: { html2canvas: "html2canvas-pro" } },
 };
 
 const manifestPath = "./public/manifest.json";

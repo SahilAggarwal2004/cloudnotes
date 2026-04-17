@@ -86,7 +86,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
     <Activity mode={showNote ? "visible" : "hidden"}>
       <div className="flex h-full min-h-64 flex-col">
         <form
-          className={`relative flex flex-col items-center rounded px-1 py-4 xs:px-2 sm:px-4 ${expanded ? "min-h-[calc(100dvh-2.875rem)] w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border"}`}
+          className={`relative flex flex-col items-center rounded-sm px-1 py-4 xs:px-2 sm:px-4 ${expanded ? "min-h-[calc(100dvh-2.875rem)] w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border"}`}
         >
           {upsertState.flag ? (
             <>
@@ -102,7 +102,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     </button>
                   </div>
                   <Expandable expand={showCloudVersion}>
-                    <div className="mt-3 rounded border border-yellow-200 bg-white p-3 text-sm">
+                    <div className="mt-3 rounded-sm border border-yellow-200 bg-white p-3 text-sm">
                       <div className="mb-2 text-xs text-gray-500">Cloud version (last updated: {new Date(propNote.updatedAt).toLocaleString()})</div>
                       <div className="mb-2">
                         <span className="font-medium text-gray-600">Title: </span>
@@ -110,7 +110,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                       </div>
                       <div>
                         <span className="font-medium text-gray-600">Description:</span>
-                        <div className="mt-1 max-h-32 overflow-y-auto whitespace-pre-wrap rounded bg-gray-50 p-2 text-gray-600">{propNote.description}</div>
+                        <div className="mt-1 max-h-32 overflow-y-auto whitespace-pre-wrap rounded-sm bg-gray-50 p-2 text-gray-600">{propNote.description}</div>
                       </div>
                     </div>
                   </Expandable>
@@ -122,7 +122,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     type="text"
                     list="tagList"
                     value={upsertState.tag}
-                    className="bg-gray-200 py-px text-center text-xs text-black placeholder:text-gray-600 focus:outline-none"
+                    className="bg-gray-200 py-px text-center text-xs text-black placeholder:text-gray-600 focus:outline-hidden"
                     placeholder="Add tag"
                     maxLength={maxTag}
                     autoComplete="off"
@@ -132,7 +132,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     type="color"
                     value={upsertState.tagColor}
                     list={tagColorsKey}
-                    className="bg-gray-200 focus:outline-none"
+                    className="bg-gray-200 focus:outline-hidden"
                     onChange={(e) => updateUpsertState({ tagColor: e.target.value })}
                   />
                 </div>
@@ -141,7 +141,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                 <input
                   type="text"
                   value={upsertState.title}
-                  className={`w-full px-5 text-center placeholder:text-gray-600 focus:outline-none ${expanded ? "text-2xl" : "text-xl"}`}
+                  className={`w-full px-5 text-center placeholder:text-gray-600 focus:outline-hidden ${expanded ? "text-2xl" : "text-xl"}`}
                   placeholder="Add title"
                   required
                   maxLength={maxTitle}
@@ -149,7 +149,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                 />
                 <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
               </div>
-              <div className={`flex-group my-2 h-[1.125rem] text-gray-800 ${expanded ? "mt-3" : "scale-95"}`}>
+              <div className={`flex-group my-2 h-4.5 text-gray-800 ${expanded ? "mt-3" : "scale-95"}`}>
                 {conflict ? (
                   <>
                     <button
@@ -227,7 +227,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                 placeholder="Add description"
                 minRows={5}
                 maxLength={maxDescription}
-                className={`mx-2 mb-1 max-h-[calc(100dvh-14rem)] w-full px-2 text-gray-600 focus:outline-none ${expanded ? "" : "text-sm"}`}
+                className={`mx-2 mb-1 max-h-[calc(100dvh-14rem)] w-full px-2 text-gray-600 focus:outline-hidden ${expanded ? "" : "text-sm"}`}
                 value={upsertState.description}
                 onChange={(e) => updateUpsertState({ description: e.target.value })}
               />
@@ -249,7 +249,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                   </h3>
                   <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
                 </div>
-                <div className={`my-2 h-[1.125rem] text-gray-800 ${expanded ? "mt-3 scale-95 xs:scale-100" : "scale-90 xs:scale-95"}`}>
+                <div className={`my-2 h-4.5 text-gray-800 ${expanded ? "mt-3 scale-95 xs:scale-100" : "scale-90 xs:scale-95"}`}>
                   {beautifyActive ? (
                     <div className="flex-group">
                       <button
@@ -331,7 +331,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                         <TbDots />
                       </button>
                       <Activity mode={showMore ? "visible" : "hidden"}>
-                        <div className="absolute right-0 mt-1 w-max space-y-2.5 rounded border bg-white p-2 text-sm text-gray-700 shadow-md">
+                        <div className="absolute right-0 mt-1 w-max space-y-2.5 rounded-sm border bg-white p-2 text-sm text-gray-700 shadow-md">
                           <button
                             type="button"
                             className="flex items-center space-x-2"
