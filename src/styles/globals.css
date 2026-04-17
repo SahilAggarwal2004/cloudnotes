@@ -79,7 +79,7 @@
   }
 
   .markdown {
-    @apply prose prose-headings:my-2 prose-pre:my-2 prose-hr:my-2 prose-table:my-2 prose-table:block prose-table:overflow-x-auto prose-th:w-screen prose-th:max-w-full prose-th:border prose-th:p-2 prose-td:border prose-td:p-2 prose-ol:whitespace-normal prose-ul:whitespace-normal overflow-y-auto *:my-0 *:whitespace-pre-wrap;
+    @apply prose prose-headings:my-2 prose-pre:my-2 prose-hr:my-2 prose-table:my-2 prose-table:block prose-table:overflow-x-auto prose-th:w-screen prose-th:max-w-full prose-th:border prose-th:p-2 prose-td:border prose-td:p-2 prose-ol:whitespace-normal prose-ul:whitespace-normal max-w-full overflow-y-auto *:my-0 *:whitespace-pre-wrap;
   }
 
   .password-icon {

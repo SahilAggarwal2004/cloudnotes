@@ -86,7 +86,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
     <Activity mode={showNote ? "visible" : "hidden"}>
       <div className="flex h-full min-h-64 flex-col">
         <form
-          className={`relative flex flex-col items-center rounded-sm px-1 py-4 xs:px-2 sm:px-4 ${expanded ? "min-h-[calc(100dvh-2.875rem)] w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border"}`}
+          className={`xs:px-2 relative flex flex-col items-center rounded-sm px-1 py-4 sm:px-4 ${expanded ? "min-h-[calc(100dvh-2.875rem)] w-[90vw] sm:w-[80vw]" : "border-grey-600 h-full border"}`}
         >
           {upsertState.flag ? (
             <>
@@ -97,7 +97,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                       <h3 className="mb-1 text-sm font-semibold text-yellow-800">⚠️ Conflict Detected</h3>
                       <p className="text-xs text-yellow-700">This note was modified both locally and in the cloud. You&apos;re editing the local version.</p>
                     </div>
-                    <button type="button" className="whitespace-nowrap text-xs text-yellow-700 underline" onClick={() => setShowCloudVersion(!showCloudVersion)}>
+                    <button type="button" className="text-xs whitespace-nowrap text-yellow-700 underline" onClick={() => setShowCloudVersion(!showCloudVersion)}>
                       {showCloudVersion ? "Hide" : "View"} Cloud Version
                     </button>
                   </div>
@@ -110,7 +110,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                       </div>
                       <div>
                         <span className="font-medium text-gray-600">Description:</span>
-                        <div className="mt-1 max-h-32 overflow-y-auto whitespace-pre-wrap rounded-sm bg-gray-50 p-2 text-gray-600">{propNote.description}</div>
+                        <div className="mt-1 max-h-32 overflow-y-auto rounded-sm bg-gray-50 p-2 whitespace-pre-wrap text-gray-600">{propNote.description}</div>
                       </div>
                     </div>
                   </Expandable>
@@ -147,7 +147,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                   maxLength={maxTitle}
                   onChange={(e) => updateUpsertState({ title: e.target.value })}
                 />
-                <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
+                <span className="absolute top-1.5 right-0 sm:-right-2">{children}</span>
               </div>
               <div className={`flex-group my-2 h-4.5 text-gray-800 ${expanded ? "mt-3" : "scale-95"}`}>
                 {conflict ? (
@@ -205,7 +205,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                       }}
                     >
                       <FaRegSave />
-                      <MdSync className="absolute -bottom-1 -right-1 rounded-full bg-black text-[0.7rem] text-white" />
+                      <MdSync className="absolute -right-1 -bottom-1 rounded-full bg-black text-[0.7rem] text-white" />
                     </button>
                   </>
                 )}
@@ -247,9 +247,9 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                   <h3 className={expanded ? "text-3xl font-medium" : "px-2 text-xl"} style={{ wordBreak: "break-word" }}>
                     {highlightedTitle}
                   </h3>
-                  <span className="absolute right-0 top-1.5 sm:-right-2">{children}</span>
+                  <span className="absolute top-1.5 right-0 sm:-right-2">{children}</span>
                 </div>
-                <div className={`my-2 h-4.5 text-gray-800 ${expanded ? "mt-3 scale-95 xs:scale-100" : "scale-90 xs:scale-95"}`}>
+                <div className={`my-2 h-4.5 text-gray-800 ${expanded ? "xs:scale-100 mt-3 scale-95" : "xs:scale-95 scale-90"}`}>
                   {beautifyActive ? (
                     <div className="flex-group">
                       <button
@@ -269,7 +269,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                         onClick={() => handleAcceptBeautify({ save: true, sync: true })}
                       >
                         <FaRegSave />
-                        <MdSync className="absolute -bottom-1 -right-1 rounded-full bg-black text-[0.7rem] text-white" />
+                        <MdSync className="absolute -right-1 -bottom-1 rounded-full bg-black text-[0.7rem] text-white" />
                       </button>
                       <button
                         type="button"
@@ -330,80 +330,78 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                       <button ref={moreRef} type="button" title="More actions" className="scale-110" onClick={() => setShowMore((prev) => !prev)}>
                         <TbDots />
                       </button>
-                      <Activity mode={showMore ? "visible" : "hidden"}>
-                        <div className="absolute right-0 mt-1 w-max space-y-2.5 rounded-sm border bg-white p-2 text-sm text-gray-700 shadow-md">
-                          <button
-                            type="button"
-                            className="flex items-center space-x-2"
-                            onClick={() => {
-                              setScreenShot(true);
-                              const pdf = document.getElementById(`pdf-${_id}`);
-                              pdf.classList.remove("hidden");
-                              generatePDF(() => pdf, { filename: `${title}.pdf`, page: { margin: Margin.SMALL } })
-                                .then(() => toast.success("PDF downloaded successfully!"))
-                                .catch(() => toast.error("Failed to generate PDF!"))
-                                .finally(() => setTimeout(() => setScreenShot(false), 100));
-                            }}
-                          >
-                            <FaRegFilePdf className="scale-110" />
-                            <span>Download PDF</span>
-                          </button>
-                          {!shared && (
-                            <>
-                              {!newNote && (
-                                <button
-                                  type="button"
-                                  className="flex items-center space-x-2 disabled:opacity-60"
-                                  disabled={progress}
-                                  onClick={() => setModal({ active: true, type: "shareNote", note: _id })}
-                                >
-                                  <GrShareOption className="scale-110" />
-                                  <span>Share Note</span>
-                                </button>
-                              )}
-                              <button type="button" className="flex items-center space-x-2 disabled:opacity-60" disabled={progress} onClick={() => startBeautify()}>
-                                <TbSparkles className="scale-110" />
-                                <span>Beautify Note</span>
-                              </button>
-                              {!localNote ? (
-                                <button
-                                  type="button"
-                                  className="flex items-center space-x-2 disabled:opacity-60"
-                                  disabled={progress}
-                                  onClick={() => setModal({ active: true, type: "undoNote", note: _id, localUpdatedAt })}
-                                >
-                                  <GrUndo className="scale-110" />
-                                  <span>Undo Note</span>
-                                </button>
-                              ) : (
-                                !newNote && (
-                                  <button
-                                    type="button"
-                                    className="flex items-center space-x-2 disabled:opacity-60"
-                                    disabled={progress}
-                                    onClick={() => {
-                                      toast.success("Local changes discarded");
-                                      deleteLocalNote(_id);
-                                    }}
-                                  >
-                                    <GrUndo className="scale-110" />
-                                    <span>Discard Changes</span>
-                                  </button>
-                                )
-                              )}
+                      <div className={`absolute right-0 mt-1 w-max space-y-2.5 rounded-sm border bg-white p-2 text-sm text-gray-700 shadow-md ${showMore ? "" : "hidden"}`}>
+                        <button
+                          type="button"
+                          className="flex items-center space-x-2"
+                          onClick={() => {
+                            setScreenShot(true);
+                            const pdf = document.getElementById(`pdf-${_id}`);
+                            pdf.classList.remove("hidden");
+                            generatePDF(() => pdf, { filename: `${title}.pdf`, page: { margin: Margin.SMALL } })
+                              .then(() => toast.success("PDF downloaded successfully!"))
+                              .catch(() => toast.error("Failed to generate PDF!"))
+                              .finally(() => setTimeout(() => setScreenShot(false), 100));
+                          }}
+                        >
+                          <FaRegFilePdf className="scale-110" />
+                          <span>Download PDF</span>
+                        </button>
+                        {!shared && (
+                          <>
+                            {!newNote && (
                               <button
                                 type="button"
                                 className="flex items-center space-x-2 disabled:opacity-60"
                                 disabled={progress}
-                                onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}
+                                onClick={() => setModal({ active: true, type: "shareNote", note: _id })}
                               >
-                                <FaRegTrashAlt className="scale-110" />
-                                <span>Delete Note</span>
+                                <GrShareOption className="scale-110" />
+                                <span>Share Note</span>
                               </button>
-                            </>
-                          )}
-                        </div>
-                      </Activity>
+                            )}
+                            <button type="button" className="flex items-center space-x-2 disabled:opacity-60" disabled={progress} onClick={() => startBeautify()}>
+                              <TbSparkles className="scale-110" />
+                              <span>Beautify Note</span>
+                            </button>
+                            {!localNote ? (
+                              <button
+                                type="button"
+                                className="flex items-center space-x-2 disabled:opacity-60"
+                                disabled={progress}
+                                onClick={() => setModal({ active: true, type: "undoNote", note: _id, localUpdatedAt })}
+                              >
+                                <GrUndo className="scale-110" />
+                                <span>Undo Note</span>
+                              </button>
+                            ) : (
+                              !newNote && (
+                                <button
+                                  type="button"
+                                  className="flex items-center space-x-2 disabled:opacity-60"
+                                  disabled={progress}
+                                  onClick={() => {
+                                    toast.success("Local changes discarded");
+                                    deleteLocalNote(_id);
+                                  }}
+                                >
+                                  <GrUndo className="scale-110" />
+                                  <span>Discard Changes</span>
+                                </button>
+                              )
+                            )}
+                            <button
+                              type="button"
+                              className="flex items-center space-x-2 disabled:opacity-60"
+                              disabled={progress}
+                              onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}
+                            >
+                              <FaRegTrashAlt className="scale-110" />
+                              <span>Delete Note</span>
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -413,14 +411,14 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                 </Activity>
                 <Text className={`markdown max-h-[calc(100dvh-14rem)] px-2 text-gray-600 ${expanded ? "" : "min-w-full text-left text-sm"}`} />
               </div>
-              <p className={`w-full text-center text-gray-600 ${expanded ? "mt-auto scale-95 text-sm" : "absolute bottom-1.5 text-2xs"}`}>
+              <p className={`w-full text-center text-gray-600 ${expanded ? "mt-auto scale-95 text-sm" : "text-2xs absolute bottom-1.5"}`}>
                 Last Updated: {new Date(localUpdatedAt).toLocaleString()}
               </p>
             </>
           )}
         </form>
         <Loading text="Generating PDF..." className={`z-30 bg-white ${screenShot ? "block" : "hidden"}`} />
-        <div id={`pdf-${_id}`} className={`fixed left-0 top-0 w-[896px] flex-col items-center space-y-4 ${screenShot ? "flex" : "hidden"}`}>
+        <div id={`pdf-${_id}`} className={`fixed top-0 left-0 w-4xl flex-col items-center space-y-4 ${screenShot ? "flex" : "hidden"}`}>
           <h3 className="w-full text-center text-3xl font-medium" style={{ wordBreak: "break-word" }}>
             {title}
           </h3>
