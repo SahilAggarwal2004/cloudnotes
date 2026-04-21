@@ -123,7 +123,7 @@ export default function NoteProvider({ children, router }) {
     clearAuthToken();
     clearCachedNotes();
     clearLastSyncedAt();
-    removeStorage("name");
+    removeStorage("user");
     clearStorage("local", true);
     clearStorage("", false);
   }

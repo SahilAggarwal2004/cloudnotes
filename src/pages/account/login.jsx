@@ -17,8 +17,8 @@ export default function Login({ router }) {
       url: "api/auth/login",
       method: "POST",
       body: { email: email.current.value, password: password.current.value },
-      onSuccess: ({ name, token }) => {
-        setStorage("name", name);
+      onSuccess: ({ name, email, token }) => {
+        setStorage("user", { name, email });
         setAuthToken(token);
         router.replace("/");
       },
@@ -49,7 +49,7 @@ export default function Login({ router }) {
                 type="email"
                 autoComplete="email"
                 required
-                className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-purple-600 focus:outline-hidden focus:ring-purple-600 sm:text-sm"
+                className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-purple-600 focus:ring-purple-600 focus:outline-hidden sm:text-sm"
                 placeholder="Email address"
               />
               <Password password={password} />

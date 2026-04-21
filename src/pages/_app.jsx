@@ -21,7 +21,7 @@ const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const name = useMemo(() => getStorage("name"), [router.pathname]);
+  const user = useMemo(() => getStorage("user"), [router.pathname]);
 
   useEffect(() => {
     setLoading(false);
@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   useEffect(() => {
-    if (name && onlyGuest.includes(router.pathname)) router.replace("/");
+    if (user && onlyGuest.includes(router.pathname)) router.replace("/");
   }, [router.pathname]);
 
   return (
@@ -233,11 +233,11 @@ export default function App({ Component, pageProps }) {
       <QueryClientProvider client={client}>
         <NoteProvider router={router}>
           <Activity mode={!loading && router.isReady ? "visible" : "hidden"}>
-            <Activity mode={!hideNavbar.includes(router.pathname) || (name && router.pathname === "/") ? "visible" : "hidden"}>
-              <Navbar name={name} router={router} />
+            <Activity mode={!hideNavbar.includes(router.pathname) || (user && router.pathname === "/") ? "visible" : "hidden"}>
+              <Navbar user={user} router={router} />
               <Modal router={router} />
             </Activity>
-            <Component {...pageProps} name={name} router={router} />
+            <Component {...pageProps} user={user} router={router} />
           </Activity>
           <ToastContainer stacked autoClose={3000} pauseOnFocusLoss={false} position="bottom-left" />
         </NoteProvider>

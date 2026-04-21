@@ -81,10 +81,10 @@ export default function About() {
         <footer className="flex w-full flex-col items-center justify-between space-y-1 bg-purple-600 px-3 py-2 text-center text-white sm:flex-row sm:space-y-0">
           <div>Made with 🤍 by Sahil Aggarwal</div>
           <div className="flex-group px-2">
-            <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noreferrer">
+            <a href="https://www.linkedin.com/in/sahilaggarwal2004/" target="_blank" rel="noopener">
               <FaLinkedin className="inline scale-125" title="LinkedIn" />
             </a>
-            <a href="https://github.com/SahilAggarwal2004" target="_blank" rel="noreferrer">
+            <a href="https://github.com/SahilAggarwal2004" target="_blank" rel="noopener">
               <FaGithub className="inline scale-125" title="GitHub" />
             </a>
           </div>

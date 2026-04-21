@@ -1,6 +1,6 @@
 {
   "name": "cloudnotes",
-  "version": "4.1.3",
+  "version": "5.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -11,8 +11,8 @@
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "@ai-sdk/react": "^3.0.170",
-    "@tanstack/react-pacer": "^0.21.1",
-    "@tanstack/react-query": "^5.99.0",
+    "@tanstack/react-pacer": "^0.22.0",
+    "@tanstack/react-query": "^5.99.2",
     "ai": "^6.0.168",
     "aos": "^2.3.4",
     "dedent": "^1.7.2",
@@ -25,7 +25,7 @@
     "react-text-to-speech": "^5.1.9",
     "react-textarea-autosize": "^8.5.9",
     "react-to-pdf": "^3.2.2",
-    "react-toastify": "^11.0.5",
+    "react-toastify": "^11.1.0",
     "react-top-loading-bar": "^3.0.2",
     "rehype-raw": "^7.0.0",
     "rehype-sanitize": "^6.0.0",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@serwist/next": "^9.5.7",
-    "@tailwindcss/postcss": "^4.2.2",
+    "@tailwindcss/postcss": "^4.2.4",
     "@tailwindcss/typography": "^0.5.19",
     "@types/react": "^19.2.14",
     "babel-plugin-react-compiler": "^1.0.0",
@@ -43,6 +43,6 @@
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "serwist": "^9.5.7",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.4"
   }
 }
