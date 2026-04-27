@@ -8,11 +8,11 @@
     "start": "next start",
     "lint": "eslint ."
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "dependencies": {
     "@ai-sdk/react": "^3.0.170",
     "@tanstack/react-pacer": "^0.22.0",
-    "@tanstack/react-query": "^5.99.2",
+    "@tanstack/react-query": "^5.100.5",
     "ai": "^6.0.168",
     "aos": "^2.3.4",
     "dedent": "^1.7.2",
@@ -39,9 +39,9 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.12",
     "prettier": "^3.8.3",
-    "prettier-plugin-tailwindcss": "^0.7.2",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "serwist": "^9.5.7",
     "tailwindcss": "^4.2.4"
   }
