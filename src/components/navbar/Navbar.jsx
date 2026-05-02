@@ -8,11 +8,12 @@ import NavLink from "./NavLink";
 import { useNoteContext } from "../../contexts/NoteProvider";
 import Hamburger from "../icons/Hamburger";
 import { getPrefilledFeedbackFormUrl } from "../../lib/utilities";
+import DeleteUser from "../user/DeleteUser";
 
 export default function Navbar({ user, router }) {
   const { name, email } = user || {};
   const { noteId } = router.query;
-  const { progress, notes, resetStorage, setProgress, setModal, setSidebar, sidebar } = useNoteContext();
+  const { closeModal, openModal, progress, notes, resetStorage, setProgress, setSidebar, sidebar } = useNoteContext();
   const [hide, setHide] = useState(true);
 
   const extendNav = () => {
@@ -22,7 +23,7 @@ export default function Navbar({ user, router }) {
 
   async function logOut() {
     setProgress(100);
-    setModal({ active: false });
+    closeModal();
     resetStorage();
     router.replace("/account/login");
     toast.success("Logged out successfully!");
@@ -108,7 +109,7 @@ export default function Navbar({ user, router }) {
               Log Out
             </button>
 
-            <button className="w-max font-semibold text-gray-600 hover:text-gray-900" onClick={() => setModal({ active: true, type: "deleteUser" })}>
+            <button className="w-max font-semibold text-gray-600 hover:text-gray-900" onClick={() => openModal({ Component: DeleteUser })}>
               Delete Account
             </button>
 

@@ -235,7 +235,7 @@ export default function App({ Component, pageProps }) {
           <Activity mode={!loading && router.isReady ? "visible" : "hidden"}>
             <Activity mode={!hideNavbar.includes(router.pathname) || (user && router.pathname === "/") ? "visible" : "hidden"}>
               <Navbar user={user} router={router} />
-              <Modal router={router} />
+              <Modal />
             </Activity>
             <Component {...pageProps} user={user} router={router} />
           </Activity>

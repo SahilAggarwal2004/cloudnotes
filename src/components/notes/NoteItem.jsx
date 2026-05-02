@@ -17,16 +17,19 @@ import remarkGfm from "remark-gfm";
 
 import { charLimit, tagColorsKey } from "../../constants";
 import { useNoteContext } from "../../contexts/NoteProvider";
+import DeleteNote from "./DeleteNote";
 import useBeautify from "../../hooks/useBeautify";
 import useUpsert from "../../hooks/useUpsert";
 import useStorage from "../../hooks/useStorage";
 import { useStorageListener } from "../../hooks/useStorageListener";
 import { copy } from "../../lib/utilities";
 import Loading from "../Loading";
-import Expandable from "../navbar/Expandable";
 import { deleteLocalNote, isNewNote } from "../../lib/notes";
 import { validateClosestForm } from "../../lib/dom";
 import { highlightText } from "../../lib/highlight";
+import Expandable from "../navbar/Expandable";
+import ShareNote from "./ShareNote";
+import UndoNote from "./UndoNote";
 
 const {
   note: {
@@ -42,7 +45,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
   const { _id, title, description, tag, updatedAt, localUpdatedAt } = note;
   const { search, searchRegex, selTag } = filter;
   const router = useRouter();
-  const { getTagColor, setModal, progress, resetQueryParam } = useNoteContext();
+  const { getTagColor, openModal, progress, resetQueryParam } = useNoteContext();
   const tagColor = getTagColor(tag);
   const { upsertState, updateUpsertState, cancelUpsert, handleUpsert } = useUpsert(propNote);
   const { beautifyActive, beautifiedText, isBeautifying, startBeautify, cancelBeautify, handleAcceptBeautify } = useBeautify(note);
@@ -354,7 +357,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                                 type="button"
                                 className="flex items-center space-x-2 disabled:opacity-60"
                                 disabled={progress}
-                                onClick={() => setModal({ active: true, type: "shareNote", note: _id })}
+                                onClick={() => openModal({ Component: ShareNote, props: { id: _id } })}
                               >
                                 <GrShareOption className="scale-110" />
                                 <span>Share Note</span>
@@ -369,7 +372,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                                 type="button"
                                 className="flex items-center space-x-2 disabled:opacity-60"
                                 disabled={progress}
-                                onClick={() => setModal({ active: true, type: "undoNote", note: _id, localUpdatedAt })}
+                                onClick={() => openModal({ Component: UndoNote, props: { id: _id, localUpdatedAt } })}
                               >
                                 <GrUndo className="scale-110" />
                                 <span>Undo Note</span>
@@ -394,7 +397,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                               type="button"
                               className="flex items-center space-x-2 disabled:opacity-60"
                               disabled={progress}
-                              onClick={() => setModal({ active: true, type: "deleteNote", note: _id })}
+                              onClick={() => openModal({ Component: DeleteNote, props: { id: _id } })}
                             >
                               <FaRegTrashAlt className="scale-110" />
                               <span>Delete Note</span>

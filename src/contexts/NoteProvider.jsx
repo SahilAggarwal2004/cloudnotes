@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 import { apiUrl, defaults, newNotesKey, queryKey, tagColorsKey, timeouts } from "../constants";
+import useModal from "../hooks/useModal";
 import useStorage from "../hooks/useStorage";
 import { useStorageListener } from "../hooks/useStorageListener";
 import { deleteLocalNote, hasActiveDraft } from "../lib/notes";
@@ -33,7 +34,7 @@ export default function NoteProvider({ children, router }) {
   const [cachedNotes, setCachedNotes, clearCachedNotes] = useStorage(queryKey, []);
   const [lastSyncedAt, setLastSyncedAt, clearLastSyncedAt] = useStorage("lastSyncedAt");
   const newNotes = useStorageListener(newNotesKey, []);
-  const [modal, setModal] = useState({ active: false });
+  const { modal, openModal, closeModal } = useModal();
   const [progress, setProgress] = useState(0);
   const [sidebar, setSidebar] = useState(false);
 
@@ -139,17 +140,18 @@ export default function NoteProvider({ children, router }) {
   return (
     <NoteContext
       value={{
+        closeModal,
         fetchApi,
         getTagColor,
         lastSyncedAt,
         modal,
         newNotes,
         notes,
+        openModal,
         progress,
         resetQueryParam,
         resetStorage,
         setAuthToken,
-        setModal,
         setProgress,
         setSidebar,
         setTagColor,

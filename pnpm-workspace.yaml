@@ -4,3 +4,4 @@ onlyBuiltDependencies:
   - unrs-resolver
 overrides:
   html2canvas: npm:html2canvas-pro@2.0.2
+  postcss@<8.5.10: ">=8.5.10"
