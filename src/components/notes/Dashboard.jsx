@@ -75,7 +75,7 @@ export default function Dashboard() {
       <div className="mb-12">
         <div className="py-4 text-center">
           <div className="flex flex-col items-center justify-center sm:mx-5 sm:flex-row sm:justify-end sm:space-x-3">
-            <input className="border-grey-600 my-1 border px-1 text-center" placeholder="Search Notes" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <input className="border-grey-600 my-1 border px-1 text-center" placeholder="Search Notes" defaultValue={search} onChange={(e) => setSearch(e.target.value)} />
             <select className="border-grey-600 my-1 w-min border px-1" value={selTag} onChange={(e) => setSelTag(e.target.value)}>
               <option key="All" value="">
                 All
@@ -117,11 +117,11 @@ export default function Dashboard() {
           ) : progress ? (
             <Loading />
           ) : (
-            <h4 className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">No Notes To Display!</h4>
+            <h4 className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">No Notes To Display!</h4>
           )}
         </div>
         <button
-          className="fixed bottom-10.5 right-[4vw] z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]"
+          className="fixed right-[4vw] bottom-10.5 z-20 cursor-pointer rounded-full bg-purple-700 px-4 py-3 text-center text-white disabled:opacity-60 sm:right-[3vw]"
           disabled={isInteractionDisabled}
           onClick={() => createNewNote()}
         >

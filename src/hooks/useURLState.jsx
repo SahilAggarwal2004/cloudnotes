@@ -11,7 +11,7 @@ export default function useURLState(param, defaultValue) {
     if (value) paramObj.set(param, value);
     else paramObj.delete(param);
     const newParams = paramObj.toString();
-    const url = router.pathname + (newParams ? "?" + newParams : "");
+    const url = router.pathname + (newParams ? `?${newParams}` : "");
     router.replace(url);
   }
 

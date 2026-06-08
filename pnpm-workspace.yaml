@@ -1,7 +1,11 @@
-onlyBuiltDependencies:
-  - core-js
-  - sharp
-  - unrs-resolver
+allowBuilds:
+  core-js: true
+  sharp: true
+  unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@tailwindcss/typography@0.5.20'
+  - postcss@8.5.10
+  - brace-expansion@5.0.6
 overrides:
   html2canvas: npm:html2canvas-pro@2.0.2
-  postcss@<8.5.10: ">=8.5.10"
+  postcss@<8.5.10: ^8.5.10
