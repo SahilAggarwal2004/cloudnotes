@@ -105,7 +105,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                     </button>
                   </div>
                   <Expandable expand={showCloudVersion}>
-                    <div className="mt-3 rounded-sm border border-yellow-200 bg-white p-3 text-sm">
+                    <div className="mt-3 max-w-[calc(90vw-3rem)] rounded-sm border border-yellow-200 bg-white p-3 text-sm">
                       <div className="mb-2 text-xs text-gray-500">Cloud version (last updated: {new Date(propNote.updatedAt).toLocaleString()})</div>
                       <div className="mb-2">
                         <span className="font-medium text-gray-600">Title: </span>
@@ -113,7 +113,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                       </div>
                       <div>
                         <span className="font-medium text-gray-600">Description:</span>
-                        <div className="mt-1 max-h-32 overflow-y-auto rounded-sm bg-gray-50 p-2 whitespace-pre-wrap text-gray-600">{propNote.description}</div>
+                        <div className="mt-1 max-h-32 overflow-x-hidden overflow-y-auto rounded-sm bg-gray-50 p-2 whitespace-pre-wrap text-gray-600">{propNote.description}</div>
                       </div>
                     </div>
                   </Expandable>
