@@ -12,7 +12,7 @@ import DeleteUser from "../user/DeleteUser";
 
 export default function Navbar({ user, router }) {
   const { name, email } = user || {};
-  const { noteId } = router.query;
+  const { id: noteId } = router.query;
   const { closeModal, openModal, progress, notes, resetStorage, setProgress, setSidebar, sidebar } = useNoteContext();
   const [hide, setHide] = useState(true);
 
@@ -92,7 +92,12 @@ export default function Navbar({ user, router }) {
 
               <div className="mt-1 space-y-1">
                 {notes.map(({ _id, title }) => (
-                  <Link key={_id} href={`/note/${_id}`} className={`block rounded-sm p-1 hover:bg-gray-100 ${_id === noteId ? "bg-gray-100" : ""}`}>
+                  <Link
+                    key={_id}
+                    href={`/note?id=${_id}`}
+                    className={`block rounded-sm p-1 hover:bg-gray-100 ${_id === noteId ? "bg-gray-100" : ""}`}
+                    onClick={() => setSidebar(false)}
+                  >
                     {title}
                   </Link>
                 ))}
@@ -113,9 +118,9 @@ export default function Navbar({ user, router }) {
               Delete Account
             </button>
 
-            <a className="w-max font-semibold text-gray-600 hover:text-gray-900" href={getPrefilledFeedbackFormUrl(name, email)} target="_blank" rel="noopener">
+            <Link href={getPrefilledFeedbackFormUrl(name, email)} target="_blank" rel="noopener" className="w-max font-semibold text-gray-600 hover:text-gray-900">
               Send Feedback
-            </a>
+            </Link>
           </div>
         </div>
       </Activity>

@@ -52,7 +52,7 @@ export default function useUpsert({ _id, title, description, tag }) {
         if (!success) {
           if (error?.type === "conflict") {
             if (Date.parse(updatedAt) > lastSyncedAt) await client.refetchQueries({ queryKey });
-            router.push(`/note/${_id}?conflict=true`);
+            router.push(`/note?id=${_id}&conflict=true`);
           }
           return;
         }

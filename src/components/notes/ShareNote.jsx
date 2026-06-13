@@ -21,7 +21,7 @@ export default function ShareNote({ id }) {
             showToast: { success: false, error: false },
           });
           if (!success) throw new Error();
-          const data = { url: `${window.location.origin}/share/${id}` };
+          const data = { url: `${window.location.origin}/share?id=${id}` };
           navigator.clipboard.writeText(data.url);
           if (navigator.canShare?.(data) && navigator.userAgentData?.mobile) navigator.share(data);
         },

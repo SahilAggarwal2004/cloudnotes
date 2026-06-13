@@ -134,7 +134,8 @@ export default function NoteProvider({ children, router }) {
   }, [data]);
 
   useEffect(() => {
-    if (router.pathname !== "/note/[noteId]") setSidebar(false);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSidebar(false);
   }, [router.pathname]);
 
   return (

@@ -2,7 +2,7 @@ import fs from "fs";
 import withSerwistInit from "@serwist/next";
 import packageJSON from "./package.json" with { type: "json" };
 
-const pages = ["/", "/about", "/account/forgot", "/account/login", "/account/signup", "/_offline"];
+const pages = ["/", "/about", "/account/forgot", "/account/login", "/account/signup", "/note", "/share", "/_offline"];
 const images = ["bg.webp", "logo.webp"].map((image) => `/images/${image}`);
 const revision = Date.now().toString();
 

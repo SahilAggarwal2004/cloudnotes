@@ -36,9 +36,9 @@ export default function Dashboard() {
 
   function createNewNote(newNote) {
     if (allNotesLength >= maxNotes) return toast.error("You have reached the maximum number of notes!");
-    const newNoteId = `${newNotePrefix}${Date.now()}`;
-    setStorage(`upsert-${newNoteId}`, { flag: true, updatedAt: new Date().toISOString(), ...newNote }, false);
-    setStorage(newNotesKey, newNotes.concat(newNoteId));
+    const newId = `${newNotePrefix}${Date.now()}`;
+    setStorage(`upsert-${newId}`, { flag: true, updatedAt: new Date().toISOString(), ...newNote }, false);
+    setStorage(newNotesKey, newNotes.concat(newId));
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   }
 

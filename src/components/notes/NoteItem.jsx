@@ -300,7 +300,7 @@ export default function NoteItem({ propNote, filter = {}, children, mode = "norm
                               <FaCompress />
                             </button>
                           ) : (
-                            <button type="button" title="Maximize note" className="scale-110" onClick={() => router.push(`/note/${_id}`)}>
+                            <button type="button" title="Maximize note" className="scale-110" onClick={() => router.push(`/note?id=${_id}`)}>
                               <FaExpand />
                             </button>
                           )}
