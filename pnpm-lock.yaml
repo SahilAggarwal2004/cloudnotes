@@ -13,8 +13,8 @@ importers:
   .:
     dependencies:
       '@ai-sdk/react':
-        specifier: 3.0.206
-        version: 3.0.206(react@19.2.7)(zod@4.4.3)
+        specifier: 3.0.208
+        version: 3.0.208(react@19.2.7)(zod@4.4.3)
       '@tanstack/react-pacer':
         specifier: 0.22.1
         version: 0.22.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -22,8 +22,8 @@ importers:
         specifier: 5.101.0
         version: 5.101.0(react@19.2.7)
       ai:
-        specifier: 6.0.204
-        version: 6.0.204(zod@4.4.3)
+        specifier: 6.0.206
+        version: 6.0.206(zod@4.4.3)
       aos:
         specifier: 2.3.4
         version: 2.3.4
@@ -112,8 +112,8 @@ importers:
 
 packages:
 
-  '@ai-sdk/gateway@3.0.130':
-    resolution: {integrity: sha512-qenRdpoYM+2y8Ibj3Y7XngvfcG4NIpejaM+YqAKWXi3/N1qZYeIelrm19jxhIwQW0W/g7WUz0L2Agl7+FnwrQA==}
+  '@ai-sdk/gateway@3.0.132':
+    resolution: {integrity: sha512-sFZFGk6aVSNKmgDrb14efaAbvM71AB3UUvaTsU+bvhWP9jrkRrwix/jFX8IoOAJk0/X7Xf7p3m0J2O2G6ljZbA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -128,8 +128,8 @@ packages:
     resolution: {integrity: sha512-Q3BZ27qfpYqnCYGvE3vt+Qi6LGOF9R5Nmzn+9JoM1lCRsD9mYaIhfJLkSunN48nfGXJ6n+XNV0J/XVpqGQl7Dw==}
     engines: {node: '>=18'}
 
-  '@ai-sdk/react@3.0.206':
-    resolution: {integrity: sha512-26gbPT876BZVXJlSNjqkCDOFiqfxAAhYn+a/ryV6ce5TWo6EfWQZeEiLrZOS6bxaOi7xxkB5uPZaZKFaIJndjQ==}
+  '@ai-sdk/react@3.0.208':
+    resolution: {integrity: sha512-HEhPWLlg5wPqnadGqDRBek8V3GzmlLH3v4PCvDY/GCsDTNKk2nYpExvl8mXu20gVT4h+79OCAy9ozKrdTXi+4A==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ~19.0.1 || ~19.1.2 || ^19.2.1
@@ -963,8 +963,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  ai@6.0.204:
-    resolution: {integrity: sha512-SudB8rUwaVhpWF8+qTJcxUptXPIdN9rWMknzTT3WbKa2QwiGRshyepFKNkDILWm882LgqlEyRZgKhNT14j0jpQ==}
+  ai@6.0.206:
+    resolution: {integrity: sha512-hVdB5PozMMxmkPBfbCxkFOn0eVeCMi/imkfPvk65cxL4O8oIrvjUxDUX8dGkdkWG1No+R7e7D9ti2DHO61Z4YQ==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -1059,6 +1059,11 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
+  baseline-browser-mapping@2.10.37:
+    resolution: {integrity: sha512-girxaJ7WZssDOFhzCGZTDKoTa1gk6A1TbflaYTpykLJ4UU9Fz9kx1aREM8JCuoVHbL8X8T/mJg7w2oYSq72Oig==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
   brace-expansion@1.1.15:
     resolution: {integrity: sha512-EwOCDEex4quD37XhqM3omwtMoJjr//isUZz1JopUNWms+4Z2ViyM/k1YIRePpoVNnQhENnxtFjLaxNHrT7xIUg==}
 
@@ -1093,6 +1098,9 @@ packages:
 
   caniuse-lite@1.0.30001797:
     resolution: {integrity: sha512-l8xKG+gwAIExZGl9FrF7KUwuOmk6wbEPC9Xoy/RtnWv1XG0Q4LFlagaLpUv3Kiza3W/wm27zy0yWJEieYKAP6w==}
+
+  caniuse-lite@1.0.30001799:
+    resolution: {integrity: sha512-hG1bReV+OUU+MOqK4t/ZWI0tZOyz3rqS9XuhOUz1cIcbwBKjOyJEJuw9ER5JuNyqxNk8u/JUVbGibBOL1yrjFw==}
 
   canvg@3.0.11:
     resolution: {integrity: sha512-5ON+q7jCTgMp9cjpu4Jo6XbvfYwSB2Ow3kzHKfIyJfaCAOHLbdKPQqGKgfED/R5B+3TFFfe8pegYA+b423SRyA==}
@@ -1234,8 +1242,8 @@ packages:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
     engines: {node: '>=0.10.0'}
 
-  dompurify@3.4.8:
-    resolution: {integrity: sha512-yb1cEmaOum7wFvOCSQxyfgVlv5D47Rc30iZWoMpbDIWTnJ6grDDQyu2KFJzB2k7u0pMuJcQ1zphH//fFnw2tjQ==}
+  dompurify@3.4.10:
+    resolution: {integrity: sha512-0xzNv0e7oYC6yyuOGZIABPM4qtg3QxLFniDNPP4ZP90wR8Yq3zgwpRbrNiT4N3IKqDbbYFEJLV+JWEs19aZ//w==}
 
   drag-drop-touch@1.3.1:
     resolution: {integrity: sha512-Q0/ZgsnW7VUjn+YqSnp1rvxjjPnZX5YLyVaw28einood+eTMcLzgOgHk8nyqIF9O18J68l+2htlEnbw5GsyTvQ==}
@@ -1244,8 +1252,8 @@ packages:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
 
-  electron-to-chromium@1.5.370:
-    resolution: {integrity: sha512-D5tSHJReAb/Kf3Hu9F/GO4lJuSWzEWHwvQ/kKSUP7pimNgvxkSKj+gUQhHpKKACwrin7rS3byU7IxreF56rl5g==}
+  electron-to-chromium@1.5.373:
+    resolution: {integrity: sha512-G2Hym8JIf/QreuseqkDibgH8Ci8KfJzqGDKdakbhSx9UltwRBH2cBLAWU/lBX0sCdv0TlhyxQyDCnSfxgMWsjA==}
 
   emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
@@ -2833,7 +2841,7 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/gateway@3.0.130(zod@4.4.3)':
+  '@ai-sdk/gateway@3.0.132(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.10
       '@ai-sdk/provider-utils': 4.0.29(zod@4.4.3)
@@ -2851,10 +2859,10 @@ snapshots:
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/react@3.0.206(react@19.2.7)(zod@4.4.3)':
+  '@ai-sdk/react@3.0.208(react@19.2.7)(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider-utils': 4.0.29(zod@4.4.3)
-      ai: 6.0.204(zod@4.4.3)
+      ai: 6.0.206(zod@4.4.3)
       react: 19.2.7
       swr: 2.4.1(react@19.2.7)
       throttleit: 2.1.0
@@ -3601,9 +3609,9 @@ snapshots:
 
   acorn@8.16.0: {}
 
-  ai@6.0.204(zod@4.4.3):
+  ai@6.0.206(zod@4.4.3):
     dependencies:
-      '@ai-sdk/gateway': 3.0.130(zod@4.4.3)
+      '@ai-sdk/gateway': 3.0.132(zod@4.4.3)
       '@ai-sdk/provider': 3.0.10
       '@ai-sdk/provider-utils': 4.0.29(zod@4.4.3)
       '@opentelemetry/api': 1.9.1
@@ -3723,6 +3731,8 @@ snapshots:
 
   baseline-browser-mapping@2.10.35: {}
 
+  baseline-browser-mapping@2.10.37: {}
+
   brace-expansion@1.1.15:
     dependencies:
       balanced-match: 1.0.2
@@ -3738,9 +3748,9 @@ snapshots:
 
   browserslist@4.28.2:
     dependencies:
-      baseline-browser-mapping: 2.10.35
-      caniuse-lite: 1.0.30001797
-      electron-to-chromium: 1.5.370
+      baseline-browser-mapping: 2.10.37
+      caniuse-lite: 1.0.30001799
+      electron-to-chromium: 1.5.373
       node-releases: 2.0.47
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
 
@@ -3764,6 +3774,8 @@ snapshots:
   callsites@3.1.0: {}
 
   caniuse-lite@1.0.30001797: {}
+
+  caniuse-lite@1.0.30001799: {}
 
   canvg@3.0.11:
     dependencies:
@@ -3889,7 +3901,7 @@ snapshots:
     dependencies:
       esutils: 2.0.3
 
-  dompurify@3.4.8:
+  dompurify@3.4.10:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
     optional: true
@@ -3902,7 +3914,7 @@ snapshots:
       es-errors: 1.3.0
       gopd: 1.2.0
 
-  electron-to-chromium@1.5.370: {}
+  electron-to-chromium@1.5.373: {}
 
   emoji-regex@9.2.2: {}
 
@@ -4664,7 +4676,7 @@ snapshots:
     optionalDependencies:
       canvg: 3.0.11
       core-js: 3.49.0
-      dompurify: 3.4.8
+      dompurify: 3.4.10
       html2canvas: html2canvas-pro@2.0.2
 
   jsx-ast-utils@3.3.5:

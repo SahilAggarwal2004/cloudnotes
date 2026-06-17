@@ -91,23 +91,26 @@ export default function NoteProvider({ children, router }) {
       if (!data.success) throw data;
       await onSuccess?.(data);
       if (showToast.success && data.message) toast.success(data.message);
+    } catch (error) {
+      if (error?.error) data = error;
+      else if (error?.name === "AbortError") data = { success: false, error: { type: "timeout", message: "Request timed out. Please try again." } };
+      else data = { success: false, error: { type: "network", message: "Network error. Please check your internet connection." } };
+      const errorObj = data.error;
+      await onError?.(errorObj);
+      if (errorObj) {
+        const authenticationError = errorObj.type === "authentication";
+        if (authenticationError) {
+          resetStorage();
+          router.replace("/account/login");
+        }
+        if (showToast.error || authenticationError) toast.error(errorObj.message);
+      }
+    } finally {
       if (data.notes) {
         client.setQueryData(queryKey, data.notes);
         setCachedNotes(data.notes);
       }
       if (data.syncedAt) setLastSyncedAt(data.syncedAt);
-    } catch (error) {
-      if (error?.error) data = error;
-      else if (error?.name === "AbortError") data = { success: false, error: { type: "timeout", message: "Request timed out. Please try again." } };
-      else data = { success: false, error: { type: "network", message: "Network error. Please check your internet connection." } };
-      await onError?.(data.error);
-      const authenticationError = data.error?.type === "authentication";
-      if (authenticationError) {
-        resetStorage();
-        router.replace("/account/login");
-      }
-      if (showToast.error || authenticationError) toast.error(data.error?.message);
-    } finally {
       setProgress(100);
     }
 
@@ -144,7 +147,6 @@ export default function NoteProvider({ children, router }) {
         closeModal,
         fetchApi,
         getTagColor,
-        lastSyncedAt,
         modal,
         newNotes,
         notes,

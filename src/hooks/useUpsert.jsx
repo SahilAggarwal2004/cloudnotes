@@ -11,7 +11,7 @@ const { description: defaultDescription, tag: defaultTag, title: defaultTitle, c
 export default function useUpsert({ _id, title, description, tag }) {
   const client = useQueryClient();
   const router = useRouter();
-  const { fetchApi, getTagColor, lastSyncedAt, setProgress, setTagColor } = useNoteContext();
+  const { fetchApi, getTagColor, setProgress, setTagColor } = useNoteContext();
   const [rawUpsertState, setUpsertState, clearUpsertState] = useStorage(`upsert-${_id}`, { flag: false }, false);
   const upsertState = { title: defaultTitle, description: defaultDescription, tag: defaultTag, tagColor: defaultColor, ...rawUpsertState };
 
@@ -43,17 +43,14 @@ export default function useUpsert({ _id, title, description, tag }) {
         deleteLocalNote(_id);
         setProgress(100);
       } else {
-        const { success, error, updatedAt } = await fetchApi({
+        const { success, error } = await fetchApi({
           url: newNote ? "api/notes/add/bulk" : `api/notes/update/${_id}${force ? "?force=true" : ""}`,
           method: newNote ? "POST" : "PUT",
           body: newNote ? { notes: [localState] } : localState,
           onSuccess: () => deleteLocalNote(_id),
         });
         if (!success) {
-          if (error?.type === "conflict") {
-            if (Date.parse(updatedAt) > lastSyncedAt) await client.refetchQueries({ queryKey });
-            router.push(`/note?id=${_id}&conflict=true`);
-          }
+          if (error?.type === "conflict") router.push(`/note?id=${_id}&conflict=true`);
           return;
         }
       }

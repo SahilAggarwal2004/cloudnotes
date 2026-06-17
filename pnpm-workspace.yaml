@@ -4,6 +4,7 @@ allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:
   - postcss@8.5.10
+  - dompurify@3.4.9
 minimumReleaseAgeStrict: true
 overrides:
   html2canvas: npm:html2canvas-pro@2.0.2
