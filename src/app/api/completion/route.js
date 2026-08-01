@@ -1,4 +1,4 @@
-import { streamText } from "ai";
+import { createUIMessageStreamResponse, streamText, toUIMessageStream } from "ai";
 import dedent from "dedent";
 import { charLimit } from "../../../constants";
 
@@ -45,5 +45,5 @@ export async function POST(request) {
     prompt: cleanedPrompt,
   });
 
-  return result.toUIMessageStreamResponse();
+  return createUIMessageStreamResponse({ stream: toUIMessageStream({ stream: result.stream }) });
 }

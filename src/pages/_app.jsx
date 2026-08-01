@@ -24,6 +24,7 @@ export default function App({ Component, pageProps }) {
   const user = useMemo(() => getStorage("user"), [router.pathname]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(false);
     init();
     if ("serviceWorker" in navigator && window.serwist) {
