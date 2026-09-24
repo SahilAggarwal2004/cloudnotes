@@ -43,6 +43,7 @@ export async function POST(request) {
     providerOptions: { gateway: { order: ["groq"] } },
     system: systemPrompt,
     prompt: cleanedPrompt,
+    reasoning: "none",
   });
 
   return createUIMessageStreamResponse({ stream: toUIMessageStream({ stream: result.stream }) });
