@@ -10,13 +10,22 @@ import { ToastContainer } from "react-toastify";
 
 import Modal from "../components/Modal";
 import Navbar from "../components/navbar/Navbar";
-import { apiUrl, hideNavbar, onlyGuest } from "../constants";
+import { hideNavbar, onlyGuest, queryStaleTime } from "../constants";
 import NoteProvider from "../contexts/NoteProvider";
 import { getStorage } from "../lib/storage";
 import { handleVersionUpdate } from "../lib/update";
 import "../styles/globals.css";
 
-const client = new QueryClient({ defaultOptions: { queries: { staleTime: 30000, retry: 1, refetchOnWindowFocus: "always", refetchOnReconnect: "always" } } });
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: queryStaleTime,
+      retry: 1,
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+    },
+  },
+});
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -55,8 +64,6 @@ export default function App({ Component, pageProps }) {
           content="CloudNotes is an online platform to save all your notes on the cloud. We ensure strong encryption of your notes so that only you can access your notes."
         />
         <link rel="manifest" href="/manifest.json" />
-
-        <link rel="preconnect" href={apiUrl} />
 
         <meta name="google-site-verification" content="5_rdfkDpTLo7tXDzIkEfmQb1wH_0AmpbcQOAPhLNBLQ" />
 

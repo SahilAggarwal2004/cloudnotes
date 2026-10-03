@@ -1,4 +1,6 @@
-export const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+export const apiUrls = process.env.NEXT_PUBLIC_API_URL.split(",")
+  .map((url) => url.trim().replace(/\/+$/, ""))
+  .filter(Boolean);
 
 export const charLimit = {
   name: { min: 3, max: 20 },
@@ -48,6 +50,16 @@ export const queryKey = ["notes"];
 
 export const tagColorsKey = "tagColors";
 
-export const unitDurations = { second: 1000, minute: 60 * 1000, hour: 60 * 60 * 1000, day: 24 * 60 * 60 * 1000 };
+export const unitDurations = {
+  second: 1000,
+  minute: 60 * 1000,
+  hour: 60 * 60 * 1000,
+  day: 24 * 60 * 60 * 1000,
+};
 
-export const timeouts = { get: 5 * unitDurations.second, mutation: 10 * unitDurations.second };
+export const queryStaleTime = 2 * unitDurations.minute;
+
+export const timeouts = {
+  get: 5 * unitDurations.second,
+  mutation: 10 * unitDurations.second,
+};

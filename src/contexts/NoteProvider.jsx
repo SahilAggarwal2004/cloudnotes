@@ -3,10 +3,11 @@ import { use, useState, createContext, useEffect, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-import { apiUrl, defaults, newNotesKey, queryKey, tagColorsKey, timeouts } from "../constants";
+import { defaults, newNotesKey, queryKey, tagColorsKey, timeouts } from "../constants";
 import useModal from "../hooks/useModal";
 import useStorage from "../hooks/useStorage";
 import { useStorageListener } from "../hooks/useStorageListener";
+import { errors, gatewayStatuses, getApiServerOrder, isTimeout } from "../lib/api";
 import { deleteLocalNote, hasActiveDraft } from "../lib/notes";
 import { clearStorage, getStorage, removeStorage, setStorage } from "../lib/storage";
 
@@ -78,43 +79,95 @@ export default function NoteProvider({ children, router }) {
   async function fetchApi({ url, method = "GET", body, token = authToken, showToast = { success: true, error: true }, onSuccess, onError }) {
     setProgress(33);
 
-    let data;
+    let result = errors.network; // Also what the caller gets when no API server is configured.
 
     try {
-      const response = await fetch(`${apiUrl}${url}`, {
-        method,
-        headers: { "Content-Type": "application/json", token, dimensions },
-        body: body ? JSON.stringify(body) : undefined,
-        signal: AbortSignal.timeout(method === "GET" ? getTimeout : mutationTimeout),
+      const explicitEmail = typeof body?.email === "string" ? body.email : null;
+      const email = explicitEmail || getStorage("user")?.email;
+
+      // An explicitly supplied email gets its own deterministic server.
+      // Otherwise, reuse the server from this browser session when available.
+      const servers = getApiServerOrder({
+        key: email?.trim().toLowerCase(),
+        preferredUrl: explicitEmail ? undefined : getStorage("apiServer", null, false)?.url,
       });
-      data = await response.json();
-      if (!data.success) throw data;
-      await onSuccess?.(data);
-      if (showToast.success && data.message) toast.success(data.message);
-    } catch (error) {
-      if (error?.error) data = error;
-      else if (error?.name === "AbortError") data = { success: false, error: { type: "timeout", message: "Request timed out. Please try again." } };
-      else data = { success: false, error: { type: "network", message: "Network error. Please check your internet connection." } };
-      const errorObj = data.error;
-      await onError?.(errorObj);
-      if (errorObj) {
-        const authenticationError = errorObj.type === "authentication";
-        if (authenticationError) {
-          resetStorage();
-          router.replace("/account/login");
+
+      const path = url.replace(/^\/+/, "");
+      const isGet = method === "GET";
+
+      for (const server of servers) {
+        let response;
+
+        try {
+          response = await fetch(`${server}/${path}`, {
+            method,
+            headers: { "Content-Type": "application/json", token, dimensions },
+            body: body ? JSON.stringify(body) : undefined,
+            signal: AbortSignal.timeout(isGet ? getTimeout : mutationTimeout),
+          });
+        } catch (error) {
+          const timedOut = isTimeout(error);
+          result = timedOut ? errors.timeout : errors.network;
+
+          // A GET can always try the next server. A mutation can only do so when the request never
+          // got through (connection refused, DNS failure, ...). After a timeout it may have been
+          // applied, and repeating it elsewhere could duplicate it.
+          if (isGet || !timedOut) continue;
+          break;
         }
-        if (showToast.error || authenticationError) toast.error(errorObj.message);
+
+        const responseData = await response.json().catch(() => null);
+        const fromApi = Boolean(responseData) && typeof responseData === "object";
+        result = fromApi ? responseData : errors.server;
+
+        // Safe to try the next server:
+        // - GET: on any server error or non-API response, since nothing is mutated.
+        // - Mutation: only on a gateway response from the platform (see gatewayStatuses). An error
+        //   reported by our own API (even a 500) may have been partially applied, so it is final.
+        const retry = fromApi ? isGet && response.status >= 500 : isGet || gatewayStatuses.includes(response.status);
+        if (retry) continue;
+
+        // Remember the server that answered, even if it answered with an error such as 401 or 409.
+        if (fromApi) setStorage("apiServer", { url: server }, false);
+        break;
+      }
+
+      if (result.success) {
+        await onSuccess?.(result);
+
+        if (showToast.success && result.message) {
+          toast.success(result.message);
+        }
+      } else {
+        const errorObj = result.error;
+
+        await onError?.(errorObj);
+
+        if (errorObj) {
+          const authenticationError = errorObj.type === "authentication";
+
+          if (authenticationError) {
+            resetStorage();
+            router.replace("/account/login");
+          }
+
+          if (showToast.error || authenticationError) {
+            toast.error(errorObj.message);
+          }
+        }
       }
     } finally {
-      if (data.notes) {
-        client.setQueryData(queryKey, data.notes);
-        setCachedNotes(data.notes);
+      if (result.notes) {
+        client.setQueryData(queryKey, result.notes);
+        setCachedNotes(result.notes);
       }
-      if (data.syncedAt) setLastSyncedAt(data.syncedAt);
+
+      if (result.syncedAt) setLastSyncedAt(result.syncedAt);
+
       setProgress(100);
     }
 
-    return data;
+    return result;
   }
 
   function resetQueryParam(parameter) {
